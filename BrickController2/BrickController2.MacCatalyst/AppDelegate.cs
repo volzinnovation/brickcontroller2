@@ -1,0 +1,52 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using BrickController2.BusinessLogic.DI;
+using BrickController2.CreationManagement.DI;
+using BrickController2.Database.DI;
+using BrickController2.DeviceManagement.DI;
+using BrickController2.Extensions;
+using BrickController2.InputDeviceManagement.DI;
+using BrickController2.iOS.PlatformServices.DI;
+using BrickController2.iOS.UI.CustomHandlers;
+using BrickController2.iOS.UI.Services.DI;
+using BrickController2.UI.Controls;
+using BrickController2.UI.DI;
+using Foundation;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Hosting;
+using ZXing.Net.Maui.Controls;
+
+namespace BrickController2.MacCatalyst;
+
+[Register("AppDelegate")]
+public partial class AppDelegate : MauiUIApplicationDelegate
+{
+    protected override MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+
+        builder
+            .UseMauiApp<BrickController2.App>()
+            .ConfigureSymbolFonts()
+            .ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddHandler<ExtendedSlider, ExtendedSliderHandler>();
+            })
+            .UseBarcodeReader()
+            .ConfigureContainer(new AutofacServiceProviderFactory(), autofacBuilder =>
+            {
+                autofacBuilder.RegisterModule(new PlatformServicesModule());
+                autofacBuilder.RegisterModule(new UIServicesModule());
+
+                autofacBuilder.RegisterModule(new BusinessLogicModule());
+                autofacBuilder.RegisterModule(new DatabaseModule());
+                autofacBuilder.RegisterModule(new CreationManagementModule());
+                autofacBuilder.RegisterModule(new DeviceManagementModule());
+                autofacBuilder.RegisterModule(new InputDeviceManagementModule());
+                autofacBuilder.RegisterModule(new UiModule());
+            });
+
+        return builder.Build();
+    }
+}

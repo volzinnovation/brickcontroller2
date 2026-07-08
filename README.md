@@ -6,6 +6,8 @@ Cross platform mobile application for controlling your creations using a bluetoo
 
 - Android 5.0+
 - iOS 12.2+
+- macOS 15+ (Mac Catalyst)
+- Ubuntu 24.04+ / Linux GTK4 (experimental; Bluetooth LE and gamepad input are not implemented yet)
 - Windows 10 version 1809 or higher
 - Windows 11
 
@@ -43,7 +45,7 @@ Cross platform mobile application for controlling your creations using a bluetoo
 ## Project details
 
 BrickController 2 is a MAUI application and can be compiled using Visual Studio 2026 (Professional, Enterprise and Community Editions)
-or Visual Studio for Mac.
+or Visual Studio for Mac. Desktop installer scripts are documented in [docs/desktop-installers.md](docs/desktop-installers.md).
 
 ## 3rd party libraries used
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleDisplayName</key>
+  <string>BrickController2</string>
+  <key>CFBundleIdentifier</key>
+  <string>com.scn.brickcontroller2</string>
+  <key>CFBundleName</key>
+  <string>BrickController2</string>
+  <key>CFBundleShortVersionString</key>
+  <string>3.4</string>
+  <key>CFBundleVersion</key>
+  <string>50</string>
+  <key>NSBluetoothAlwaysUsageDescription</key>
+  <string>Bluetooth access is required to use SBrick, BuWizz or Powered-Up devices.</string>
+  <key>NSBluetoothPeripheralUsageDescription</key>
+  <string>Bluetooth access is required to use SBrick, BuWizz or Powered-Up devices.</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Camera is required in order to import a creation via QR code from another application.</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>Location access is required to use SBrick, BuWizz or Powered-Up devices.</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>Location access is required to use SBrick, BuWizz or Powered-Up devices.</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>Location access is required to use SBrick, BuWizz or Powered-Up devices.</string>
+  <key>UIApplicationSupportsIndirectInputEvents</key>
+  <true/>
+  <key>UIFileSharingEnabled</key>
+  <true/>
+  <key>UIUserInterfaceStyle</key>
+  <string>Dark</string>
+</dict>
+</plist>

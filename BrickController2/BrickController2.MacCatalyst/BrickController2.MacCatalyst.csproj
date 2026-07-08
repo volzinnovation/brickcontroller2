@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-maccatalyst</TargetFramework>
+    <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+    <Platforms>x64;ARM64</Platforms>
+    <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
+    <AssemblyName>BrickController2.MacCatalyst</AssemblyName>
+    <ApplicationTitle>BrickController 2</ApplicationTitle>
+    <ApplicationId>com.scn.brickcontroller2</ApplicationId>
+    <RootNamespace>BrickController2.MacCatalyst</RootNamespace>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <ValidateXcodeVersion Condition="'$(ValidateXcodeVersion)' == ''">false</ValidateXcodeVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Maui.Controls" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
+    <PackageReference Include="Microsoft.Maui.Essentials" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" />
+    <ProjectReference Include="..\BrickController2\BrickController2.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\BrickController2.iOS\PlatformServices\**\*.cs" Link="PlatformServices\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\BrickController2.iOS\UI\**\*.cs" Link="UI\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiSplashScreen Include="..\BrickController2.iOS\Resources\splash.svg" Link="splash.svg" BaseSize="128,128" Color="#990000" />
+  </ItemGroup>
+
+</Project>

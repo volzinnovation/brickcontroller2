@@ -1,0 +1,83 @@
+name: Build BrickController Linux
+
+on:
+  push:
+    branches:
+      - default
+      - 'releases/**'
+    paths:
+      - '.github/**/*linux.yml'
+      - 'build/installers/build-linux-deb.sh'
+      - 'Directory.*.props'
+      - 'NuGet.config'
+      - 'BrickController2.slnx'
+      - 'BrickController2/BrickController2/**'
+      - 'BrickController2/BrickController2.Linux/**'
+  pull_request:
+    branches:
+      - default
+      - 'releases/**'
+    paths:
+      - '.github/**/*linux.yml'
+      - 'build/installers/build-linux-deb.sh'
+      - 'Directory.*.props'
+      - 'NuGet.config'
+      - 'BrickController2.slnx'
+      - 'BrickController2/BrickController2/**'
+      - 'BrickController2/BrickController2.Linux/**'
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-24.04
+    name: BrickController Linux Build
+    strategy:
+      matrix:
+        runtime: [linux-x64]
+    env:
+      APP_DISPLAY_VERSION: "0.0.0"
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Install .NET MAUI Workload
+      run: dotnet workload install maui-android
+
+    - name: Install GTK build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libgtk-4-dev libwebkitgtk-6.0-dev \
+          gobject-introspection libgirepository1.0-dev \
+          gir1.2-gtk-4.0 gir1.2-webkit-6.0 \
+          pkg-config dpkg-dev
+
+    - name: Set app version for release
+      if: github.event_name == 'release' && github.event.action == 'published'
+      run: echo "APP_DISPLAY_VERSION=${{ github.event.release.tag_name }}" >> "$GITHUB_ENV"
+
+    - name: Build Linux installer
+      run: bash build/installers/build-linux-deb.sh ${{ matrix.runtime }}
+
+    - name: Upload Linux artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: brickcontroller-linux-${{ matrix.runtime }}
+        path: artifacts/installers/*.deb
+
+    - name: Upload Linux installer to release
+      if: github.event_name == 'release' && github.event.action == 'published'
+      uses: softprops/action-gh-release@v2
+      with:
+        files: artifacts/installers/*.deb
