@@ -19,10 +19,10 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        var builder = MauiApp
-            .CreateBuilder()
-            .UseMauiAppLinuxGtk4<BrickController2.App>()
-            .AddLinuxGtk4Essentials()
+        var builder = MauiApp.CreateBuilder();
+        builder.UseMauiAppLinuxGtk4<BrickController2.App>();
+
+        builder
             .ConfigureSymbolFonts()
             .UseBarcodeReader()
             .ConfigureContainer(new AutofacServiceProviderFactory(), autofacBuilder =>
@@ -36,6 +36,8 @@ public static class MauiProgram
                 autofacBuilder.RegisterModule(new InputDeviceManagementModule());
                 autofacBuilder.RegisterModule(new UiModule());
             });
+
+        builder.AddLinuxGtk4Essentials();
 
         return builder.Build();
     }

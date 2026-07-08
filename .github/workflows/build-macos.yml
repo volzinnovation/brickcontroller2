@@ -37,11 +37,15 @@ permissions:
 
 jobs:
   build-macos:
-    runs-on: macos-latest
-    name: BrickController macOS Build
+    runs-on: ${{ matrix.runner }}
+    name: BrickController macOS Build (${{ matrix.runtime }})
     strategy:
       matrix:
-        runtime: [maccatalyst-arm64, maccatalyst-x64]
+        include:
+          - runtime: maccatalyst-arm64
+            runner: macos-26
+          - runtime: maccatalyst-x64
+            runner: macos-26-intel
     env:
       APP_DISPLAY_VERSION: "0.0.0"
 
