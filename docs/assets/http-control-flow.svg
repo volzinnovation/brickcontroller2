@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260" role="img" aria-labelledby="title desc">
+  <title id="title">BrickController2 HTTP control flow</title>
+  <desc id="desc">A client sends HTTP requests to the BrickController2 app, which controls a brick creation over Bluetooth.</desc>
+  <!-- Original self-authored SVG icons; no third-party icon assets. -->
+  <defs>
+    <marker id="arrow-http" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f6fed"/>
+    </marker>
+    <marker id="arrow-bluetooth" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#138a58"/>
+    </marker>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#12233f" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .card { fill: #ffffff; stroke: #d7dee9; stroke-width: 2; filter: url(#soft-shadow); }
+      .label { fill: #182335; font: 700 22px Inter, Segoe UI, Arial, sans-serif; }
+      .sub { fill: #59677c; font: 500 15px Inter, Segoe UI, Arial, sans-serif; }
+      .arrow-label { fill: #233044; font: 700 16px Inter, Segoe UI, Arial, sans-serif; }
+      .line-http { stroke: #2f6fed; stroke-width: 5; stroke-linecap: round; marker-end: url(#arrow-http); }
+      .line-bluetooth { stroke: #138a58; stroke-width: 5; stroke-linecap: round; marker-end: url(#arrow-bluetooth); }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="960" height="260" rx="18"/>
+
+  <g transform="translate(35 42)">
+    <rect class="card" x="0" y="0" width="235" height="176" rx="16"/>
+    <text class="label" x="117.5" y="132" text-anchor="middle">Client</text>
+    <text class="sub" x="117.5" y="154" text-anchor="middle">third-party app</text>
+    <g transform="translate(68 28)" fill="none" stroke="#2f6fed" stroke-width="5" stroke-linejoin="round">
+      <rect x="13" y="0" width="73" height="52" rx="7"/>
+      <path d="M 0 68 H 99 L 86 52 H 13 Z" fill="#e8f0ff" stroke="#2f6fed"/>
+      <path d="M 38 18 L 27 26 L 38 34"/>
+      <path d="M 61 18 L 72 26 L 61 34"/>
+    </g>
+  </g>
+
+  <g transform="translate(362 42)">
+    <rect class="card" x="0" y="0" width="235" height="176" rx="16"/>
+    <text class="label" x="117.5" y="132" text-anchor="middle">BrickController2</text>
+    <text class="sub" x="117.5" y="154" text-anchor="middle">app and HTTP server</text>
+    <g transform="translate(72 26)">
+      <rect x="0" y="0" width="91" height="70" rx="10" fill="#fff1f1" stroke="#d71920" stroke-width="5"/>
+      <path d="M 0 18 H 91" stroke="#d71920" stroke-width="5"/>
+      <circle cx="15" cy="9" r="3.5" fill="#d71920"/>
+      <circle cx="29" cy="9" r="3.5" fill="#d71920"/>
+      <circle cx="43" cy="9" r="3.5" fill="#d71920"/>
+      <path d="M 23 37 H 68 M 23 52 H 68" stroke="#d71920" stroke-width="5" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <g transform="translate(690 42)">
+    <rect class="card" x="0" y="0" width="235" height="176" rx="16"/>
+    <text class="label" x="117.5" y="132" text-anchor="middle">Brick creation</text>
+    <text class="sub" x="117.5" y="154" text-anchor="middle">motors and lights</text>
+    <g transform="translate(62 30)">
+      <rect x="0" y="29" width="112" height="42" rx="8" fill="#fff4db" stroke="#e09a18" stroke-width="5"/>
+      <rect x="13" y="10" width="36" height="24" rx="6" fill="#fff4db" stroke="#e09a18" stroke-width="5"/>
+      <rect x="62" y="10" width="36" height="24" rx="6" fill="#fff4db" stroke="#e09a18" stroke-width="5"/>
+      <circle cx="28" cy="80" r="13" fill="#f4fbf8" stroke="#138a58" stroke-width="5"/>
+      <circle cx="84" cy="80" r="13" fill="#f4fbf8" stroke="#138a58" stroke-width="5"/>
+    </g>
+  </g>
+
+  <path class="line-http" d="M 283 130 C 305 130 327 130 349 130"/>
+  <text class="arrow-label" x="316" y="106" text-anchor="middle">HTTP</text>
+  <path d="M 302 149 H 330" stroke="#2f6fed" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+
+  <path class="line-bluetooth" d="M 610 130 C 632 130 654 130 676 130"/>
+  <text class="arrow-label" x="643" y="106" text-anchor="middle">Bluetooth</text>
+  <path d="M 630 149 C 639 140 648 140 657 149" fill="none" stroke="#138a58" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+</svg>

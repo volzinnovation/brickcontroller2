@@ -52,6 +52,8 @@ or Visual Studio for Mac. Desktop installer scripts are documented in [docs/desk
 
 The Mac Catalyst app can expose the HTTP control API for external tools. For local testing, start the app with:
 
+![Client controls BrickController2 over HTTP; BrickController2 controls the brick creation over Bluetooth](docs/assets/http-control-flow.webp)
+
 - `BRICKCONTROLLER_HTTP_ENABLED=1`
 - `BRICKCONTROLLER_HTTP_PORT=5081`
 - `BRICKCONTROLLER_HTTP_TOKEN=test-token`
