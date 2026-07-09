@@ -1,0 +1,125 @@
+name: Release Mac and Ubuntu (Manual, Unsigned)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version tag (e.g. 3.4.1)'
+        required: true
+        default: '0.0.0'
+      prerelease:
+        description: 'Mark as pre-release'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    runs-on: ${{ matrix.runner }}
+    name: Build macOS (${{ matrix.runtime }})
+    strategy:
+      matrix:
+        include:
+          - runtime: maccatalyst-arm64
+            runner: macos-26
+          - runtime: maccatalyst-x64
+            runner: macos-26-intel
+    env:
+      APP_DISPLAY_VERSION: ${{ inputs.version }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Install .NET MAUI Workload
+      run: dotnet workload install maui-maccatalyst
+
+    - name: Select compatible Xcode if available
+      run: |
+        if [ -d /Applications/Xcode_26.5.app/Contents/Developer ]; then
+          echo "DEVELOPER_DIR=/Applications/Xcode_26.5.app/Contents/Developer" >> "$GITHUB_ENV"
+        else
+          xcodebuild -version
+        fi
+
+    - name: Build macOS installer (unsigned)
+      run: bash build/installers/build-macos-pkg.sh ${{ matrix.runtime }}
+
+    - name: Upload macOS artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: brickcontroller-macos-${{ matrix.runtime }}
+        path: artifacts/installers/*.pkg
+
+  build-ubuntu:
+    runs-on: ubuntu-24.04
+    name: Build Ubuntu (linux-x64)
+    env:
+      APP_DISPLAY_VERSION: ${{ inputs.version }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Install .NET MAUI Workload
+      run: dotnet workload install maui-android
+
+    - name: Install packaging dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y dpkg-dev
+
+    - name: Build Ubuntu installer (unsigned)
+      run: bash build/installers/build-linux-api-deb.sh linux-x64
+
+    - name: Upload Ubuntu artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: brickcontroller-linux-api-linux-x64
+        path: artifacts/installers/*.deb
+
+  create-release:
+    needs: [build-macos, build-ubuntu]
+    runs-on: ubuntu-24.04
+    name: Publish GitHub Release
+
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: release-artifacts
+        merge-multiple: true
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ inputs.version }}
+        name: BrickController2 ${{ inputs.version }}
+        draft: false
+        prerelease: ${{ inputs.prerelease }}
+        files: release-artifacts/**/*
+        body: |
+          ## BrickController2 ${{ inputs.version }}
+
+          Unsigned builds for macOS and Ubuntu, created via manual workflow trigger.
+
+          ### Downloads
+          | Platform | File |
+          |---|---|
+          | macOS (Apple Silicon) | `BrickController2_${{ inputs.version }}_maccatalyst-arm64.pkg` |
+          | macOS (Intel) | `BrickController2_${{ inputs.version }}_maccatalyst-x64.pkg` |
+          | Ubuntu / Linux x64 | `BrickController2.Api_*_linux-x64.deb` |
+
+          > **Note:** These releases are **unsigned**.
+          > macOS users may need to allow the app via *System Settings → Privacy & Security → Open Anyway* after installation.
