@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using BrickController2.Extensions;
+using BrickController2.InputDeviceManagement.HttpControl;
 using BrickController2.InputDeviceManagement.Sensors;
 using BrickController2.PlatformServices.InputDeviceService;
 
@@ -13,6 +14,17 @@ namespace BrickController2.InputDeviceManagement.DI
 
             // generic sensor based input device, but just if supported and enabled in Settings
             builder.RegisterInputDeviceService<InputSensorService, OrientationSensorController>();
+
+            builder.RegisterType<HttpControlSettingsService>()
+                .As<IHttpControlSettingsService>()
+                .SingleInstance();
+
+            builder.RegisterType<HttpControlService>()
+                .As<IInputDeviceService>()
+                .As<IInputDeviceService<HttpInputDevice>>()
+                .As<IHttpControlService>()
+                .As<IStartable>()
+                .SingleInstance();
         }
     }
 }

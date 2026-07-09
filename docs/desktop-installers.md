@@ -4,6 +4,7 @@ BrickController 2 has two desktop heads in addition to the existing Windows buil
 
 - `BrickController2.MacCatalyst` targets macOS 15+ through .NET MAUI Mac Catalyst and reuses the iOS CoreBluetooth/GameController platform services.
 - `BrickController2.Linux` targets Ubuntu/Linux through the experimental .NET MAUI GTK4 backend from `dotnet/maui-labs`.
+- `BrickController2.Linux.Api` targets Ubuntu/Linux as a headless HTTP API host backed by BlueZ BLE central operations.
 
 ## macOS
 
@@ -31,7 +32,9 @@ XCODE_DEVELOPER_DIR=/Applications/Xcode_26.5.app/Contents/Developer \
 
 ## Ubuntu/Linux
 
-The Linux app uses the GTK4 backend that Microsoft documents as experimental and not officially supported. The UI, database, preferences, localization, and file import/export are wired through the Linux head. Bluetooth LE and game controller input still need native BlueZ and Linux input implementations; the current Linux services report those capabilities as unsupported.
+The Linux desktop app uses the GTK4 backend that Microsoft documents as experimental and not officially supported. The UI, database, preferences, localization, and file import/export are wired through the Linux head. Bluetooth LE and game controller input are still unsupported in this UI head.
+
+For Bluetooth on Linux, use the headless API host. It exposes scan/connect/GATT read/write/notification operations over HTTP and routes them through BlueZ on D-Bus. Details and HTTP examples are in [linux-headless-api.md](linux-headless-api.md).
 
 Install prerequisites and build a `.deb` installer on Ubuntu:
 
@@ -46,3 +49,12 @@ APP_DISPLAY_VERSION=3.4 bash build/installers/build-linux-deb.sh linux-x64
 ```
 
 The installer is written to `artifacts/installers`.
+
+Build the headless API `.deb` installer on Ubuntu:
+
+```bash
+dotnet workload install maui-android
+sudo apt install dpkg-dev
+
+APP_DISPLAY_VERSION=3.4 bash build/installers/build-linux-api-deb.sh linux-x64
+```

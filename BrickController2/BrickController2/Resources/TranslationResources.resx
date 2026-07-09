@@ -765,4 +765,34 @@
   <data name="OrientationSensor" xml:space="preserve">
     <value>Tilt Steering</value>
   </data>
+  <data name="HttpControlService" xml:space="preserve">
+    <value>HTTP control service</value>
+  </data>
+  <data name="HttpControlEnabled" xml:space="preserve">
+    <value>Enable HTTP control</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="HttpControlListenMode" xml:space="preserve">
+    <value>Listen mode</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="HttpControlAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="HttpControlAccessToken" xml:space="preserve">
+    <value>Access token</value>
+  </data>
+  <data name="HttpControlNotRunning" xml:space="preserve">
+    <value>Not running</value>
+  </data>
+  <data name="HttpControlNoToken" xml:space="preserve">
+    <value>No token generated</value>
+  </data>
+  <data name="Regenerate" xml:space="preserve">
+    <value>Regenerate</value>
+  </data>
 </root>

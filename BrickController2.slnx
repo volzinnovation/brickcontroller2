@@ -22,6 +22,7 @@
     <Deploy />
   </Project>
   <Project Path="BrickController2/BrickController2.Linux/BrickController2.Linux.csproj" />
+  <Project Path="BrickController2/BrickController2.Linux.Api/BrickController2.Linux.Api.csproj" />
   <Project Path="BrickController2/BrickController2.WinUI/BrickController2.WinUI.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />

@@ -23,12 +23,23 @@
             <Grid RowSpacing="0" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
 
                 <!-- Settings items -->
-                <Grid Margin="20">
+                <ScrollView Margin="20">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -53,7 +64,47 @@
                     <Switch Grid.Column="1" Grid.Row="4" IsToggled="{Binding IsOrientationSensorEnabled}" HorizontalOptions="End" VerticalOptions="Center" IsVisible="{Binding IsOrientationSensorSupported}"/>
 
                     <BoxView Grid.ColumnSpan="2" Grid.Row="5" Style="{StaticResource DividerBoxViewStyle}" Margin="5,10,5,10"/>
+
+                    <!-- HTTP control service -->
+                    <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Text="{extensions:Translate HttpControlService}" FontSize="Large" FontAttributes="Bold" VerticalOptions="Center" IsVisible="{Binding IsHttpControlSupported}"/>
+
+                    <Label Grid.Column="0" Grid.Row="7" Text="{extensions:Translate HttpControlEnabled}" FontSize="Large" VerticalOptions="Center" IsVisible="{Binding IsHttpControlSupported}"/>
+                    <Switch Grid.Column="1" Grid.Row="7" IsToggled="{Binding IsHttpControlEnabled}" HorizontalOptions="End" VerticalOptions="Center" IsVisible="{Binding IsHttpControlSupported}"/>
+
+                    <Label Grid.Column="0" Grid.Row="8" Text="{extensions:Translate Port}" FontSize="Large" VerticalOptions="Center" IsVisible="{Binding IsHttpControlSupported}"/>
+                    <Button Grid.Column="1" Grid.Row="8" Text="{Binding HttpControlPort}" Command="{Binding SelectHttpControlPortCommand}" Style="{StaticResource PickerButtonStyle}" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsHttpControlSupported}"/>
+
+                    <Label Grid.Column="0" Grid.Row="9" Text="{extensions:Translate HttpControlListenMode}" FontSize="Large" VerticalOptions="Center" IsVisible="{Binding IsHttpControlSupported}"/>
+                    <Button Grid.Column="1" Grid.Row="9" Text="{Binding HttpControlListenMode}" Command="{Binding SelectHttpControlListenModeCommand}" Style="{StaticResource PickerButtonStyle}" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsHttpControlSupported}"/>
+
+                    <Label Grid.Column="0" Grid.Row="10" Text="{extensions:Translate Status}" FontSize="Large" VerticalOptions="Center" IsVisible="{Binding IsHttpControlSupported}"/>
+                    <Label Grid.Column="1" Grid.Row="10" Text="{Binding HttpControlStatus}" FontSize="Small" VerticalOptions="Center" HorizontalOptions="End" HorizontalTextAlignment="End" LineBreakMode="WordWrap" IsVisible="{Binding IsHttpControlSupported}"/>
+
+                    <Label Grid.Column="0" Grid.Row="11" Text="{extensions:Translate HttpControlAddress}" FontSize="Large" VerticalOptions="Start" IsVisible="{Binding IsHttpControlSupported}"/>
+                    <Grid Grid.Column="1" Grid.Row="11" RowSpacing="6" IsVisible="{Binding IsHttpControlSupported}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Text="{Binding HttpControlUrls}" FontSize="Small" HorizontalOptions="End" HorizontalTextAlignment="End" LineBreakMode="WordWrap"/>
+                        <Button Grid.Row="1" Text="{extensions:Translate Copy}" Command="{Binding CopyHttpControlUrlCommand}" Style="{StaticResource PickerButtonStyle}" HorizontalOptions="FillAndExpand"/>
+                    </Grid>
+
+                    <Label Grid.Column="0" Grid.Row="12" Text="{extensions:Translate HttpControlAccessToken}" FontSize="Large" VerticalOptions="Start" IsVisible="{Binding IsHttpControlSupported}"/>
+                    <Grid Grid.Column="1" Grid.Row="12" RowSpacing="6" IsVisible="{Binding IsHttpControlSupported}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Text="{Binding HttpControlAccessToken}" FontSize="Small" HorizontalOptions="End" HorizontalTextAlignment="End" LineBreakMode="TailTruncation"/>
+                        <Button Grid.Row="1" Text="{extensions:Translate Copy}" Command="{Binding CopyHttpControlTokenCommand}" Style="{StaticResource PickerButtonStyle}" HorizontalOptions="FillAndExpand"/>
+                        <Button Grid.Row="2" Text="{extensions:Translate Regenerate}" Command="{Binding RegenerateHttpControlTokenCommand}" Style="{StaticResource PickerButtonStyle}" HorizontalOptions="FillAndExpand"/>
+                    </Grid>
+
+                    <BoxView Grid.ColumnSpan="2" Grid.Row="13" Style="{StaticResource DividerBoxViewStyle}" Margin="5,10,5,10" IsVisible="{Binding IsHttpControlSupported}"/>
                 </Grid>
+                </ScrollView>
 
             </Grid>
 

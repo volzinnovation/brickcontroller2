@@ -9,6 +9,7 @@ using BrickController2.InputDeviceManagement.DI;
 using BrickController2.iOS.PlatformServices.DI;
 using BrickController2.iOS.UI.CustomHandlers;
 using BrickController2.iOS.UI.Services.DI;
+using BrickController2.MacCatalyst.Diagnostics;
 using BrickController2.UI.Controls;
 using BrickController2.UI.DI;
 using Foundation;
@@ -45,8 +46,13 @@ public partial class AppDelegate : MauiUIApplicationDelegate
                 autofacBuilder.RegisterModule(new DeviceManagementModule());
                 autofacBuilder.RegisterModule(new InputDeviceManagementModule());
                 autofacBuilder.RegisterModule(new UiModule());
+                autofacBuilder.RegisterType<Mk38MotorSmokeTest>().SingleInstance();
+                autofacBuilder.RegisterType<HttpMk38EndToEndTestHost>().SingleInstance();
             });
 
-        return builder.Build();
+        var app = builder.Build();
+        Mk38MotorSmokeTestLauncher.StartIfRequested(app.Services);
+        HttpMk38EndToEndTestHostLauncher.StartIfRequested(app.Services);
+        return app;
     }
 }

@@ -8,11 +8,13 @@ on:
     paths:
       - '.github/**/*linux.yml'
       - 'build/installers/build-linux-deb.sh'
+      - 'build/installers/build-linux-api-deb.sh'
       - 'Directory.*.props'
       - 'NuGet.config'
       - 'BrickController2.slnx'
       - 'BrickController2/BrickController2/**'
       - 'BrickController2/BrickController2.Linux/**'
+      - 'BrickController2/BrickController2.Linux.Api/**'
   pull_request:
     branches:
       - default
@@ -20,11 +22,13 @@ on:
     paths:
       - '.github/**/*linux.yml'
       - 'build/installers/build-linux-deb.sh'
+      - 'build/installers/build-linux-api-deb.sh'
       - 'Directory.*.props'
       - 'NuGet.config'
       - 'BrickController2.slnx'
       - 'BrickController2/BrickController2/**'
       - 'BrickController2/BrickController2.Linux/**'
+      - 'BrickController2/BrickController2.Linux.Api/**'
   release:
     types:
       - published
@@ -36,7 +40,7 @@ permissions:
 jobs:
   build-linux:
     runs-on: ubuntu-24.04
-    name: BrickController Linux Build
+    name: BrickController Linux API Build
     strategy:
       matrix:
         runtime: [linux-x64]
@@ -54,29 +58,25 @@ jobs:
     - name: Install .NET MAUI Workload
       run: dotnet workload install maui-android
 
-    - name: Install GTK build dependencies
+    - name: Install packaging dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y \
-          libgtk-4-dev libwebkitgtk-6.0-dev \
-          gobject-introspection libgirepository1.0-dev \
-          gir1.2-gtk-4.0 gir1.2-webkit-6.0 \
-          pkg-config dpkg-dev
+        sudo apt-get install -y dpkg-dev
 
     - name: Set app version for release
       if: github.event_name == 'release' && github.event.action == 'published'
       run: echo "APP_DISPLAY_VERSION=${{ github.event.release.tag_name }}" >> "$GITHUB_ENV"
 
-    - name: Build Linux installer
-      run: bash build/installers/build-linux-deb.sh ${{ matrix.runtime }}
+    - name: Build Linux API installer
+      run: bash build/installers/build-linux-api-deb.sh ${{ matrix.runtime }}
 
-    - name: Upload Linux artifact
+    - name: Upload Linux API artifact
       uses: actions/upload-artifact@v4
       with:
-        name: brickcontroller-linux-${{ matrix.runtime }}
+        name: brickcontroller-linux-api-${{ matrix.runtime }}
         path: artifacts/installers/*.deb
 
-    - name: Upload Linux installer to release
+    - name: Upload Linux API installer to release
       if: github.event_name == 'release' && github.event.action == 'published'
       uses: softprops/action-gh-release@v2
       with:

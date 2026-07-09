@@ -98,6 +98,14 @@ public sealed class InputDeviceManagerService : IInputDeviceManagerService
         InputDeviceEventInternal?.Invoke(this, eventArgs);
     }
 
+    public IReadOnlyCollection<IInputDevice> GetInputDevices()
+    {
+        lock (_lockObject)
+        {
+            return _availableInputDevices.ToArray();
+        }
+    }
+
     /// <summary>
     /// Initialize collection of available InputDeviceServices (including listening of connected/disconnected controller)
     /// </summary>
