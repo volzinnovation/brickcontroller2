@@ -1,6 +1,6 @@
 # BrickController 2
 
-Cross platform mobile application for controlling your creations using a bluetooth gamepad.
+Cross platform application for controlling your creations using a bluetooth gamepad and via web service interface. 
 
 ## Supported platforms
 
