@@ -56,6 +56,10 @@ or Visual Studio for Mac. Desktop installer scripts are documented in [docs/desk
 ## Additional resources used
 - [Material Icons](https://github.com/google/material-design-icons/blob/master/font/MaterialIconsOutlined-Regular.otf) - [Apache-2.0 license](https://github.com/google/material-design-icons?tab=Apache-2.0-1-ov-file)
 
-## Author
+## Original Author
 
 István Murvai
+
+## Repo maintainer and newer features
+
+Raphael Volz
