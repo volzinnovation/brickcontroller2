@@ -100,6 +100,10 @@ test/test-mk38-motor.sh
 
 István Murvai
 
-## Repo maintainer and newer features
+## Maintainer of the Mac version
+
+Prof. Dr. Raphael Volz (Pforzheim University)
+
+## Repository maintainer and newer features
 
 Raphael Volz
