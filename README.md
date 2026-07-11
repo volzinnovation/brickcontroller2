@@ -1,16 +1,15 @@
 # BrickController
 
-Cross platform application for controlling your creations using a bluetooth gamepad and via web service interface. 
+Cross platform application for controlling your creations using a your computer, your programs (via http), or a bluetooth gamepad. 
 
 ## Supported platforms
-
-- Android 5.0+
+- macOS 15+ (Mac Catalyst) - with HTTP web service host
 - iOS 12.2+
-- macOS 15+ (Mac Catalyst)
 - Ubuntu 24.04+ / Linux GTK4 (experimental UI; Bluetooth LE and gamepad input are not implemented in the UI head yet)
 - Ubuntu 24.04+ / Linux headless API host (BlueZ Bluetooth LE central over HTTP)
 - Windows 10 version 1809 or higher
 - Windows 11
+- Android 5.0+
 
 ## Supported receivers
 
@@ -48,11 +47,11 @@ Cross platform application for controlling your creations using a bluetooth game
 BrickController is a MAUI application and can be compiled using Visual Studio 2026 (Professional, Enterprise and Community Editions)
 or Visual Studio for Mac. Desktop installer scripts are documented in [docs/desktop-installers.md](docs/desktop-installers.md), and the Linux headless Bluetooth API is documented in [docs/linux-headless-api.md](docs/linux-headless-api.md).
 
-## HTTP control and MK 3.8 test
-
-The Mac Catalyst app can expose the HTTP control API for external tools. For local testing, start the app with:
-
 ![Client controls BrickController2 over HTTP; BrickController2 controls the brick creation over Bluetooth](docs/assets/http-control-flow.webp)
+
+## HTTP control 
+
+The Mac app can expose a HTTP control API for external tools. For local testing, start the app with:
 
 - `BRICKCONTROLLER_HTTP_ENABLED=1`
 - `BRICKCONTROLLER_HTTP_PORT=5081`
@@ -100,7 +99,7 @@ test/test-mk38-motor.sh
 
 István Murvai
 
-Maintainer of Mac version: Prof. Dr. Raphael Volz (Pforzheim University)
+Maintainer of Mac and 2026 app store version: Prof. Dr. Raphael Volz (Pforzheim University)
 
 ## Repo maintainer and newer features
 
