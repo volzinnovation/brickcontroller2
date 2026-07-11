@@ -6,6 +6,15 @@
 *.user
 *.userosscache
 *.sln.docstates
+.DS_Store
+
+# Local environment and Apple signing credentials
+.env
+.env.*
+!.env.example
+AuthKey_*.p8
+*.mobileprovision
+*.provisionprofile
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
