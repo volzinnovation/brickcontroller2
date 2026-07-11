@@ -1,6 +1,6 @@
 # BrickController
 
-Cross platform application for controlling your creations using a your computer, your programs (via http), or a bluetooth gamepad. 
+Cross platform application for controlling your brick creations using a your computer, your programs (via http), or a bluetooth gamepad. 
 
 ## Supported platforms
 - macOS 15+ (Mac Catalyst) - with HTTP web service host
