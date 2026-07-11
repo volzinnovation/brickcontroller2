@@ -1,4 +1,4 @@
-# BrickController 2
+# BrickController
 
 Cross platform application for controlling your creations using a bluetooth gamepad and via web service interface. 
 
@@ -45,7 +45,7 @@ Cross platform application for controlling your creations using a bluetooth game
 
 ## Project details
 
-BrickController 2 is a MAUI application and can be compiled using Visual Studio 2026 (Professional, Enterprise and Community Editions)
+BrickController is a MAUI application and can be compiled using Visual Studio 2026 (Professional, Enterprise and Community Editions)
 or Visual Studio for Mac. Desktop installer scripts are documented in [docs/desktop-installers.md](docs/desktop-installers.md), and the Linux headless Bluetooth API is documented in [docs/linux-headless-api.md](docs/linux-headless-api.md).
 
 ## HTTP control and MK 3.8 test
@@ -100,6 +100,8 @@ test/test-mk38-motor.sh
 
 István Murvai
 
+Maintainer of Mac version: Prof. Dr. Raphael Volz (Pforzheim University)
+
 ## Repo maintainer and newer features
 
-Raphael Volz
+Prof. Dr. Raphael Volz (Pforzheim University)

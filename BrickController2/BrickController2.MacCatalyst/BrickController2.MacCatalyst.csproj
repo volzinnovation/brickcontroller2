@@ -7,8 +7,8 @@
     <Platforms>x64;ARM64</Platforms>
     <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
     <AssemblyName>BrickController2.MacCatalyst</AssemblyName>
-    <ApplicationTitle>BrickController 2</ApplicationTitle>
-    <ApplicationId>com.scn.brickcontroller2</ApplicationId>
+    <ApplicationTitle>BrickController</ApplicationTitle>
+    <ApplicationId>de.raphaelvolz.brickcontroller</ApplicationId>
     <RootNamespace>BrickController2.MacCatalyst</RootNamespace>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
@@ -31,7 +31,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\**\*" />
     <MauiSplashScreen Include="..\BrickController2.iOS\Resources\splash.svg" Link="splash.svg" BaseSize="128,128" Color="#990000" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiAsset Include="..\..\LICENSE.txt" Link="OpenSource\LICENSE.txt" />
+    <MauiAsset Include="..\..\THIRD_PARTY_NOTICES.txt" Link="OpenSource\THIRD_PARTY_NOTICES.txt" />
+    <MauiAsset Include="..\..\Help\**\*.*" Link="Help\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
 </Project>

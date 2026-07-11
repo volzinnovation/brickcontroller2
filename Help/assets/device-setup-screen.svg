@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">BrickController device setup screen</title>
+  <desc id="desc">Screenshot-style help asset showing channel setup and output testing controls.</desc>
+  <rect width="960" height="600" rx="18" fill="#202124"/>
+  <rect x="28" y="28" width="904" height="544" rx="12" fill="#f7f8fa"/>
+  <rect x="28" y="28" width="904" height="64" rx="12" fill="#b00000"/>
+  <text x="64" y="69" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#fff">Device setup</text>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="58" y="122" width="844" height="78" rx="8" fill="#fff" stroke="#d8dce2"/>
+    <text x="82" y="154" font-size="22" font-weight="700" fill="#1f2937">Mould King 3.8 Powered Module</text>
+    <text x="82" y="181" font-size="16" fill="#667085">Connected over Bluetooth LE</text>
+    <rect x="58" y="230" width="844" height="248" rx="8" fill="#fff" stroke="#d8dce2"/>
+    <text x="82" y="266" font-size="22" font-weight="700" fill="#1f2937">Channel test</text>
+    <g fill="#1f2937" font-size="18">
+      <text x="82" y="318">Channel 1</text>
+      <text x="82" y="374">Channel 2</text>
+      <text x="82" y="430">Channel 3</text>
+    </g>
+    <g stroke="#c5cad3" stroke-width="12" stroke-linecap="round">
+      <line x1="220" y1="312" x2="720" y2="312"/>
+      <line x1="220" y1="368" x2="720" y2="368"/>
+      <line x1="220" y1="424" x2="720" y2="424"/>
+    </g>
+    <g stroke="#b00000" stroke-width="12" stroke-linecap="round">
+      <line x1="220" y1="312" x2="486" y2="312"/>
+      <line x1="220" y1="368" x2="382" y2="368"/>
+      <line x1="220" y1="424" x2="610" y2="424"/>
+    </g>
+    <g fill="#b00000">
+      <circle cx="486" cy="312" r="16"/>
+      <circle cx="382" cy="368" r="16"/>
+      <circle cx="610" cy="424" r="16"/>
+    </g>
+    <rect x="752" y="292" width="118" height="48" rx="6" fill="#b00000"/>
+    <rect x="752" y="348" width="118" height="48" rx="6" fill="#b00000"/>
+    <rect x="752" y="404" width="118" height="48" rx="6" fill="#b00000"/>
+    <g fill="#fff" font-size="16" font-weight="700" text-anchor="middle">
+      <text x="811" y="322">Test</text>
+      <text x="811" y="378">Test</text>
+      <text x="811" y="434">Test</text>
+    </g>
+  </g>
+</svg>

@@ -5,12 +5,12 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>BrickController2.Linux</RootNamespace>
     <AssemblyName>BrickController2.Linux</AssemblyName>
-    <ApplicationId>com.scn.brickcontroller2</ApplicationId>
-    <ApplicationTitle>BrickController 2</ApplicationTitle>
+    <ApplicationId>de.raphaelvolz.brickcontroller</ApplicationId>
+    <ApplicationTitle>BrickController</ApplicationTitle>
     <RuntimeIdentifiers>linux-x64;linux-arm64</RuntimeIdentifiers>
-    <Description>Experimental Ubuntu/Linux desktop build of BrickController 2.</Description>
+    <Description>Experimental Ubuntu/Linux desktop build of BrickController.</Description>
     <Authors>Istvan Murvai</Authors>
-    <PackageProjectUrl>https://github.com/vicocz/brickcontroller2</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/volzinnovation/brickcontroller2/</PackageProjectUrl>
     <DebSection>utils</DebSection>
     <DebCategories>Utility;Game;</DebCategories>
   </PropertyGroup>

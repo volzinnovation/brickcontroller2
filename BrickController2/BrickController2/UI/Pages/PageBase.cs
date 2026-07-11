@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.ApplicationModel;
 using BrickController2.UI.Services.Background;
 using BrickController2.UI.Services.Dialog;
 using BrickController2.UI.ViewModels;
@@ -9,6 +10,8 @@ namespace BrickController2.UI.Pages
 {
     public abstract class PageBase : ContentPage
     {
+        private static readonly Uri HelpRepositoryUri = new("https://github.com/volzinnovation/brickcontroller2/");
+
         private readonly IBackgroundService _backgroundService;
         private readonly IDialogServerHost _dialogServerHost;
 
@@ -22,6 +25,8 @@ namespace BrickController2.UI.Pages
 
             // On iOS hide the back button title
             NavigationPage.SetBackButtonTitle(this, string.Empty);
+
+            AddHelpMenu();
         }
 
         protected void AfterInitialize(IPageViewModel vm)
@@ -108,6 +113,23 @@ namespace BrickController2.UI.Pages
             }
 
             throw new NotImplementedException("No dialog server");
+        }
+
+        private void AddHelpMenu()
+        {
+            var helpMenu = new MenuBarItem { Text = "Help" };
+            helpMenu.Add(new MenuFlyoutItem
+            {
+                Text = "BrickController Help",
+                Command = new Command(OpenHelpRepository)
+            });
+
+            MenuBarItems.Add(helpMenu);
+        }
+
+        private static async void OpenHelpRepository()
+        {
+            await Launcher.Default.OpenAsync(HelpRepositoryUri);
         }
     }
 }

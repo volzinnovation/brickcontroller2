@@ -30,7 +30,7 @@ mkdir -p "${OUTPUT_DIR}"
 
 PUBLISHED_PKG="$(find "${PUBLISH_DIR}" -maxdepth 1 -type f -name '*.pkg' | head -n 1)"
 if [[ -n "${PUBLISHED_PKG}" ]]; then
-  PKG_PATH="${OUTPUT_DIR}/BrickController2_${VERSION}_${RID}.pkg"
+  PKG_PATH="${OUTPUT_DIR}/BrickController_${VERSION}_${RID}.pkg"
   cp "${PUBLISHED_PKG}" "${PKG_PATH}"
   echo "${PKG_PATH}"
   exit 0
@@ -46,10 +46,10 @@ rm -rf "${STAGING_DIR}"
 mkdir -p "${STAGING_DIR}/Applications"
 cp -R "${APP_PATH}" "${STAGING_DIR}/Applications/BrickController2.app"
 
-PKG_PATH="${OUTPUT_DIR}/BrickController2_${VERSION}_${RID}.pkg"
+PKG_PATH="${OUTPUT_DIR}/BrickController_${VERSION}_${RID}.pkg"
 productbuild \
   --root "${STAGING_DIR}" \
-  --identifier "com.scn.brickcontroller2" \
+  --identifier "de.raphaelvolz.brickcontroller" \
   --version "${VERSION}" \
   --install-location "/" \
   "${PKG_PATH}"

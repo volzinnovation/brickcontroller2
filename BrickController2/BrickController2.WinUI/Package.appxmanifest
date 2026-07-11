@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="com.scn.BrickController2"
+    Name="de.raphaelvolz.brickcontroller"
     Publisher="CN=Vit Nemecky" />
 
   <Properties>
-    <DisplayName>BrickController2</DisplayName>
+    <DisplayName>BrickController</DisplayName>
     <PublisherDisplayName>20e2eb05-a9ce-4df2-b83a-efe50e08ac16</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -28,7 +28,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="BrickController2"
+        DisplayName="BrickController"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="Windows application for controlling Lego creations using a bluetooth gamepad."

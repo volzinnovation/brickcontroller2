@@ -35,7 +35,7 @@ dotnet build "$PROJECT" \
   -p:CodesignKey=-
 
 APP_BIN="$(find "$ROOT_DIR/BrickController2/BrickController2.MacCatalyst/bin/$CONFIGURATION/net10.0-maccatalyst/$RID" \
-  -path "*/BrickController 2.app/Contents/MacOS/BrickController2.MacCatalyst" \
+  -path "*/BrickController.app/Contents/MacOS/BrickController2.MacCatalyst" \
   -type f \
   -perm -111 \
   | sort \

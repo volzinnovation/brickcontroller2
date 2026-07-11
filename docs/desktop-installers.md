@@ -1,6 +1,6 @@
 # Desktop installers
 
-BrickController 2 has two desktop heads in addition to the existing Windows build:
+BrickController has two desktop heads in addition to the existing Windows build:
 
 - `BrickController2.MacCatalyst` targets macOS 15+ through .NET MAUI Mac Catalyst and reuses the iOS CoreBluetooth/GameController platform services.
 - `BrickController2.Linux` targets Ubuntu/Linux through the experimental .NET MAUI GTK4 backend from `dotnet/maui-labs`.
@@ -29,6 +29,33 @@ XCODE_DEVELOPER_DIR=/Applications/Xcode_26.5.app/Contents/Developer \
   APP_DISPLAY_VERSION=3.4 \
   bash build/installers/build-macos-pkg.sh maccatalyst-arm64
 ```
+
+### App Store distribution prerequisites
+
+Before using `build/appstore/publish-maccatalyst-appstore.sh` or `build/appstore/publish-ios-appstore.sh`, create and install these Apple distribution assets:
+
+- Apple Distribution certificate in the login keychain.
+- 3rd Party Mac Developer Installer certificate in the login keychain for Mac App Store `.pkg` uploads.
+- App Store provisioning profiles for the iOS and Mac Catalyst bundle identifier `de.raphaelvolz.brickcontroller`.
+- App Store Connect API key file at `~/.appstoreconnect/private_keys/AuthKey_<key id>.p8`, plus `ASC_API_KEY_ID` and `ASC_API_ISSUER_ID` in the upload environment.
+
+Check the local machine with:
+
+```bash
+bash build/appstore/check-appstore-prerequisites.sh
+```
+
+If Xcode has cloud-managed distribution signing available but the distribution
+identities are not visible in the local keychain, use the Xcode-managed export
+path:
+
+```bash
+bash build/appstore/export-maccatalyst-xcode-managed.sh
+bash build/appstore/export-maccatalyst-xcode-managed.sh --upload
+```
+
+The `--upload` path requires an App Store Connect app record for
+`de.raphaelvolz.brickcontroller` before Xcode can transfer the package.
 
 ## Ubuntu/Linux
 

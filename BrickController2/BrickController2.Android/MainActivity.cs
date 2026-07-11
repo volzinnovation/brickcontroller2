@@ -15,7 +15,7 @@ using static BrickController2.PlatformServices.InputDevice.InputDevices;
 namespace BrickController2.Droid
 {
     [Activity(
-        Label = "BrickController2",
+        Label = "BrickController",
         Icon = "@mipmap/ic_launcher",
         Theme = "@style/MainTheme",
         MainLauncher = true,
@@ -109,4 +109,3 @@ namespace BrickController2.Droid
         }
     }
 }
-

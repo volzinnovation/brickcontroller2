@@ -1,0 +1,32 @@
+BrickController third-party notices
+===================================
+
+BrickController is distributed under the MIT License. See LICENSE.txt for the
+copyright notice and permission terms for the application source code.
+
+The application also uses third-party libraries and assets. Based on the NuGet
+package metadata and repository documentation currently referenced by the app,
+the relevant notices for the iOS and Mac Catalyst builds are:
+
+- Autofac: MIT
+- Autofac.Extensions.DependencyInjection: MIT
+- Microsoft.Maui.Controls: MIT
+- Microsoft.Maui.Controls.Compatibility: MIT
+- Microsoft.Maui.Essentials: MIT
+- Microsoft.Extensions.* packages pulled transitively by MAUI/Autofac: MIT
+- Microsoft.NET.ILLink.Tasks: MIT
+- Newtonsoft.Json: MIT
+- sqlite-net-pcl: license file in package
+- SQLiteNetExtensions: project license from package/repository metadata
+- SQLiteNetExtensions.Async: project license from package/repository metadata
+- SQLitePCLRaw.bundle_green: Apache-2.0
+- SQLitePCLRaw.core/provider/lib.e_sqlite3: package license files; SQLite is
+  public domain and SQLitePCLRaw components are Apache-2.0/MIT-family packages
+  according to package metadata.
+- ZXing.Net: Apache-2.0
+- ZXing.Net.Maui and ZXing.Net.Maui.Controls: MIT
+- Material Icons Outlined font: Apache-2.0
+
+The app contains references to LEGO-compatible devices. LEGO is a trademark of
+the LEGO Group of companies, which does not sponsor, authorize, or endorse this
+application.

@@ -19,7 +19,7 @@
                 <ScrollView>
                     <VerticalStackLayout Padding="20" Spacing="6">
 
-                        <Label Text="BrickController 2" FontSize="Medium" FontAttributes="Bold"/>
+                        <Label Text="BrickController" FontSize="Medium" FontAttributes="Bold"/>
 
                         <HorizontalStackLayout Spacing="6">
                             <Label Text="{extensions:Translate Version}  "/>
@@ -28,7 +28,8 @@
 
                         <BoxView Style="{StaticResource DividerBoxViewStyle}" Margin="6,16,6,16"/>
 
-                        <Label Text="Copyright © 2025, István Murvai (SCN)"/>
+                        <Label Text="Original author: István Murvai (SCN)"/>
+                        <Label Text="Maintainer of Mac version: Prof. Dr. Raphael Volz (Pforzheim University)"/>
 
                         <BoxView Style="{StaticResource DividerBoxViewStyle}" Margin="6,16,6,16"/>
 

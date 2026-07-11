@@ -20,23 +20,23 @@ The installer is written to `artifacts/installers`.
 Install it with:
 
 ```bash
-sudo apt install ./artifacts/installers/BrickController2.Api_3.4_linux-x64.deb
+sudo apt install ./artifacts/installers/BrickController.Api_3.4_linux-x64.deb
 ```
 
 The package installs:
 
-- `/usr/lib/brickcontroller2-api/` for the self-contained app
-- `/usr/bin/brickcontroller2-api` as a launcher
-- `brickcontroller2-api.service` as a systemd service
+- `/usr/lib/brickcontroller-api/` for the self-contained app
+- `/usr/bin/brickcontroller-api` as a launcher
+- `brickcontroller-api.service` as a systemd service
 
 The service binds to `http://127.0.0.1:5080` by default. Override `ASPNETCORE_URLS` in a systemd drop-in if the API should listen on another interface. Add authentication or a reverse proxy before exposing it outside localhost.
 
 ## Service commands
 
 ```bash
-systemctl status brickcontroller2-api.service
-journalctl -u brickcontroller2-api.service -f
-sudo systemctl restart brickcontroller2-api.service
+systemctl status brickcontroller-api.service
+journalctl -u brickcontroller-api.service -f
+sudo systemctl restart brickcontroller-api.service
 ```
 
 BlueZ must be running and the Bluetooth adapter must be powered:

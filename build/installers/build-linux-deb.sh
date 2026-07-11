@@ -27,6 +27,6 @@ if [[ -z "${DEB_PATH}" ]]; then
   exit 1
 fi
 
-TARGET="${OUTPUT_DIR}/BrickController2_${VERSION}_${RID}.deb"
+TARGET="${OUTPUT_DIR}/BrickController_${VERSION}_${RID}.deb"
 cp "${DEB_PATH}" "${TARGET}"
 echo "${TARGET}"

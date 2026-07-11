@@ -8,9 +8,9 @@
     <AssemblyName>BrickController2.Linux.Api</AssemblyName>
     <OutputType>Exe</OutputType>
     <RuntimeIdentifiers>linux-x64;linux-arm64</RuntimeIdentifiers>
-    <Description>Headless Ubuntu/Linux API host for BrickController 2 Bluetooth LE control.</Description>
+    <Description>Headless Ubuntu/Linux API host for BrickController Bluetooth LE control.</Description>
     <Authors>Istvan Murvai</Authors>
-    <PackageProjectUrl>https://github.com/vicocz/brickcontroller2</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/volzinnovation/brickcontroller2/</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
