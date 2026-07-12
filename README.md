@@ -18,13 +18,13 @@ Cross platform application for controlling your brick creations using a your com
 - BuWizz 1
 - BuWizz 2
 - BuWizz 3
-- Lego PowerFunctions infrared receiver on Android devices having IR emitter
-- Lego Powered-Up hub
-- Lego Boost Hub
-- Lego Technic Hub
-- Lego WeDo 2.0 Smart Hub
-- Lego Technic Move Hub (PLAYVM mode)
-- Lego Duplo Train Hub
+- LEGO® PowerFunctions infrared receiver on Android devices having IR emitter
+- LEGO® Powered-Up hub
+- LEGO® Boost Hub
+- LEGO® Technic Hub
+- LEGO® WeDo 2.0 Smart Hub
+- LEGO® Technic Move Hub (PLAYVM mode)
+- LEGO® Duplo Train Hub
 - Circuit Cubes
 - Mould King DIY Module
 - Mould King 3.8 Powered Module
@@ -46,6 +46,8 @@ Cross platform application for controlling your brick creations using a your com
 
 BrickController is a MAUI application and can be compiled using Visual Studio 2026 (Professional, Enterprise and Community Editions)
 or Visual Studio for Mac. Desktop installer scripts are documented in [docs/desktop-installers.md](docs/desktop-installers.md), and the Linux headless Bluetooth API is documented in [docs/linux-headless-api.md](docs/linux-headless-api.md).
+
+For a researched overview of supported controllers, receiver hubs, motors, lights, product availability, and servo-control options, see [Controllers and powered equipment](docs/controllers-and-equipment.md).
 
 ![Client controls BrickController2 over HTTP; BrickController2 controls the brick creation over Bluetooth](docs/assets/http-control-flow.webp)
 
