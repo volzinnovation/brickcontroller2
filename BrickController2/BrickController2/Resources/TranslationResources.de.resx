@@ -721,7 +721,7 @@
     <value>Eingabegerät</value>
   </data>
   <data name="InputDevices" xml:space="preserve">
-    <value>Eingabegräte</value>
+    <value>Eingabe</value>
   </data>
   <data name="RemoteControlEnabled" xml:space="preserve">
     <value>Fernbedienung aktivieren</value>

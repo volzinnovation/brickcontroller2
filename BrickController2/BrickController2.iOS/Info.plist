@@ -43,9 +43,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera is required in order to import a creation via QR code from another application.</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.4</string>
+	<string>3.5</string>
 	<key>CFBundleVersion</key>
-	<string>50</string>
+	<string>51</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
