@@ -12,6 +12,7 @@
 .env
 .env.*
 !.env.example
+/secrets/
 AuthKey_*.p8
 *.mobileprovision
 *.provisionprofile
