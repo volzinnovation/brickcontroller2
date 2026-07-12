@@ -49,6 +49,23 @@ or Visual Studio for Mac. Desktop installer scripts are documented in [docs/desk
 
 For a researched overview of supported controllers, receiver hubs, motors, lights, product availability, and servo-control options, see [Controllers and powered equipment](docs/controllers-and-equipment.md).
 
+For the proposed open-hardware successor ecosystem—Raspberry Pi Zero compute,
+Wi-Fi and Bluetooth, open motors/lights/sensors, brick-compatible source CAD,
+and a synchronized CAD/simulation digital twin—see the
+[Open Modular Brick Robotics 0.1 draft specification](spec/ombr/0.1/OMBR-SPEC.md).
+
+BrickController2 is an interim compatibility and remote-control client within
+that larger effort. The OMBR specification covers the complete open ecosystem:
+hub and power hardware, cables, actuators, lights, sensors, brick-compatible
+mechanics, full per-component electronic interface contracts, firmware,
+programming runtimes, developer tools, CAD, digital twin, simulation, test
+fixtures, repair, and governance. Its primary planned
+Workbench is an open Visual Studio Code extension over a headless core; a
+cross-platform .NET application remains an interchangeable client option.
+
+LEGO® is a trademark of the LEGO Group of companies, which does not sponsor,
+authorize, or endorse this project.
+
 ![Client controls BrickController2 over HTTP; BrickController2 controls the brick creation over Bluetooth](docs/assets/http-control-flow.webp)
 
 ## HTTP control 
