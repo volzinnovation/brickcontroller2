@@ -73,11 +73,13 @@ jobs:
         echo "APP_PACKAGE_VERSION=${VERSION_PARTS[0]:-0}.${VERSION_PARTS[1]:-0}.${VERSION_PARTS[2]:-0}.${VERSION_PARTS[3]:-0}" >> $GITHUB_ENV
 
     - name: Decode Signing Certificate
+      if: github.event_name == 'release' && github.event.action == 'published'
       run: |
         echo "${{ secrets.SIGNING_CERTIFICATE_BASE_64_CONTENT }}" > cert.asc
         certutil -decode cert.asc cert.pfx
 
     - name: Install Signing Certificate
+      if: github.event_name == 'release' && github.event.action == 'published'
       run: certutil -user -p ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }} -Silent -importpfx cert.pfx NoRoot
             
     - name: Restore Dependencies
@@ -98,7 +100,7 @@ jobs:
         -r win-x64 `
         -p:Platform=x64 `
         -p:GenerateAppxPackageOnBuild=true `
-        -p:AppxPackageSigningEnabled=true `
+        -p:AppxPackageSigningEnabled=${{ github.event_name == 'release' && github.event.action == 'published' }} `
         -p:PackageCertificateThumbprint=${{ secrets.SIGNING_CERTIFICATE_THUMBPRINT }}
 
     - name: Upload WinUI Artifact
