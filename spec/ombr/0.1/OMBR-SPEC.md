@@ -4,7 +4,7 @@
 
 Version: 0.1.0-draft
 
-Date: 12 July 2026
+Date: 13 July 2026
 
 Status: Proposal for public review
 
@@ -13,25 +13,36 @@ Short name: OMBR
 OMBR is a working technical identifier, not a final product name or
 certification mark.
 
+“Robotics” in the working name is historical shorthand. OMBR's technical
+scope is modular brick automation: mobile and stationary robots, vehicles,
+machines, instruments, kinetic installations, and other programmable
+mechanisms use the same open component, mechanical, control, and twin
+contracts.
+
 Current draft license: MIT under the repository's [LICENSE.txt](../../../LICENSE.txt).
-The patent-aware specification license proposed in section 7.3 is a future
+The patent-aware specification license proposed in section 6.3 is a future
 governance decision and does not silently relicense this draft.
 
 ## Abstract
 
-This document specifies an open, brick-compatible robotics ecosystem built
-around Raspberry Pi Zero-class compute. It covers:
+This document specifies an open, brick-compatible robotics and automation
+ecosystem built around Raspberry Pi Zero-class compute. It covers:
 
 - a Wi-Fi- and Bluetooth-capable controller hub;
 - a separate real-time safety controller;
 - an open native peripheral interface;
 - openly documented motors, lights, sensors, cables, and adapters;
-- a brick-grid mechanical interface and editable enclosure CAD;
+- a brick-grid mechanical interface, open reference-part system, gears and
+  power-transmission semantics, and editable component CAD;
 - a transport-neutral capability and control model;
 - an editor-independent programming, deployment, debugging, and operator
   toolchain;
 - an offline-first digital twin linked to CAD and simulation; and
-- licensing, governance, security, safety, and conformance requirements.
+- a maintained implementation catalog that maps requirements to honestly
+  graded open designs and documented commercial components;
+- an auditable cost model with an aggressive EUR 49.99 base-hub target; and
+- licensing, legal/IP, product-regulatory, governance, security, safety, and
+  conformance requirements.
 
 The design deliberately separates the open project-controlled hardware from
 the Raspberry Pi module and other third-party components. A Raspberry Pi Zero
@@ -49,182 +60,12 @@ network, programming, CAD, and simulation contract. BrickController2 is an
 interim integration vehicle and one possible client, not the required OMBR
 development environment or system boundary.
 
-## 1. Status and interpretation
+## 1. Design principles
 
-Version 0.1 is a design baseline, not a production-ready electrical or toy
-safety certification. No version-1 OMBR profile conformance or certification
-claim may be made against this draft. Implementations may say only “implements
-OMBR 0.1.0-draft” and must identify every unimplemented or experimental area.
-
-The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT,
-RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL are to be interpreted as
-described by [BCP 14](https://www.rfc-editor.org/rfc/rfc8174) when they appear
-in all capitals.
-
-Stable requirement rows such as OPEN-001 and HUB-004 are the future
-conformance baseline. Unnumbered BCP 14 statements remain draft requirements
-addressable by section and opening phrase; they must receive stable IDs before
-their profile becomes claimable. Informative explanations, examples,
-component candidates, and roadmaps do not create conformance requirements.
-
-## 2. Vision
-
-OMBR should make a physical brick robot and its digital representation two
-views of the same creation:
-
-1. design the assembly from brick and project-authored parts;
-2. validate fit, wiring, mass, joints, and capabilities;
-3. program behavior in ordinary languages with portable SDKs;
-4. simulate the same actuator and sensor contract used by the hardware;
-5. deploy the creation, programs, and control profiles to the hub;
-6. operate locally through a gamepad, editor, standalone application, CLI, or
-   on-device program; and
-7. synchronize calibrated and observed state back to the digital twin.
-
-The ecosystem should feel like a modular maker platform: stable interfaces,
-self-describing peripherals, source files beside every product, multiple
-programming levels, and no required vendor cloud. It should additionally fit
-brick and studless beam constructions and preserve the repeatable geometry
-needed for CAD.
-
-### 2.1 Primary use cases
-
-- remote-controlled vehicles with proportional throttle and steering;
-- autonomous robots running Python, .NET, C/C++, ROS, or visual programs;
-- one workspace for source, device discovery, build, deploy, debug, remote
-  control, CAD-linked twin inspection, simulation, and trace comparison;
-- classroom and maker projects that work without an internet connection;
-- reusable motor, light, and sensor modules from multiple manufacturers;
-- live telemetry, calibration, recording, and replay;
-- CAD-first assembly, collision checking, and build instructions;
-- software-in-the-loop and hardware-in-the-loop simulation; and
-- adapters for selected legacy brick-motor ecosystems.
-
-### 2.2 Non-goals
-
-- cloning a proprietary product housing, logo, or ornamental design;
-- claiming affiliation with or certification by the LEGO Group;
-- making Linux the sole real-time motor or safety controller;
-- requiring a hosted account, telemetry service, or public cloud;
-- promising compatibility with every mechanically similar legacy connector;
-- treating a rendered mesh as editable mechanical source;
-- making version 0.1 suitable for safety-critical or industrial control; or
-- claiming a commercial product is certified merely because its Pi module is.
-
-## 3. Market and repository context
-
-This section is informative and deliberately evidence-bounded.
-Official-source evidence was reviewed on 12 July 2026.
-
-| System | Documented strength | Gap addressed by OMBR |
-| --- | --- | --- |
-| BrickController2 | Broad receiver support, transport abstraction, gamepad and HTTP inputs, profiles, sequences, normalized output, local storage | No hub PCB, open peripheral electrical standard, source CAD, or digital-twin contract |
-| BuWizz 3.0 Pro | Six ports, high motor power, replaceable battery, current sensing, BLE, and brick-compatible mounting | Its official product page documents BLE, not Wi-Fi, and does not document an open PCB/CAD/BOM or digital-twin contract |
-| Raspberry Pi Build HAT | Pi integration, four LPF2 ports, and an RP2040 handling low-level control; firmware is now open | It is an accessory rather than a complete open hub ecosystem, and LPF2 is not a complete open native connector specification |
-| M5Stack | Standard module families, schematics, software libraries, Grove and M-Bus interfaces, and a coherent maker ecosystem | It is not a Pi/Linux-based brick-mechanical system |
-| SPIKE/MINDSTORMS large hub | Six ports, BLE/USB, IMU, removable battery, and brick geometry | Official specifications do not document Wi-Fi or an open, reproducible hardware design |
-
-The defensible opportunity statement is:
-
-> None of the compared official product documentation demonstrates the full
-> combination of Raspberry Pi-class Linux compute, Wi-Fi and Bluetooth,
-> brick-compatible mounting, open carrier and peripheral hardware, an open
-> native wired peripheral contract, and synchronized CAD/simulation assets.
-
-BuWizz facts are drawn from its
-[official product page](https://buwizz.com/shop/buwizz-3-0-pro/). M5Stack's
-[ecosystem documentation](https://docs.m5stack.com/en/learn/intro) describes
-its module and interface approach. Raspberry Pi documents the
-[Build HAT](https://www.raspberrypi.com/products/build-hat/) and its
-[open firmware](https://github.com/raspberrypi/buildhat). LEGO Education's
-[SPIKE Prime Large Hub technical specification](https://assets.education.lego.com/v3/assets/blt293eea581807678a/bltf512a371e82f6420/5f8801baf4f4cf0fa39d2feb/techspecs_techniclargehub.pdf)
-supports the corresponding comparison row.
-
-### 3.1 BrickController2 concepts retained, not imposed
-
-OMBR retains these repository concepts while removing vendor-specific
-assumptions:
-
-- A **Creation** remains the user-owned unit of a robot or model.
-- A **Control Profile** remains a collection of input-to-action bindings.
-- A **Control Source** exposes typed, bounded capabilities rather than a fixed
-  gamepad layout.
-- A **Binding** maps one capability to one or more actuator actions and may
-  apply inversion, dead zones, curves, scaling, limiting, and mixing.
-- A **Timeline** retains reusable value/duration control points, looping, and
-  interpolation.
-- A **Component** replaces a hard-coded receiver type.
-- A **Capability** replaces assumptions that every channel is a motor.
-- A stable instance UUID replaces the current device-type-plus-BLE-address
-  identity.
-- Requested, accepted, applied, and observed values are distinct states.
-
-The source model is visible in
-[Creation.cs](../../../BrickController2/BrickController2/CreationManagement/Creation.cs),
-[ControllerProfile.cs](../../../BrickController2/BrickController2/CreationManagement/ControllerProfile.cs),
-[ControllerAction.cs](../../../BrickController2/BrickController2/CreationManagement/ControllerAction.cs),
-[Sequence.cs](../../../BrickController2/BrickController2/CreationManagement/Sequence.cs),
-and the generic
-[HTTP capability model](../../../BrickController2/BrickController2/InputDeviceManagement/HttpControl/HttpControlModels.cs).
-
-BrickController2 is a useful compatibility client and proving ground for
-device discovery, profiles, gamepads, sequences, and remote-control behavior.
-Its MAUI views, local database, concrete receiver classes, and application
-lifecycle are not normative OMBR interfaces. A hub, project, program, digital
-twin, or simulator MUST remain usable through the public schemas and APIs
-without installing BrickController2 or Visual Studio Code.
-
-### 3.2 Purchasable-component benchmark program
-
-OMBR reference classes are grounded in components that builders can buy or
-obtain, not only idealized requirements. The benchmark catalog records exact
-product and hardware revision, purchase date and region, lifecycle state,
-official documentation, independently measured samples, uncertainty, and the
-OMBR profile or adapter behavior being compared. Availability and price are
-evidence fields, never permanent conformance properties.
-
-The initial informative benchmark set is:
-
-| OMBR area | Purchasable or documented reference examples | What is benchmarked, not copied |
-| --- | --- | --- |
-| Hub/controller | [BuWizz 3.0 Pro](https://buwizz.com/shop/buwizz-3-0-pro/), [LEGO Hub 88009](https://www.lego.com/de-de/product/hub-88009), [M5Stack controller/module families](https://docs.m5stack.com/en/learn/intro) | Envelope, mounting, ports, battery service, radio workflow, responsiveness, ecosystem modularity |
-| Battery, charging, and bench power | Replaceable packs in current brick hubs, documented USB-C power paths, and certified current-limited maker bench supplies | Energy, voltage/current, service, charging while operating, protection, thermal behavior, fault energy, connector and lifecycle |
-| Human input and remote control | Generic USB/Bluetooth HID gamepads, [LEGO Powered Up Remote 88010](https://www.lego.com/de-de/product/remote-control-88010), keyboards, touch and assistive inputs | Capability descriptors, range/neutral, rate, latency, mapping, disconnect, battery, accessibility and feedback |
-| Passive motion | Currently sold PF-style M, L, XL, buggy, train, and micro motors from multiple vendors | Envelope class, mounting, axle output, voltage, speed, current, torque, thermal behavior, cable exit |
-| Feedback motion and steering | [LEGO Technic Large Motor 88013](https://www.lego.com/de-de/product/technic-large-motor-88013) and currently sold compatible position motors or steering servos | Position topology, range, zeroing, repeatability, backlash, speed, load, current, safe stop; connector shape alone is not equivalence |
-| Lights | [LEGO Powered Up Light 88005](https://www.lego.com/de-de/product/light-88005), PF-style dual lights, SBrick Light, addressable RGB modules | Mounting, intensity/color capability, current, update rate, thermal behavior, effects, cable handling |
-| Distance/proximity | [M5Stack ToF4M](https://shop.m5stack.com/products/time-of-flight-distance-unit-vl53l1x) and [ultrasonic units](https://shop.m5stack.com/products/ultrasonic-distance-unit-i-o-rcwl-9620), plus legally acquired brick-system sensors | Range, field of view, surface/ambient sensitivity, rate, latency, uncertainty, saturation, envelope and mounting |
-| Color/reflectance | [M5Stack Color Unit](https://shop.m5stack.com/products/color-unit) and [reflective-sensor units](https://shop.m5stack.com/products/infrared-reflective-sensor-unit) | Illumination geometry, raw and calibrated channels, color space, distance, ambient rejection, rate and repeatability |
-| Motion/orientation | [M5Stack 6-axis IMU Unit](https://shop.m5stack.com/products/6-axis-imu-unitmpu6886) and hub-integrated IMUs | Axis frame, selectable range, noise, bias, drift, rate, latency, calibration and temperature behavior |
-| Force/touch | [M5Stack scale kit with Weight Unit and load cells](https://shop.m5stack.com/products/scale-kit-with-weight-unit), exact switches, and bumper/contact sensors selected by the acquisition plan | Force range, overload, creep, hysteresis, rate, mechanics, calibration and replacement; an HX711 front end alone is not a force reference |
-| Cables/adapters | Current PF-style and Powered Up extension leads, Grove/HY2.0 modules, and project P0 cables | Usable length, routing, bend/pull, contact lifecycle, voltage drop, keying, repair, identification and adapter boundaries |
-| Brick mechanics | Selected genuine studless beams, pins, axles, bricks and plates plus M5Stack units with documented compatible holes | Grid, fit distributions, insertion/retention, envelope, mounting access, wear, material/process variation and legally redistributable reference frames |
-
-The repository's current
-[controllers and powered equipment survey](../../../docs/controllers-and-equipment.md)
-is a seed catalog, not conformance evidence by itself. It distinguishes
-Power Functions-style power/control, Powered Up/LPF2 identification and
-feedback, and incompatible servo signaling that a similar plug can hide.
-Rows without an exact linked model are acquisition classes only; Phase 0 must
-replace them with archived manufacturer evidence and purchased exact SKUs,
-revisions, dates, and regions before they define any numeric target.
-
-| ID | Requirement |
-| --- | --- |
-| BENCH-001 | Every benchmark record MUST identify manufacturer, product name and number, hardware and firmware revision where observable, acquisition source, purchase or observation date, region, sample count, lifecycle state, official source URLs plus archived capture and content digest, and whether each datum is documented, measured, inferred, or unknown. |
-| BENCH-002 | Raw measurements, fixture source, instrument and calibration data, environment, supply conditions, procedure, uncertainty, analysis code, photos permitted for redistribution, and anonymized sample results MUST accompany a published benchmark conclusion. Data, code, fixture, image, and report licenses MUST be explicit. |
-| BENCH-003 | A reference class MUST specify which dimensions are envelope, attachment, electrical, protocol, capability, performance, usability, or lifecycle targets. Meeting one dimension MUST NOT imply another. |
-| BENCH-004 | Claims MUST use `benchmark-comparable`, `mechanically compatible`, `electrically adaptable`, `protocol adaptable`, `behaviorally compatible`, or `drop-in compatible` precisely. `Drop-in compatible` requires every relevant mechanical, electrical, protocol, behavioral, safety, and performance test. |
-| BENCH-005 | A proprietary purchased product MAY be a measurement reference or supported adapter endpoint, but MUST remain an identified COTS boundary and MUST NOT become required closed source for the open starter workflow. |
-| BENCH-006 | Benchmark geometry and behavior MUST be independently measured or taken from redistribution-permitted sources. The project MUST NOT copy logos, firmware, PCB artwork, ornamental housing surfaces, or restricted CAD. Independent measurement alone does not grant patent, design, trademark, copyright, database, or other rights. |
-| BENCH-007 | A numeric stable class target MUST be supported by at least three physical samples across two lots or documented revisions. If that evidence cannot be obtained, the target remains provisional and cannot support a stable benchmark or compatibility profile. The report MUST separately state sample count, lots/revisions, and number of independent products and manufacturers. |
-| BENCH-008 | A component class MUST publish minimum, target, and stretch ranges where appropriate rather than selecting one competitor's accidental value as a universal requirement. Safety ceilings remain absolute and are not benchmark averages. |
-| BENCH-009 | Adapters MUST identify exactly which mechanical, electrical, identity, feedback, command, calibration, and update features they translate, pass through, emulate, or do not support. |
-| BENCH-010 | The catalog MUST retain discontinued and failed combinations with lifecycle and evidence status so builders can repair old systems and avoid repeating unsafe compatibility assumptions. |
-| BENCH-011 | Availability evidence MUST be refreshed for each specification release and marked by date and region. A retail listing alone MUST NOT establish electrical, behavioral, safety, or open-hardware compliance. |
-| BENCH-012 | The first stable starter family MUST publish side-by-side benchmark reports for its hub, battery/charger or bench source, control input, each cable class, mechanical attachment set, open-loop motor path, feedback actuator, light, and every included sensor against at least one obtainable functional reference. |
-
-## 4. Design principles
+These principles govern every normative profile, implementation decision, and
+conformance claim that follows. Where a lower-level requirement appears
+ambiguous, it is interpreted consistently with these principles rather than as
+an exception to them.
 
 | ID | Principle |
 | --- | --- |
@@ -248,8 +89,82 @@ revisions, dates, and regions before they define any numeric target.
 | PRIN-018 | Returns are part of the circuit: every signal and rail declares its return, grounding, shield, common-mode, isolation, and backfeed model rather than relying on an unlabeled global ground. |
 | PRIN-019 | Electrical claims are conditional and measurable: ratings identify temperature, airflow, enclosure, cable, duty cycle, supply impedance, firmware configuration, sample count, uncertainty, and evidence. |
 | PRIN-020 | Service access is not a secret interface: test pads, boot straps, programming headers, recovery ports, and factory fixtures that affect owner repair or firmware replacement are documented and safely disabled or authorized in normal use. |
+| PRIN-021 | Creation generality: component, control, safety, CAD, and twin semantics MUST describe robots, vehicles, stationary machines, and other automation without assuming locomotion, a chassis, or one robot-shaped root. |
+| PRIN-022 | Mechanical authority is explicit: catalog identity, visualization mesh, connection metadata, measured functional geometry, and open-replacement fabrication source are different evidence levels and MUST NOT be substituted for one another. |
+| PRIN-023 | Affordable means a complete, dated SKU and channel model: required parts, tax, margin, test, compliance, support, warranty, and exclusions are visible rather than hidden behind a bare-BOM headline. |
+| PRIN-024 | Open licensing and technical conformance do not grant third-party patent, design, copyright, database, trademark, or regulatory clearance; each release carries a scoped rights and market-access record. |
 
-## 5. Terms and object model
+## 2. Status and interpretation
+
+Version 0.1 is a design baseline, not a production-ready electrical or toy
+safety certification. No version-1 OMBR profile conformance or certification
+claim may be made against this draft. Implementations may say only “implements
+OMBR 0.1.0-draft” and must identify every unimplemented or experimental area.
+
+The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT,
+RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL are to be interpreted as
+described by [BCP 14](https://www.rfc-editor.org/rfc/rfc8174) when they appear
+in all capitals.
+
+Stable requirement rows such as OPEN-001 and HUB-004 are the future
+conformance baseline. Unnumbered BCP 14 statements remain draft requirements
+addressable by section and opening phrase; they must receive stable IDs before
+their profile becomes claimable. Informative explanations, examples,
+component candidates, and roadmaps do not create conformance requirements.
+
+## 3. Vision and scope
+
+OMBR should make a physical brick creation and its digital representation two
+views of the same system, whether that creation is a robot, vehicle,
+stationary machine, instrument, or installation:
+
+1. design the assembly from brick and project-authored parts;
+2. validate fit, wiring, mass, joints, and capabilities;
+3. program behavior in ordinary languages with portable SDKs;
+4. simulate the same actuator and sensor contract used by the hardware;
+5. deploy the creation, programs, and control profiles to the hub;
+6. operate locally through a gamepad, editor, standalone application, CLI, or
+   on-device program; and
+7. synchronize calibrated and observed state back to the digital twin.
+
+The ecosystem should feel like a modular maker platform: stable interfaces,
+self-describing peripherals, source files beside every product, multiple
+programming levels, and no required vendor cloud. It should additionally fit
+brick and studless beam constructions and preserve the repeatable geometry
+needed for CAD.
+
+### 3.1 Primary use cases
+
+- remote-controlled ground, rail, water, and other vehicles with proportional
+  propulsion, steering, braking, and auxiliary functions;
+- autonomous or teleoperated robots running Python, .NET, C/C++, ROS, or
+  visual programs;
+- stationary machines such as conveyors, sorters, lifts, cranes, plotters,
+  machine tools, test rigs, and packaging or material-handling demonstrators;
+- programmable mechanisms, kinetic art, model infrastructure, laboratory and
+  classroom automation, and instrumented physical experiments;
+- one workspace for source, device discovery, build, deploy, debug, remote
+  control, CAD-linked twin inspection, simulation, and trace comparison;
+- classroom and maker projects that work without an internet connection;
+- reusable motor, light, and sensor modules from multiple manufacturers;
+- live telemetry, calibration, recording, and replay;
+- CAD-first assembly, collision checking, and build instructions;
+- software-in-the-loop and hardware-in-the-loop simulation; and
+- adapters for selected legacy brick-motor ecosystems.
+
+### 3.2 Non-goals
+
+- cloning a proprietary product housing, logo, or ornamental design;
+- claiming affiliation with or certification by the LEGO Group;
+- making Linux the sole real-time motor or safety controller;
+- requiring a hosted account, telemetry service, or public cloud;
+- promising compatibility with every mechanically similar legacy connector;
+- treating a rendered mesh as editable mechanical source;
+- making version 0.1 suitable for safety-critical, road-going, aviation,
+  medical, production-industrial, or other regulated control; or
+- claiming a commercial product is certified merely because its Pi module is.
+
+## 4. Terms and object model
 
 | Term | Meaning |
 | --- | --- |
@@ -260,7 +175,12 @@ revisions, dates, and regions before they define any numeric target.
 | Component model | A versioned design shared by every manufactured instance of a component. |
 | Component instance | A physical or simulated occurrence with owner-resettable identity, revision, and calibration. |
 | Capability | A typed property, action, or event with units, bounds, access rules, and quality metadata. |
-| Creation | A user-owned assembly graph, control configuration, asset set, and twin configuration. |
+| Creation | A user-owned assembly graph, control configuration, asset set, and twin configuration for a robot, vehicle, stationary machine, instrument, installation, or other automated mechanism. |
+| Mechanical reference catalog | A versioned description of an external or OMBR-native part source, its authority, license, coverage, snapshot, identifiers, and limitations. |
+| Mechanical mating profile | A versioned functional geometry and behavior contract for a connection or transmission interface such as a stud, pin, axle, hole, gear mesh, rack, joint, wheel, or track. |
+| Implementation candidate | An exact open design, open-source package, or documented COTS component evaluated against named OMBR requirements; inclusion is not endorsement or qualification. |
+| Offer observation | Dated evidence that a particular seller offered a particular SKU, condition, quantity, region, tax/delivery basis, and lead time at a stated price. It is not a property of the underlying design. |
+| Landed COGS | The recurring cost of a tested, packaged unit ready for the stated sales channel, including procurement, conversion, assembly, yield, test, inbound logistics, duty, and required amortized items defined by the cost profile. |
 | Control source | A gamepad, UI, program, sensor, timeline, or network client that produces input capabilities. |
 | Binding | A versioned rule mapping input capability values to actions or desired properties. |
 | Digital twin | Linked design, as-built, calibrated, simulated, and runtime representations of a creation. |
@@ -276,7 +196,7 @@ revisions, dates, and regions before they define any numeric target.
 | Absolute maximum | A non-operating stress boundary whose exceedance may cause permanent damage; operation at or near it is not implied. |
 | Current envelope | The role- and condition-specific minimum, consumption, capacity, transient, protection, fault, leakage, and backfeed currents for one rail at one interface. |
 
-## 6. System architecture
+## 5. System architecture
 
 ~~~mermaid
 flowchart LR
@@ -351,14 +271,14 @@ enable, watchdogs, hard deadlines, current and temperature faults, and the
 ability to remove motor power without Linux cooperation. Each active
 peripheral adds its own local watchdog and protection.
 
-### 6.1 Planned conformance profiles
+### 5.1 Planned conformance profiles
 
 Conformance will be modular after the relevant profile is frozen. No profile
 in this table is claimable in version 0.1.
 
 | Profile | Principal requirement groups | Additional evidence | Draft blocker |
 | --- | --- | --- | --- |
-| OMBR-HUB-1 | OPEN, HUB, SAFE, ELEC, applicable PWR, NET, API, SEC, SW | Hub, selected power-source, radio, safety, and recovery rows in section 17.4 | Fail-safe stop circuit, BLE/API contract, stable power profile, and applicable product classification |
+| OMBR-HUB-1 | OPEN, HUB, SAFE, ELEC, applicable PWR, NET, API, SEC, SW | Hub, selected power-source, radio, safety, and recovery rows in section 16.4 | Fail-safe stop circuit, BLE/API contract, stable power profile, and applicable product classification |
 | OMBR-POWER-1 | OPEN, ELEC, PWR, applicable SAFE and SEC | Source, battery/charging when present, protection, energy, thermal, service, and lifecycle rows | Frozen chemistry/source classes, fixtures, limits, regulatory plan, and fault-energy evidence |
 | OMBR-LINK-1 | OPEN, ELEC, LINK, PER, TIME, SEC | Wire, electrical, cable, fault, and interoperability rows | Production connector, physical transport/topology, sender authentication or isolation, framing, timing, and version negotiation |
 | OMBR-MECH-1 | OPEN, MECH, PKG, TWIN | Mechanical and manufacturing rows | Metrology dataset, normative geometry, gauges, force windows, lifecycle, and conditioning |
@@ -371,25 +291,31 @@ in this table is claimable in version 0.1.
 | OMBR-CONTROL-1 | OPEN, INPUT, CTRL, TIME, and applicable ELEC, API, and SEC | Control-source descriptors, calibration, mapping, loss, lease, feedback, and input fixtures | Frozen input descriptors, handheld/generic-HID profile, latency limits, and two-source mapping vectors |
 | OMBR-WORKBENCH-1 | OPEN, DEV, API, PKG, TWIN, SIM, SEC, SW | Golden project through headless CLI plus VS Code and an independent client | Versioned developer API/CLI, client capability matrix, golden workflows, and offline packages |
 | OMBR-RUNTIME-1 | OPEN, PROG, API, TIME, SEC, SW | Reproducible build, permission, deploy, lifecycle, failure, log, and debug rows | Runtime descriptors, sandbox profile, SDK contracts, and Python/.NET golden programs |
-| OMBR-ECOSYSTEM-1 | Every applicable profile plus ECO, BENCH, and GOV | Complete public source release, benchmark catalog, governance evidence, and system integration matrix | All constituent profile blockers plus independently reproduced end-to-end starter system |
+| OMBR-ECOSYSTEM-1 | Every applicable profile plus ECO, CAT, IP, REG, GOV, and BENCH | Complete public source release, implementation catalog, rights/market-access register, governance evidence, system integration matrix, and benchmark catalog | All constituent profile blockers plus independently reproduced end-to-end starter system |
 
 The requirement-group column is orientation for this draft, not a computable
 claim. GOV-013 requires every stable profile to replace it with an exact,
 machine-readable claimant/applicability/evidence matrix.
 
-P0 in section 9.8 is an engineering prototype only. OMBR-LINK-1 is blocked
+P0 in section 8.8 is an engineering prototype only. OMBR-LINK-1 is blocked
 by the connector, transport/topology, authenticated-session or isolation
 choice, and exact framing/timing/version rules—not by the connector alone.
+`OMBR-AFFORDABLE-HUB-1` is a dated market/price claim governed by COST rather
+than a timeless technical conformance profile. Passing OMBR-HUB-1 does not
+establish the price claim, and missing the price target does not permit an
+implementation to weaken HUB, SAFE, ELEC, OPEN, IP, or REG requirements.
 
-### 6.2 Whole-ecosystem completeness
+### 5.2 Whole-ecosystem completeness
 
-OMBR specifies a complete programmable brick-robotics ecosystem, not only
-a hub, editor, or connector. Its scope spans the controller and battery;
+OMBR specifies a complete programmable brick-automation ecosystem, not only
+a robot, hub, editor, or connector. Its scope spans the controller and battery;
 ports, plugs, and cables; sensors; lights and motion actuators; brick-grid
-mounting and source CAD; firmware and user-program runtimes; developer and
-operator tools; the digital twin and simulator; manufacturing, calibration,
-test, repair, and teaching material; and the governance needed for independent
-implementations.
+structural parts, connectors, gears, transmissions, mounting, and source CAD;
+firmware and user-program runtimes; developer and operator tools; the digital
+twin and simulator; manufacturing, calibration, test, repair, and teaching
+material; and the governance needed for independent implementations. A
+Creation may move through its environment or remain fixed; neither locomotion
+nor a single chassis is required.
 
 ~~~mermaid
 flowchart TB
@@ -403,7 +329,7 @@ flowchart TB
         ACT["Open-loop and feedback motion actuators"]
         LIGHT["White, RGBW, and addressable lights"]
         SENSOR["Distance, color, touch/force, IMU, other sensors"]
-        MECH["Brick-grid shells, frames, axles, mounts, cable routes"]
+        MECH["Bricks, beams, pins, axles, gears, joints, shells, cable routes"]
         INPUT -.-> HUB
         POWER --> HUB
         HUB --> CABLE
@@ -439,7 +365,7 @@ flowchart TB
 
 | ID | Requirement |
 | --- | --- |
-| ECO-001 | A complete ecosystem release MUST identify the exact hub, power, native link, cable, mechanical, motor or actuator, light, sensor, runtime, developer-tool, twin, and simulation profiles it implements, plus the exact documentation artifacts and conformance-suite versions it contains. |
+| ECO-001 | A complete ecosystem release MUST identify the exact hub, power, native link, cable, mechanical, motor or actuator, light, sensor, runtime, developer-tool, twin, and simulation profiles it implements, plus the exact implementation-catalog snapshot, price-book/cost status, rights/market-access register, documentation artifacts, and conformance-suite versions it contains. |
 | ECO-002 | The reference starter system MUST include a buildable hub with IMU, protected power source or bench-power profile, at least two qualified cable lengths, one open-loop motor path, one feedback motion actuator, one controllable light, distance or proximity, color or reflectance, and touch or force sensors, an open handheld control source or documented generic-HID gamepad profile, brick-compatible mounting source, hub runtime, CLI/SDK, Workbench, simulator, and end-to-end example Creation. |
 | ECO-003 | Constituent components MUST remain independently replaceable and implementable. An aggregate ecosystem claim MUST NOT hide a failed, proprietary, experimental, or untested constituent profile. |
 | ECO-004 | One content-addressed ecosystem release manifest MUST tie together compatible hardware, firmware, schemas, SDKs, tools, CAD, calibration, simulation models, test suites, documentation, and known limitations. |
@@ -452,9 +378,9 @@ flowchart TB
 | ECO-011 | Before a stable ecosystem profile, at least one independently built physical peripheral and one independent CLI or application client MUST complete the public end-to-end test without project-private information. |
 | ECO-012 | Compatibility with third-party brick elements MUST be factual, narrowly scoped, measured, and legally distinct from project ownership, endorsement, or certification. |
 
-## 7. Openness and release contract
+## 6. Openness and release contract
 
-### 7.1 Scope
+### 6.1 Scope
 
 | ID | Requirement |
 | --- | --- |
@@ -491,7 +417,7 @@ which distinguish editable design source from manufacturing exports.
 The optional certification target in OPEN-020 follows the
 [OSHWA Certification Requirements](https://certification.oshwa.org/requirements.html).
 
-### 7.2 Raspberry Pi boundary
+### 6.2 Raspberry Pi boundary
 
 The reference hub uses a Raspberry Pi Zero 2 W as a replaceable COTS module.
 Its official brief documents a 65 by 30 mm board, a quad-core 1 GHz
@@ -511,7 +437,7 @@ therefore say:
 The compute boundary MUST be documented well enough to permit a future
 alternative Linux module without changing peripheral or twin semantics.
 
-### 7.3 Target licensing policy
+### 6.3 Target licensing policy
 
 The existing BrickController2 code remains under its current MIT license.
 Relicensing it requires agreement from the relevant rights holders.
@@ -540,7 +466,7 @@ the [Reproducible Builds definition](https://reproducible-builds.org/docs/defini
 exact standard versions and claimed level; merely emitting an attestation does
 not prove that its contents or builder are trustworthy.
 
-### 7.4 Open prior art and upstream-first engineering
+### 6.4 Open prior art and upstream-first engineering
 
 The initial reuse ledger investigates these precedents without preselecting
 them as dependencies:
@@ -561,9 +487,76 @@ Each ledger entry records a specific repository/release and evidence. A project
 name in this table does not establish compatible licensing, current
 maintenance, safety, reproducibility, or fitness for OMBR.
 
-## 8. Hub requirements
+### 6.5 Legal, intellectual-property, and market-access gates
 
-### 8.1 Functional baseline
+OMBR defines technical and documentation requirements. It does not grant
+rights in third-party patents, designs, copyrights, databases, or trademarks,
+does not certify freedom to operate, and is not legal advice. Conformance does
+not imply affiliation with or endorsement by any third party. Implementers are
+responsible for market-, product-, revision-, use-, and date-specific clearance
+and for applicable safety and regulatory compliance.
+
+The public [legal/IP register](LEGAL-IP-REGISTER.md) is a screening and
+governance template, not a legal opinion. Privileged counsel work may remain
+confidential while the public register records scope, evidence IDs, decision,
+mitigation, date, owner, and residual risk. Public patent, trademark, and
+design databases help find risks but cannot establish that no relevant right
+exists or that a particular act is permitted.
+
+| ID | Requirement |
+| --- | --- |
+| IP-001 | Every reference product and material revision MUST have a rights register scoped by exact design/firmware/data revision, intended acts (`make`, `use`, `sell`, `offer`, `import`, `distribute`, or `modify`), launch window, target countries, sales channel, age/use classification, and reviewed features. A project-wide or permanent “cleared” flag is prohibited. |
+| IP-002 | Rights gates MUST run at concept, architecture freeze, design freeze, prelaunch, and every material change. Outcomes MUST use `no-issue-identified-not-clearance`, `monitor`, `redesign`, `seek-license`, `obtain-counsel-opinion`, or `stop`; unresolved high-impact items block the affected release or feature. |
+| IP-003 | Patent/FTO screening MUST decompose at least the controller architecture, power and motor drive, port/connector/contact system, cable, motor and sensor interfaces, brick/beam mating geometry, gear/transmission features, protocols, firmware behavior, digital-twin synchronization, and CAD/simulation workflow into searchable features. It MUST cover keywords, IPC/CPC classes, applicants/inventors, patent families, published applications and grants, claims, priority/expiry, current official territorial status, and a recorded disposition. Qualified counsel review is REQUIRED before commercial market launch. |
+| IP-004 | Patent records MUST retain family and jurisdiction, applicant/assignee, priority/publication/grant dates, relevant independent claims, claim-chart evidence ID, legal-status source and date, fees/expiry/opposition information where relevant, reviewer, mitigation, and next review. An expired family in one country MUST NOT imply freedom in another country or under another family member. |
+| IP-005 | The OMBR name, logo, certification marks, domains, package namespaces, product names, and presentation MUST receive word/device-mark clearance for the relevant markets and classes before public commercial use. Third-party marks including LEGO, TECHNIC, and MINDSTORMS MUST NOT be incorporated into those identifiers or used as badges, logos, stylized decoration, or source indicators. |
+| IP-006 | Third-party marks MAY appear only as minimally necessary plain-text factual references in compatibility, procurement, benchmark, or historical records after review. The claim MUST identify the exact product/interface and revision, separate mechanical, electrical, protocol, and behavioral compatibility, cite tests, attribute the owner, and state non-affiliation nearby. A disclaimer does not cure confusing or otherwise improper use. |
+| IP-007 | Every exterior and compatibility-critical geometry MUST receive target-market registered/unregistered design and trade-dress review. The engineering file MUST map each retained interface feature to its objective function, alternatives considered, independent measurement evidence, and CAD history; shells, colors, ornament, cavities, and nonfunctional geometry MUST be independently designed. “Must fit,” modularity, repair, or technical function MUST NOT be treated as automatic clearance. |
+| IP-008 | LEGO/BrickLink sites, instructions, catalog images, Studio assets, and other restricted sources MUST NOT be scraped, bulk mirrored, extracted, or redistributed as the OMBR library. Sparse factual aliases MAY be recorded with source and date. Release assets MUST use project-authored renders/photos/metrology/CAD or individually licensed material with machine-readable attribution and redistribution rights. |
+| IP-009 | Every imported CAD, LDraw, data, image, document, software, and model artifact MUST record exact source URL/revision/hash/date, author or holder, per-artifact license/terms, attribution, modifications, use basis, redistribution/cache status, and limitations. CI MUST block required release assets with unknown, noncommercial, no-derivatives, field-of-use, revocable/tool-only, or otherwise incompatible terms. |
+| IP-010 | Protocol interoperability research MUST record lawful access, authorized acts, information unavailable from the rights holder, exact interoperability purpose, necessity and minimization, jurisdiction, reviewer separation where used, and independently authored outputs. It MUST NOT publish extracted firmware/source, comments, keys, protected assets, or security bypasses. Repair or interoperability exceptions MUST NOT be assumed across territories. |
+| IP-011 | Open-source and open-hardware licenses MUST be reviewed separately from third-party FTO. The artifact manifest MUST preserve holders, notices, patent clauses, source obligations, reciprocal scope, generated-artifact status, and dependency compatibility. A supplier's public datasheet or SDK does not license its silicon, PCB, trademarks, patents, or reference-design artwork beyond its actual terms. |
+| IP-012 | Contribution terms for normative text, schemas, reference software, hardware, CAD, and test data MUST provide the copyright and patent permissions needed by the selected specification and artifact licenses. Trademark permission and conformance certification remain separate, published policies. |
+| IP-013 | A clean-room or independent-measurement process MUST preserve acquisition provenance, researcher and implementer roles, dated notes, input/output boundaries, independent design history, and tests. It reduces copying risk but MUST NOT be described as patent, design, trademark, contract, database, or overall legal clearance. |
+| IP-014 | Commercial suppliers and manufacturing partners MUST be reviewed for component authenticity, authorized-channel status, licenses/royalties, restricted-use terms, indemnities, export/import constraints, and notification of lifecycle or material changes. Supplier representations MUST be retained but do not replace implementer due diligence. |
+| IP-015 | The reference release MUST publish non-confidential residual risks, prohibited uses, unresolved dependencies, licenses obtained, required attribution/marking, redesign or feature omissions, next-review triggers, and contact for rights concerns. |
+
+Product classification comes before a standards checklist. The same board may
+be a 14+ maker controller, education product, radio product, machinery
+component, or child-directed toy depending on presentation, intended use,
+included parts, and market. Using a pre-certified radio module can reduce test
+scope but does not certify the final enclosure, antenna environment, power
+system, cables, software, or product.
+
+| ID | Requirement |
+| --- | --- |
+| REG-001 | Before design freeze, each commercial or distributed reference SKU MUST record intended use and user, age grading, foreseeable misuse, target territories, economic-operator roles, product classification, and an applicability matrix of current laws, delegated acts, standards, guidance, labels, registrations, technical files, declarations, and post-market duties. |
+| REG-002 | The EU market plan MUST explicitly assess the Radio Equipment Directive, EMC, electrical safety as applicable, RoHS, REACH, WEEE, batteries and transport when included, General Product Safety Regulation, packaging and consumer-price rules, privacy, the Cyber Resilience Act transition, and toy-safety rules if the product is or may be perceived as a toy. Non-EU releases require their own matrices. |
+| REG-003 | Every safety/compliance conclusion MUST identify the exact final-product revision and configuration, standards editions, laboratory or competent reviewer, reports, deviations, critical components, firmware, antenna/enclosure/cable assumptions, and change-control triggers. Upstream module declarations are supporting evidence only. |
+| REG-004 | The technical file MUST include risk assessment, schematics/BOM/CAD, software and update architecture, intended/foreseeable use, safety instructions, test reports, supplier declarations, production controls, traceability, incident/vulnerability handling, corrective-action and recall process, and retention period required by the applicable regime. |
+| REG-005 | Security and update obligations MUST be planned for the declared support lifetime, including vulnerability intake, triage, coordinated disclosure, authenticated update and recovery, dependency monitoring, reporting deadlines, owner notification, and end-of-support behavior. An open-source publication alone does not discharge a commercial manufacturer's duties. |
+| REG-006 | Child-directed or education configurations MUST complete specific chemical, mechanical, electrical, thermal, small-parts, strangulation/cable, battery, misuse, hygiene, accessibility, labeling, and digital-product-passport assessments required for the target date and market. A `14+` label MUST reflect genuine intended use and risk evidence rather than serve as a workaround. |
+| REG-007 | Production and procurement change control MUST prevent an alternate component, resin, finish, battery, radio, antenna, connector, cable, supplier, firmware, or enclosure change from silently invalidating safety, EMC/radio, environmental, IP, cost, or conformance evidence. |
+| REG-008 | Legal, certification, laboratory, documentation, registration, surveillance, update/support, warranty, recycling, and recall provisions MUST be included in the cost model and release schedule rather than deferred until after the retail target is announced. |
+
+Relevant primary screening sources include the [EPO Espacenet and legal-status
+tools](https://www.epo.org/en/searching-for-patents/technical/espacenet),
+[WIPO PATENTSCOPE](https://www.wipo.int/en/web/patentscope/), the
+[WIPO Global Brand Database](https://www.wipo.int/en/web/global-brand-database),
+[EUIPO search](https://www.euipo.europa.eu/en/search-ip), and official national
+registers. The EU [Radio Equipment Directive](https://single-market-economy.ec.europa.eu/sectors/electrical-and-electronic-engineering-industries-eei/radio-equipment-directive-red_en)
+covers radio safety/health, EMC, and spectrum requirements. The
+[Cyber Resilience Act](https://digital-strategy.ec.europa.eu/en/policies/cyber-resilience-act)
+has reporting obligations applying from 11 September 2026 and main obligations
+from 11 December 2027. The new
+[EU Toy Safety Regulation](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2509)
+entered into force on 1 January 2026 and applies from 1 August 2030 after its
+transition; the classification and rules actually applicable at the placement
+date must be verified.
+
+## 7. Hub requirements
+
+### 7.1 Functional baseline
 
 | ID | Requirement |
 | --- | --- |
@@ -583,7 +576,7 @@ maintenance, safety, reproducibility, or fitness for OMBR.
 | HUB-014 | The hub MUST provide a physical stop input wired to both the safety MCU for diagnosis and the independent de-energize-to-trip output gate. |
 | HUB-015 | The hub MUST visibly indicate at least booting, ready, wireless pairing, output armed, warning, and fault states. |
 
-### 8.2 Reference compute profile
+### 7.2 Reference compute profile
 
 The first reference implementation, **Hub R0**, uses:
 
@@ -607,7 +600,7 @@ OMBR MUST report this limitation. A signed update system on Zero 2 W improves
 software supply-chain integrity but does not create an immutable hardware root
 of trust against physical microSD replacement.
 
-### 8.3 Real-time safety controller
+### 7.3 Real-time safety controller
 
 | ID | Requirement |
 | --- | --- |
@@ -633,7 +626,7 @@ Raspberry Pi's Build HAT is evidence for this split architecture: its
 low-level microcontroller handles time-sensitive peripheral functions while
 the Pi communicates through a documented serial protocol.
 
-### 8.4 Power architecture
+### 7.4 Power architecture
 
 The reference electrical target is a protected removable 2-cell battery pack,
 but battery chemistry is not frozen in version 0.1.
@@ -682,7 +675,7 @@ target, not a frozen conformance dimension. The Pi board alone is 65 by 30 mm;
 room is still needed for walls, antenna clearance, connectors, power
 electronics, battery, and strain relief.
 
-### 8.5 Universal electronic interface contract
+### 7.5 Universal electronic interface contract
 
 Every electronic component is specified at its boundaries, not merely by a
 marketing name or connector family. This applies to hub ports, batteries,
@@ -744,9 +737,9 @@ or not applicable is represented explicitly and never encoded as zero.
 | ELEC-028 | A runtime descriptor MAY carry a bounded machine-readable subset for discovery and pre-arm checks, but it MUST identify the immutable full contract and endpoint-profile revision and digest. The validator still verifies exact connector/contact map, voltage after worst-case drop, steady/peak/inrush/regenerative current, cable/contact/protection/thermal capacity, fault energy, ground/common-mode/isolation/shield, protocol role/version/timing/topology/security, and aggregate source budget. |
 | ELEC-029 | A stable electronic profile release MUST contain the complete resolved interface contracts, endpoint profiles, source and evidence artifacts, COTS/derating record, fault matrix, semantic compatibility rules, protocol schemas and golden vectors, and at least one tested source-cable-load combination. Prose, a product page, or a connector drawing alone cannot support a full-interface claim. |
 
-## 9. Native peripheral link
+## 8. Native peripheral link
 
-### 9.1 Architectural choice
+### 8.1 Architectural choice
 
 OMBR uses a project-owned native link and optional adapters. It does not make
 a proprietary brick connector the foundation of the ecosystem.
@@ -771,7 +764,7 @@ I2C is permitted inside a component but MUST NOT be the default external cable
 transport. USB-C MUST NOT carry undocumented proprietary motor voltage or
 signals that violate the USB-C specification.
 
-### 9.2 Link requirements
+### 8.2 Link requirements
 
 | ID | Requirement |
 | --- | --- |
@@ -798,7 +791,7 @@ signals that violate the USB-C specification.
 | LINK-021 | HELLO MUST list supported major and minor ranges. Peers select the highest shared major and then highest shared minor; no shared major leaves outputs disabled and returns incompatible-version. Unknown state-changing types or nonzero reserved flags are rejected without side effects. |
 | LINK-022 | Every cable type MUST have a versioned component and endpoint profile resolving the complete ELEC contract for both ends and declaring contact/conductor mapping, length, conductor gauge and material, twist/shield/drain, resistance, capacitance, inductance, impedance where applicable, propagation delay, current/voltage and fault-withstand limits, bend/flex, strain relief, temperature derating, source release, and validation digest. |
 | LINK-023 | A passive cable MUST be identifiable by durable human-readable part and revision marking. Optional electronic identification MUST use the open descriptor protocol and MUST NOT be required to manufacture an otherwise passive compatible cable. |
-| LINK-024 | Reference cables MUST be field-replaceable and either assemblable with documented commodity tools or accompanied by openly licensable contact, mould, and assembly tooling plus continuity and load-test fixtures. |
+| LINK-024 | Reference cables MUST be field-replaceable and use documented, obtainable connector/contact systems assemblable with commodity tools or an openly reproducible connector process that does not require undisclosed custom tooling. Cable releases MUST include assembly, continuity, pull, voltage-drop, and load-test fixtures. |
 | LINK-025 | The hub MUST keep high power disabled when the installed or configured cable type is absent, incompatible, underrated, or contradictory to endpoint limits; a cable declaration MUST NOT raise a physical port ceiling. |
 | LINK-026 | Extension, splitter, hub, and adapter cables MUST declare topology, cumulative voltage drop, termination, branch and total current limits, hot-plug behavior, and fault isolation; a passive Y cable MUST NOT be assumed safe for a point-to-point profile. |
 
@@ -809,7 +802,7 @@ isolation or a compact authenticated-session construction with replay
 protection and owner-recoverable keys. This limitation is also documented in
 [CAN in Automation's security overview](https://can-cia.org/services/publications/can-community-news/09-2025).
 
-### 9.3 Node identity
+### 8.3 Node identity
 
 A BLE address, Wi-Fi MAC, USB path, or bus node number MUST NOT serve as the
 persistent twin identity.
@@ -827,7 +820,7 @@ Each component exposes:
 
 UUIDs follow [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.html).
 
-### 9.4 Message framing
+### 8.4 Message framing
 
 The P0 application layer uses deterministic CBOR payloads. JSON is the
 normative diagnostic representation of the same data model. CBOR follows
@@ -853,7 +846,7 @@ authenticated-message field or isolated-port design, fragmentation,
 minor-version encoding, timing table, and JSON/CBOR schemas MUST be frozen
 with golden vectors before OMBR-LINK-1.
 
-### 9.5 Required exchanges
+### 8.5 Required exchanges
 
 1. The unpowered or auxiliary-powered module announces presence.
 2. The hub assigns a session node ID.
@@ -868,7 +861,7 @@ with golden vectors before OMBR-LINK-1.
 11. Timeout, STOP, fault, disconnect, or shutdown enters safe state and removes
     high power as defined by the port profile.
 
-### 9.6 Command lifetime and time synchronization
+### 8.6 Command lifetime and time synchronization
 
 Wall-clock timestamps are for records. They never determine whether a motion
 command remains valid.
@@ -884,7 +877,7 @@ command remains valid.
 | TIME-007 | A scheduled trajectory MUST identify hub boot ID and signed 64-bit monotonic nanoseconds, and time synchronization MUST publish offset, drift estimate, round-trip delay, and uncertainty. A node MUST reject new scheduled motion when uncertainty exceeds 5 ms. |
 | TIME-008 | A locally stored autonomous timeline MAY exceed 250 ms only after explicit local activation and validation; it remains subject to physical stop, local limits, watchdogs, and a declared loss-of-controller policy. |
 
-### 9.7 Capability classes
+### 8.7 Capability classes
 
 The base protocol defines properties, actions, and events. A capability
 descriptor includes:
@@ -912,7 +905,7 @@ The model is compatible with the
 OMBR uses a constrained profile so embedded devices do not need a general
 JSON-LD engine.
 
-### 9.8 P0 prototype connector
+### 8.8 P0 prototype connector
 
 The development prototype MAY use the Molex Micro-Fit 3.0 eight-circuit
 [0430450800 right-angle header](https://www.molex.com/en-us/products/part-detail/0430450800),
@@ -946,15 +939,16 @@ touch-safety, lifecycle, insertion force, pull-out, high-temperature derated
 current, hot plug, signal integrity, field-replaceable cables, sourcing, and
 open tooling.
 
-## 10. Mechanical compatibility
+## 9. Mechanical compatibility
 
-### 10.1 Coordinate and grid
+### 9.1 Coordinate and grid
 
-OMBR's canonical physical coordinate system is right-handed:
-
-- +X forward;
-- +Y left; and
-- +Z up.
+OMBR's canonical physical coordinate basis is right-handed +X, +Y, +Z. A
+project MAY attach application-specific labels such as forward, left, up,
+machine-base, workpiece, tool-center-point, end-effector, wheel-contact, or
+gravity to named frames, but those labels are metadata rather than universal
+axis meanings. A stationary machine is not required to invent a forward
+direction, and a Creation may have multiple anchored roots.
 
 Twin and simulation values use metres, radians, kilograms, seconds, amperes,
 volts, kelvin, and derived SI units. CAD MAY use millimetres if the manifest
@@ -973,7 +967,81 @@ that real-world conversions are approximations. They MUST NOT be used as
 manufacturing tolerances without physical metrology. See the
 [LDraw format specification](https://www.ldraw.org/article/218.html).
 
-### 10.2 Requirements
+### 9.2 Public reference sources and authority
+
+No public LEGO or BrickLink source reviewed for this draft supplies an openly
+licensed, complete engineering definition of the functional geometry,
+tolerances, materials, loads, and lifecycle of its element catalog. The public
+sources form useful but narrower evidence layers:
+
+| Source | Reliable use in OMBR | Boundary that MUST be preserved |
+| --- | --- | --- |
+| [LEGO piece-number guidance](https://www.lego.com/en-gb/service/help-topics/article/identifying-lego-set-and-piece-numbers), [Pick a Brick](https://www.lego.com/en-us/pick-and-build/pick-a-brick), and official building instructions | Manufacturer-published names, Design IDs for shapes, Element IDs for shape/color combinations, set inventories, images, and current regional availability | Identity and retail evidence only; these sources do not publish editable engineering solids, interface tolerances, materials, gear profiles, load ratings, or lifecycle data |
+| [LEGO Technic building guidance](https://www.lego.com/en-ca/service/help-topics/article/tips-for-building-with-lego-technic-elements) and its [1:1 measurement chart](https://www.lego.com/cdn/product-assets/product.bi.additional.info.pdf/42055_X_Measurements.pdf) | Informative beam/axle length identification and the Technic convention of naming those lengths in stud modules | A print aid is not a dimensioned manufacturing drawing, calibration artifact, tolerance, or fit specification |
+| [BrickLink Studio](https://studiohelp.bricklink.com/hc/en-us/articles/5404381697559-Introduction-to-Studio), owned by the LEGO Group since its [BrickLink acquisition](https://www.lego.com/en-us/aboutus/news/2019/november/lego-bricklink) | Public virtual building, catalog lookup, model assembly, instructions, LDraw/LXFML import, and documented [LDraw export](https://studiohelp.bricklink.com/hc/en-us/articles/6502197862679-Exporting-to-other-formats) | Studio documents [missing parts](https://studiohelp.bricklink.com/hc/en-us/articles/8117942037911-Missing-parts) and approximate [collision detection](https://studiohelp.bricklink.com/hc/en-us/articles/5412820155927-Collision); its [software/assets license](https://studiohelp.bricklink.com/hc/en-us/articles/6606313426711-Studio-Software-License-Agreement) is not an open-CAD redistribution license |
+| [LDraw format and units](https://www.ldraw.org/article/218.html) plus the [LDraw Parts Library](https://library.ldraw.org/) | Open, mature part/model exchange, visualization proxies, library identifiers, origins, and per-file attribution | LDraw is explicitly unofficial and community-run; its real-world unit conversion is approximate, “Official” means accepted by LDraw, licenses vary by file, and a mesh is not manufacturing or fit authority |
+| OMBR Mechanical Reference Library | Project-authored functional interfaces, parametric source for OMBR-native replacements, drawings, gauges, measured fit/load/life evidence, simulation semantics, and stable open identifiers | This is the normative source for OMBR-native semantics; optional third-party aliases do not transfer ownership, endorsement, or rights to reproduce third-party parts |
+
+The reviewed official public sources do not expose an engineering solid,
+dimensioned functional interfaces and tolerances, connection-force
+distributions, gear tooth definition, or load and wear-life qualification.
+OMBR therefore does not label Pick a Brick, instructions, Builder, Studio, or
+LDraw data as “official engineering CAD.” The core specification deliberately
+stops at the functional engineering data needed to identify, procure, model,
+mate, test, replace, and simulate a part. Production-mould design and tooling
+are out of scope. If a manufacturer later publishes or licenses a more
+authoritative engineering artifact, its exact revision, permission, scope,
+and digest can be added without changing the authority of existing records.
+
+External identities remain namespaced. `lego-design-id`, `lego-element-id`,
+`bricklink-item-number`, and `ldraw-file` are not interchangeable and are not
+assumed to map one-to-one. OMBR tools may link to or import data under its
+actual terms; they MUST NOT extract proprietary application assets, bulk-copy
+a restricted catalog, or redistribute third-party geometry without compatible
+permission.
+
+### 9.3 Mechanical Reference Library
+
+The openly licensed OMBR Mechanical Reference Library is an independently
+authored set of component records, functional models, and mating profiles. It
+is designed for engineering selection, procurement, brick-CAD assembly,
+kinematics, dynamics, open replacement fabrication, and physical conformance
+rather than rendering alone. Its starter taxonomy covers:
+
+- structural bricks, plates, tiles, studless beams/liftarms, frames, panels,
+  brackets, shells, and project-authored chassis parts;
+- studs, tubes, round holes, friction and free pins, cross axles and holes,
+  bushings, axle-pins, perpendicular/angled connectors, hinges, ball joints,
+  universal joints, and turntables;
+- spur, bevel, double-bevel, crown, worm, rack, differential, clutch, pulley,
+  belt, chain, sprocket, and linear transmission elements;
+- wheels, tyres, hubs, casters, tracks, rollers, and rail-guidance elements;
+  and
+- springs, elastomers, string, hose, pneumatic elements, counterweights, and
+  other flexible or stored-energy parts.
+
+Every library part is a component model decomposed into one or more named
+rigid, static, or flexible bodies whose interfaces point to exact revisions of
+reusable mechanical mating profiles. Repeated features such as beam holes are
+explicit named frames or a deterministic, expanded frame generator whose
+output is content-addressed. The creation graph separately records fixed mates,
+kinematic joints, multi-member transmissions, flexible elements, assembly
+hierarchy, pose authority, and design/as-built/runtime state. This lets the
+same graph describe a rover drivetrain, differential, closed-loop linkage,
+vehicle steering rack, crane, or stationary conveyor without pretending every
+relationship is a binary static connection.
+
+A gear record is not merely a toothed visual mesh. It captures gear type,
+tooth system, tooth count, module or circular pitch, pressure and helix/cone
+angles, pitch/base/tip/root diameters, addendum, dedendum, profile shift,
+root fillet, face width, clearance, backlash, bore or axle fit, datum and axis,
+material and fabrication basis where known, runout, permitted mates and centre distances, torque/speed/
+temperature limits, efficiency assumptions, lubrication, duty, and wear-life
+evidence. A mesh relation records both gear revisions, contacting features,
+axis frames, centre distance, orientation, signed ratio, phase where relevant,
+backlash/compliance, efficiency, limits, and validation evidence.
+
+### 9.4 Requirements
 
 | ID | Requirement |
 | --- | --- |
@@ -986,18 +1054,50 @@ manufacturing tolerances without physical metrology. See the
 | MECH-007 | Dimensions and tolerances MUST be based on a documented measurement study across multiple genuine reference parts, types, ages, cavities, and lots. |
 | MECH-008 | A claim of brick or beam compatibility MUST identify the tested elements, sample count, process, material, environmental conditions, and pass criteria. |
 | MECH-009 | The project MUST publish go/no-go gauges and insertion/retention test procedures. |
-| MECH-010 | Manufacturing source MUST avoid logos, source-indicating marks, or copied ornamental housings belonging to another manufacturer. |
+| MECH-010 | Released OMBR-native CAD and replacement-fabrication source MUST avoid logos, source-indicating marks, or copied ornamental housings belonging to another manufacturer. |
 | MECH-011 | Hub, battery, motor or actuator, light, sensor, adapter, and cable-retention models MUST declare their outer envelope in SI units and brick-grid modules, accessible mounting frames, assembly clearance, and collision geometry. |
 | MECH-012 | The reference starter family MUST provide measured attachment strategies for selected studless-beam holes and pins, cross axles, and top or bottom stud connections; each strategy is a separate tested compatibility claim. |
 | MECH-013 | The project MUST publish a machine-readable reference-part and attachment-frame library with source, revision, license, provenance, geometry fidelity, and measured-versus-nominal status for every entry. |
 | MECH-014 | Cable models and assemblies MUST include connector sweep, minimum bend, strain-relief, removal-tool, and moving-joint keep-outs so CAD and simulation can detect unroutable or unsafe placements. |
 | MECH-015 | A mechanical component release MUST include assembly orientation, fasteners, torque where applicable, disassembly sequence, wear interfaces, and replacement limits; glue or destructive joining requires a documented reason and replaceable subassembly boundary. |
+| MECH-016 | Each mechanical reference catalog MUST declare publisher, stable catalog ID and revision, source URI, review date, immutable snapshot digest where redistribution is permitted, license or access terms, authority class, covered evidence levels, identifier semantics, and limitations. Dynamic retail or API results MUST additionally record query, locale, and retrieval time. |
+| MECH-017 | A part's external aliases MUST be separately namespaced and independently sourced. A tool MUST NOT infer equality among a LEGO Design ID, LEGO Element ID, BrickLink Item Number, LDraw filename, or OMBR part ID merely because their strings resemble one another. |
+| MECH-018 | Catalog identity, availability, visual geometry, connection metadata, dimensional reference, tolerance distribution, material specification, load/life evidence, and open-replacement source MUST be separately claimable evidence levels. Every value MUST carry source, revision, method, uncertainty where measured, and authoritative/provisional/unknown status. |
+| MECH-019 | A third-party proprietary asset MAY be an optional local import or visual reference but MUST NOT be required to build, validate, manufacture, simulate, or repair the open starter system. Restricted assets and catalogs MUST NOT be vendored, extracted, or bulk mirrored without explicit compatible permission. |
+| MECH-020 | “Official” MUST name its authority. `manufacturer-published`, `manufacturer-approved`, `ldraw-official`, `community`, `independently-measured`, and `ombr-native` MUST remain distinct labels; an LDraw Official part MUST NOT be presented as LEGO-approved engineering CAD. |
+| MECH-021 | Every OMBR Mechanical Reference Library record MUST publish an immutable part-record ID and revision, name, category, design/variant/offer identity class, source and rights status, artifact digests where distributable, external aliases, datum and coordinate convention, procurement/lifecycle status, provenance, engineering-evidence coverage, maturity, and known limitations. An external purchased-part record MUST NOT claim unavailable native CAD; an OMBR-native replacement additionally publishes the editable and derived artifacts required by MECH-023. |
+| MECH-022 | Every part MUST separately describe nominal envelope, functional connection geometry, collision volume, moving sweep, assembly/removal and tool clearances, visual geometry, datums, tolerances, fit classes, material/process/finish, mass properties, allowed loads, environmental limits, wear surfaces, life, and evidence. Unknown fields MUST be explicit and MUST NOT be filled from a visual mesh. |
+| MECH-023 | OMBR core does not standardize production moulds or tooling. A purchased-part record MUST publish the available engineering data needed for selection and use—identity, revision, envelope, functional interfaces, fit, material family where documented, mass, load/speed/environment/life limits, procurement status, and evidence—and mark unavailable values unknown. An OMBR-native replacement MUST additionally publish open parametric geometry, fabrication assumptions, drawings, gauges, and physical tests sufficient for its chosen accessible process such as FDM, resin printing, CNC, or a documented service bureau. |
+| MECH-024 | OMBR-native parts intended to mate with third-party elements SHOULD preserve only the necessary functional grid and interfaces while using original, non-confusing appearance and project marks. Compatibility metrology does not authorize copying logos, ornamental surfaces, protected designs, or undisclosed manufacturing data. |
+| MECH-025 | Every mechanical interface MUST reference an exact mechanical mating-profile revision and declare mating role, datum frame, insertion or engagement axis, allowed orientations, assembly path, fit class, retained degrees of freedom, detachability, tool access, and wrong/partial-mate outcome. |
+| MECH-026 | A mating profile MUST define both sides of the functional interface; nominal geometry and tolerance stack; clearance/interference policy; insertion, withdrawal, retention, torque, friction, and wear bands where applicable; compatible material/process classes; conditioning; cycle life; gauges; test method; and a compatibility matrix. Connector appearance or nominal grid alignment alone is insufficient. |
+| MECH-027 | Repeated studs, tubes, holes, teeth, links, or track features MUST expand deterministically into stable named frames and interfaces. A generator MUST declare parameters, coordinate order, source/version, output digest, and collision/connection rules so another implementation produces the same graph. |
+| MECH-028 | Every gear, rack, worm, sprocket, pulley, or similar transmission part MUST publish its full functional tooth/groove profile, axis and phase convention, dimensional tolerances, bore/axle fit, permitted mate families, material and fabrication basis where known, runout and concentricity, load/speed/thermal/duty limits, efficiency, backlash/compliance, lubrication policy, wear life, fixtures, and evidence; tooth count plus a render mesh is insufficient. |
+| MECH-029 | Every gear mesh or transmission connection MUST resolve exact part and feature revisions and declare geometry, centre distance or belt/chain length and tension, axis relationship, signed ratio, direction, phase where relevant, efficiency/loss, backlash/compliance, load/speed limits, interference and axial-retention checks, and validation status. |
+| MECH-030 | A multi-stage transmission MUST derive and expose overall ratio, direction, reflected inertia, backlash/compliance, loss/efficiency range, limiting member, and output load envelope from its resolved stages. A manually entered summary MUST be checked against the graph. |
+| MECH-031 | Fixed, revolute/continuous, prismatic, screw, universal, spherical, planar, and floating kinematic joints MUST declare body/frame endpoints, axes, allowed and constrained degrees of freedom, limits, zero/reference state, friction/damping/compliance, preload, load envelope, breakaway or retention, state observability, and safe behavior. Gear, rack, worm, belt, chain, differential, clutch, cam, lead-screw, or tendon relations are transmissions; detachability belongs to a mate/joint policy; flexible routing is a separate element. |
+| MECH-032 | Structural parts and assemblies used to support a declared load MUST publish applicable load cases, support assumptions, safety factor policy, stiffness/deflection, buckling or pull-out limits, fatigue/cycle assumptions, failure modes, and validation evidence; a collision-safe CAD placement is not a load rating. |
+| MECH-033 | Wheels, tyres, tracks, rails, and ground-contact models MUST declare rolling/steering axes, effective loaded radius or path, width/envelope, hub fit, material/compliance, friction basis, permitted load/speed, runout, slip assumptions, wear, and surface/environment conditions. |
+| MECH-034 | Springs, elastomers, hoses, string, pneumatics, counterweights, and other stored-energy or flexible elements MUST declare rest state, routing/attachment, constitutive or force/displacement behavior, travel/pressure/tension limits, hysteresis/creep, damping, fatigue, failure containment, release procedure, and simulation approximation. |
+| MECH-035 | Mechanical conformance MUST validate identity and license resolution, deterministic artifact generation, frame/interface graph closure, tolerance stacks, interference and tool access, kinematic freedom, transmission math, load/energy limits, and physical fit/force/wear evidence. Passing an LDraw, Studio, STEP, or mesh import alone MUST NOT establish OMBR-MECH-1. |
+| MECH-036 | Mechanical catalog records MUST separately identify design/shape, material/color/packaging element or SKU, engineering model, OMBR replacement, and seller offer. Lifecycle and availability are independently sourced, dated, regional, and condition-specific; a price is a timestamped currency/quantity/tax/shipping observation, never an intrinsic part property. |
+| MECH-037 | Every catalog datum and asset MUST declare data and asset licenses or terms, redistribution/cache status, use basis (`authored`, `licensed`, `measured`, `factual-metadata`, or `unknown`), jurisdictions where reviewed, review status/date, and limitations. Missing restrictions MUST NOT be interpreted as permission. |
+| MECH-038 | A mapping from an external part to an OMBR-native replacement MUST declare substitution class, exact revisions, covered and uncovered interfaces/properties, dimensional and behavioral evidence, rights status, and limitations. Visual resemblance or shared aliases are insufficient. |
+| MECH-039 | Every physical component used for dynamics or moving collision MUST decompose into one or more named rigid, static, or flexible bodies. Each body MUST declare frame, visual/collision/keep-out geometry, material/contact references, load-envelope references, and known or explicit-unknown mass, center of mass, and inertia in a named expression frame with evidence. |
+| MECH-040 | Fixed mates, kinematic joints, transmissions, flexible elements, and transmission networks MUST be distinct first-class objects with stable IDs and body-aware endpoints. A transmission MAY have more than two members, as required by differentials and clutches, and the constraint graph MAY contain closed loops even though frame parentage remains acyclic. |
+| MECH-041 | Assemblies MUST declare hierarchy, reusable subassemblies, members/BOM, roots and anchors, build/disassembly artifacts, configurations, and placement authority. An instance is either explicitly anchored relative to a named frame or constraint-derived; redundant absolute and connection poses MUST NOT silently overdetermine it. |
+| MECH-042 | Design configuration, as-built calibration, initial simulation state, commanded state, and observed runtime joint/transmission state MUST be separate layers. Telemetry MUST NOT rewrite design joints, limits, mates, or placement authority. |
+| MECH-043 | Every actuator and position/force/motion sensor capability MUST bind to exact joint or transmission coordinates with axis, sign, zero/offset, units, reduction, range, limits, calibration and observability. A component-level capability without a mechanical state mapping is insufficient for simulation parity. |
+| MECH-044 | Every CAD, LDraw, glTF, STEP, SDF, URDF, or other derivative MUST declare exact format/version/profile/extensions; source units, handedness, up axis and frame; scale/transform into the manifest; semantic-ID-to-node mappings; fidelity/authority; and a machine-readable loss report. The manifest owns connectivity and kinematics that an asset format cannot express. |
+| MECH-045 | Mechanical-library completeness MUST be demonstrated by a versioned semantic-family/evidence/availability/open-replacement coverage matrix over structures; studs/tubes; pins/holes; axles/bushes; connectors; joints; gears/racks/worms; differentials/clutches; belts/chains/pulleys; wheels/tracks/rails; flexible/stored-energy elements; and generic fasteners. Completeness does not require redistribution of restricted third-party records or geometry. |
+| MECH-046 | A mechanical offer observation MUST record seller, exact SKU/condition, region, currency, amount, quantity and pack basis, MOQ, tax and delivery inclusion, stock/lead-time observation, source URI, and retrieval time. A dynamic-query catalog snapshot MUST additionally retain query, locale, API/version/terms and permitted snapshot digest. |
+| MECH-047 | Pneumatic and hydraulic bodies, attachments, motion, stored-energy hazards, and mechanical loads belong in MECH; medium, pressure, flow, leakage, valves, reservoirs, and safe venting require a future separately versioned `OMBR-FLUID-1` profile and MUST NOT be invented as unversioned mechanical fields. |
 
 Until the metrology study is complete, hole diameter, stud clutch geometry,
-and production tolerances remain reference-CAD parameters rather than frozen
+and third-party fit/tolerance assumptions remain reference-CAD parameters rather than frozen
 normative numbers.
 
-### 10.3 Trademark and compatibility wording
+### 9.5 Trademark and compatibility wording
 
 The project name, domain, logo, and certification mark MUST NOT contain LEGO,
 MINDSTORMS, or another third party's mark. The LEGO logo MUST NOT appear on
@@ -1013,9 +1113,9 @@ licensing does not grant third-party trademark, design, or patent rights.
 LEGO® is a trademark of the LEGO Group of companies, which does not sponsor,
 authorize, or endorse this specification.
 
-## 11. Peripheral requirements
+## 10. Peripheral requirements
 
-### 11.1 Common component contract
+### 10.1 Common component contract
 
 | ID | Requirement |
 | --- | --- |
@@ -1047,7 +1147,7 @@ Required common faults include:
 - update-failed; and
 - internal-error.
 
-### 11.2 Motor and position actuator profile
+### 10.2 Motor and position actuator profile
 
 An OMBR-MOTOR-1 device may be a smart motor, a smart gearbox, or an adapter
 that drives a passive two-wire motor. The ecosystem MUST NOT require a
@@ -1095,7 +1195,7 @@ The first reference family should include:
 3. a higher-torque L-size position motor; and
 4. a two-wire legacy motor adapter containing the H-bridge and protection.
 
-### 11.3 Light profile
+### 10.3 Light profile
 
 | ID | Requirement |
 | --- | --- |
@@ -1107,7 +1207,7 @@ The first reference family should include:
 | LIGHT-006 | The module MUST enforce LED current and thermal limits locally. |
 | LIGHT-007 | The release MUST publish channel current, voltage range, refresh or PWM rate, flicker information, thermal behavior, optical measurement method, and expected lifetime assumptions. |
 
-### 11.4 Sensor profile
+### 10.4 Sensor profile
 
 The initial standard sensor classes are:
 
@@ -1129,7 +1229,7 @@ The initial standard sensor classes are:
 | SENSOR-005 | Calibration MUST identify procedure, reference equipment, timestamp, software revision, operator or process, and resulting parameters. |
 | SENSOR-006 | A simulator MUST be able to reproduce the sensor's range, latency, rate, clipping, and a declared noise model. |
 
-### 11.5 Adapter profile
+### 10.5 Adapter profile
 
 Adapters preserve useful purchased equipment without making a proprietary
 connector or undocumented waveform the OMBR native link. Initial adapter
@@ -1155,7 +1255,7 @@ servo equivalence.
 | ADAPTER-011 | Legacy factory IDs, radio addresses, port numbers, or device paths MUST NOT replace OMBR owner-resettable instance identity; replacement and pairing history remains in the as-built twin. |
 | ADAPTER-012 | The compatibility matrix MUST record failed, partial, unsafe, and revision-sensitive combinations as well as successful ones, including supply conditions and whether evidence is manufacturer-documented or independently measured. |
 
-### 11.6 Component-level reference candidates
+### 10.6 Component-level reference candidates
 
 The following parts are informative starting points for engineering prototypes,
 not an approved production BOM. A release cannot conform by copying this
@@ -1181,11 +1281,11 @@ The first open peripheral starter release MUST include the open-loop and
 feedback motion paths, light, distance/proximity, color/reflectance, and
 touch/force sensors, cables, and applicable adapters required by ECO-002. Each
 release includes editable electronics, firmware, mechanical CAD, fixtures,
-and characterization data satisfying section 7.
+and characterization data satisfying section 6.
 
-## 12. Creation and control model
+## 11. Creation and control model
 
-### 12.1 Control sources
+### 11.1 Control sources
 
 A control source may be a generic USB or Bluetooth gamepad, open handheld
 remote, keyboard, touch UI, phone motion sensor, assistive input, program,
@@ -1213,7 +1313,7 @@ HID profile provides the substitutable path.
 | INPUT-012 | The project MUST publish either open source handheld-controller hardware and firmware or a complete generic-HID gamepad profile, mapping wizard, fixtures, and test vectors sufficient to operate the starter system without a proprietary remote. |
 | INPUT-013 | Input benchmarks MUST record hardware/firmware revision, OS and driver, connection, report descriptor, sample and event rates, end-to-end latency, jitter, range, neutral drift, disconnect behavior, battery behavior, and mapping provenance. |
 
-### 12.2 Creation graph
+### 11.2 Creation graph
 
 A Creation contains:
 
@@ -1236,7 +1336,7 @@ simulator. Deployment binds stable component IDs to discovered instance IDs;
 it MUST NOT rewrite the design source merely because a physical device was
 replaced.
 
-### 12.3 Bindings
+### 11.3 Bindings
 
 Bindings preserve BrickController2's useful input behavior while targeting
 typed capabilities rather than integer channels.
@@ -1283,7 +1383,7 @@ finite IEEE 754 binary64 values. NaN and infinities are invalid. Each
 operation is rounded only when written to a capability whose resolution
 requires quantization.
 
-### 12.4 Timelines
+### 11.4 Timelines
 
 A timeline is an ordered list of time-tagged control points or actions. It may
 loop and interpolate, but it MUST declare:
@@ -1301,7 +1401,7 @@ Motion scheduling uses a monotonic clock. Wall-clock time is metadata, not the
 execution time base. Time-sensitive points SHOULD run on the hub or peripheral
 rather than depend on network arrival.
 
-### 12.5 State semantics
+### 11.5 State semantics
 
 OMBR distinguishes:
 
@@ -1317,7 +1417,7 @@ timestamp, hub-receive timestamp, value, unit, quality, calibration revision,
 and optional uncertainty. Consumers MUST NOT infer that desired equals
 applied or observed.
 
-### 12.6 Portable programming model
+### 11.6 Portable programming model
 
 OMBR does not define a mandatory new programming language. Ordinary Python,
 .NET/C#, C/C++, Rust, JavaScript/TypeScript, ROS, visual tools, and future
@@ -1359,9 +1459,9 @@ request ID, actor, timestamp, result, prior revision, and resulting digest.
 | PROG-019 | Debugging MUST preserve command expiry, arbitration, resource ceilings, local limits, watchdogs, and physical stop; a breakpoint MUST NOT leave an unbounded motion command active. |
 | PROG-020 | The same program bundle MUST be deployable without semantic rewriting by the VS Code Workbench, headless CLI, or an independent client; target-specific build artifacts are selected by declared platform metadata. |
 
-## 13. Wireless and local network interfaces
+## 12. Wireless and local network interfaces
 
-### 13.1 Roles
+### 12.1 Roles
 
 - BLE provides nearby and recovery discovery in 0.1. Commissioning and bounded
   local control remain experimental until GATT characteristics, procedures,
@@ -1375,7 +1475,7 @@ request ID, actor, timestamp, result, prior revision, and resulting digest.
 All transports map to the same capability meanings. A transport adapter MUST
 NOT invent a different unit, sign, safe state, or identity.
 
-### 13.2 Discovery
+### 12.2 Discovery
 
 | ID | Requirement |
 | --- | --- |
@@ -1388,7 +1488,7 @@ Version 0.1 does not invent permanent UUIDs or DNS service names before the
 project has governance and a registry. Prototype identifiers MUST be clearly
 marked experimental and MUST change before 1.0.
 
-### 13.3 HTTP and event API
+### 12.3 HTTP and event API
 
 The planned reference API root is **/ombr/v1**. Before OMBR-HUB-1 becomes
 claimable it will be described by a checked-in OpenAPI 3.1.1 document and JSON
@@ -1428,7 +1528,7 @@ API contract:
 | API-011 | Developer and debug sessions MUST expose scope, actor, target, creation revision, start, absolute maximum lifetime, inactivity expiry, and revocation; closing a client MUST NOT leave an immortal session. |
 | API-012 | Checked-in OpenAPI and event schemas MUST generate at least TypeScript, .NET, and Python client contract tests whose serialized requests and observable results match the same golden vectors. |
 
-### 13.4 MQTT digital-twin profile
+### 12.4 MQTT digital-twin profile
 
 OMBR-TWIN-1 uses MQTT 5 when synchronizing through a broker. The broker MAY
 run locally on the hub, another local machine, or an owner-chosen remote
@@ -1469,9 +1569,9 @@ channel, program uploader, or substitute for revisioned project transactions.
 Source and package changes use content-addressed files or the authenticated
 HTTPS transaction API.
 
-## 14. Digital twin, CAD, and simulation
+## 13. Digital twin, CAD, and simulation
 
-### 14.1 Twin layers
+### 13.1 Twin layers
 
 OMBR links four distinct representations:
 
@@ -1488,7 +1588,7 @@ Runtime telemetry MUST NOT mutate source CAD or an immutable simulation
 release. Calibration produces a new calibrated record linked to source and
 procedure.
 
-### 14.2 Semantic authority
+### 13.2 Semantic authority
 
 The OMBR project manifest is authoritative for identity, relationships,
 interfaces, capabilities, and asset hashes. Native CAD is authoritative for
@@ -1503,7 +1603,7 @@ authority for a Creation, program, deployment, credential, or twin layer.
 No external format is forced to represent manufacturing, assembly, runtime
 state, and simulation by itself.
 
-### 14.3 Project package
+### 13.3 Project package
 
 An OMBR project is a directory or ZIP-compatible archive with this logical
 layout:
@@ -1616,6 +1716,12 @@ additionally enforces:
 | PKG-008 | Every electronic interface contract, endpoint profile, connector variant, pin, rail, signal, protocol, source artifact, schema/vector, evidence, fault-matrix, and cable reference MUST resolve at the exact declared revision, and each endpoint profile MUST refer back to the same contract revision as the component interface. |
 | PKG-009 | Electrical semantic validation MUST check operating and absolute voltage ordering, transient containment, temperature ordering, nonnegative consumption/capacity magnitudes, minimum/nominal/maximum current-limit ordering, continuous not exceeding peak, nonzero peak/inrush duration when their magnitude exceeds continuous/idle values, role-appropriate minimum-current semantics, rail-to-pin and signal-to-pin references, and explicit zero-versus-unknown status. |
 | PKG-010 | An electrical connection MUST resolve source, every cable/adapter segment, and sink roles and prove the ELEC-017/ELEC-028 intersection including connector mating, contact map, return/shield, voltage at the load, all current states, fault energy, cable/thermal limits, signal/protocol/timing/topology/security, and aggregate source budget before it can be activated. |
+| PKG-011 | Mechanical validation MUST resolve every catalog, part record, external alias, artifact, body, material/contact/load reference, interface, mating/fit profile and exact revision, and MUST report unavailable or legally non-redistributable optional assets without silently substituting them. |
+| PKG-012 | Every mate MUST prove role/profile compatibility, orientation and symmetry, engagement and assembly path, fit/retention/detachability, tolerance stack, tool/removal access, collision/keep-out, and wrong/partial-mate outcome. |
+| PKG-013 | Every assembly MUST validate roots, anchors, placement authority, body/frame endpoint resolution, joint axes/DOF/limits, initial configuration, closed-loop constraints, and absence of contradictory redundant poses within the declared solver tolerance. |
+| PKG-014 | Dynamic validation MUST resolve body mass/inertia expression frames, material/contact assumptions, loads, supports, safety factors, stored energy, environmental/conditioned state and limiting-member evidence; explicit unknowns block fidelity/load claims that require them. |
+| PKG-015 | Every transmission and network MUST validate member/profile revisions, geometry and centre/routing/tension constraints, ratio/sign/phase, efficiency/loss, backlash/compliance, speed/load limits, reflected properties, limiting member, actuator/sensor mapping, and derived summary against the graph. |
+| PKG-016 | Every imported or derived mechanical asset MUST validate declared format edition/extensions, units/axes/handedness, scale/transform, semantic node mappings, authority/fidelity, source digest/generator, rights, and loss report; round-trip tests MUST prove that required IDs and semantics survive. |
 
 URI format, SemVer, SPDX expressions, content digests, archive limits, and
 cross-document references are semantic assertions. Validators MUST configure
@@ -1623,7 +1729,7 @@ format assertion or perform equivalent explicit checks; JSON Schema format
 annotations and default values do not insert or validate these semantics by
 themselves.
 
-### 14.4 Asset formats
+### 13.4 Asset formats
 
 | Asset | Requirement and role |
 | --- | --- |
@@ -1654,7 +1760,7 @@ Relevant primary specifications include
 [3MF Core 1.3.0](https://3mf.io/spec/core-v1-3-0/), and the
 [LDraw format](https://www.ldraw.org/article/218.html).
 
-### 14.5 Frames and physical properties
+### 13.5 Frames and physical properties
 
 | ID | Requirement |
 | --- | --- |
@@ -1672,8 +1778,11 @@ Relevant primary specifications include
 | TWIN-012 | A client cache, database, generated scene graph, thumbnail, or search index MUST be disposable and reconstructable from authoritative source, deployment records, and permitted runtime history. |
 | TWIN-013 | Every live or simulated view and command surface MUST identify the selected Creation revision and exact physical or simulation target; combining values from targets without an explicit comparison mode is forbidden. |
 | TWIN-014 | External assets MUST be content-addressed and license-identified before use. Offline mode MUST fail with a specific missing-artifact result rather than silently substituting a network or stale cache version. |
+| TWIN-015 | The manifest's body, interface, mate, joint, transmission, assembly, and capability-binding graphs are semantic authority. CAD, LDraw, glTF, STEP, SDF, URDF, scene, and solver files are source or derivative artifacts with declared coverage; a tool MUST NOT infer missing normative mechanics from an opaque scene. |
+| TWIN-016 | Design configuration, as-built measurements/calibration, initial simulation state, requested/accepted/applied control state, and observed runtime mechanical state MUST remain separate, revisioned layers with explicit promotion/reconciliation. |
+| TWIN-017 | Mechanical asset generation and import/export MUST publish coordinate/semantic mappings and loss reports and pass identity, pose, joint, transmission, material/mass, collision, and capability-binding round-trip tests for every fidelity tier claimed. |
 
-### 14.6 Reproducible simulation
+### 13.6 Reproducible simulation
 
 Every released simulation includes:
 
@@ -1714,7 +1823,7 @@ Required reference scenarios include:
 | SIM-003 | Claimant-selected tolerances MAY accompany a report but MUST NOT replace or loosen the selected fidelity tier's ceilings. |
 | SIM-004 | Conformance reference traces and acceptance calculations MUST be public, versioned, independently reproducible, and tied to exact hardware characterization data. |
 
-### 14.7 Round-trip acceptance
+### 13.7 Round-trip acceptance
 
 The future golden ecosystem rover is complete only when:
 
@@ -1733,9 +1842,9 @@ The future golden ecosystem rover is complete only when:
     tier's mandatory limits; during version 0.1 the comparison is reported as
     characterization only.
 
-## 15. Security, privacy, and owner control
+## 14. Security, privacy, and owner control
 
-### 15.1 Threat model baseline
+### 14.1 Threat model baseline
 
 The project MUST consider:
 
@@ -1756,7 +1865,7 @@ The project MUST consider:
 - denial of service and resource exhaustion; and
 - a cloud or broker outage.
 
-### 15.2 Requirements
+### 14.2 Requirements
 
 | ID | Requirement |
 | --- | --- |
@@ -1788,7 +1897,7 @@ compute profile can provide signed artifacts, measured hashes, least
 privilege, and owner-controlled recovery, but MUST NOT claim hardware-verified
 boot against an attacker who can replace storage.
 
-### 15.3 Safety is not authentication
+### 14.3 Safety is not authentication
 
 Authentication does not make a motion command safe. Every authorized command
 still passes through:
@@ -1800,9 +1909,9 @@ still passes through:
 5. safety-controller ceilings; and
 6. local peripheral limits and watchdog.
 
-## 16. Software, programming tools, firmware, and updates
+## 15. Software, programming tools, firmware, and updates
 
-### 16.1 Open tooling layers
+### 15.1 Open tooling layers
 
 The reference developer platform has replaceable layers:
 
@@ -1845,7 +1954,7 @@ The baseline CLI command families are `init`, `validate`, `migrate`, `pack`,
 | DEV-009 | A client MUST negotiate hub API, project schema, developer-service, simulator, runtime, SDK, and debug-adapter capabilities before mutation and MUST provide a safe read-only fallback or specific incompatible-version result. |
 | DEV-010 | A client that rewrites a project MUST preserve understood and unknown optional fields and extensions; inability to preserve them MUST force read-only behavior or an explicit, previewable migration. |
 
-### 16.2 Visual Studio Code reference Workbench
+### 15.2 Visual Studio Code reference Workbench
 
 The primary reference authoring environment is an open-source Visual Studio
 Code extension. It integrates existing language support instead of inventing a
@@ -1878,7 +1987,7 @@ behavior; a webview cannot save private authoritative state.
 | DEV-024 | The extension MAY integrate third-party Python, C#, C/C++, Rust, ROS, CAD, and simulator extensions, but core OMBR validation, packaging, device recovery, and export MUST remain usable without a proprietary extension. |
 | DEV-025 | Extension telemetry MUST satisfy SEC-013 and SEC-020 and MUST remain functionally optional; declining telemetry MUST NOT disable any local feature. |
 
-### 16.3 Alternative cross-platform .NET client
+### 15.3 Alternative cross-platform .NET client
 
 A standalone .NET application is a peer Workbench for mobile operation,
 classroom use, dedicated operator consoles, and users who do not want an IDE.
@@ -1900,7 +2009,7 @@ accessibility, packaging, licensing, and long-term-maintenance evaluation.
 | DEV-029 | A client-specific database MAY cache discovery and presentation state, but canonical projects, deployment records, recordings, credentials, and twin authority MUST remain exportable through standard OMBR contracts. |
 | DEV-030 | The VS Code extension, standalone .NET client, and CLI MUST each be removable without making owner hardware, projects, credentials, programs, recordings, or recovery images inaccessible to another conforming tool. |
 
-### 16.4 Common software and update requirements
+### 15.4 Common software and update requirements
 
 | ID | Requirement |
 | --- | --- |
@@ -1923,9 +2032,9 @@ developer-service or hub conformance API. OMBR layers the component,
 capability, Creation, program, safety, and twin contracts above it. See
 [the current headless API documentation](../../../docs/linux-headless-api.md).
 
-## 17. Versioning, governance, and conformance
+## 16. Versioning, governance, and conformance
 
-### 17.1 Versioning
+### 16.1 Versioning
 
 Specification releases use semantic versioning:
 
@@ -1939,7 +2048,7 @@ A physical product exposes specification version, profile, model revision,
 PCB revision, BOM revision, enclosure revision, bootloader version, firmware
 version, and source-release location.
 
-### 17.2 Extensions
+### 16.2 Extensions
 
 The project maintains a public registry for:
 
@@ -1959,7 +2068,7 @@ separately from optional extension payloads. Every required URI MUST have a
 matching payload, and an implementation MUST reject a document if it does not
 understand that exact required version.
 
-### 17.3 Conformance claim
+### 16.3 Conformance claim
 
 The following syntax is reserved for a future stable release and MUST NOT be
 used by a version 0.1 implementation:
@@ -1972,7 +2081,7 @@ A claim has this form:
 Passing one profile does not imply another. Mechanical fit does not imply
 electrical or behavioral compatibility.
 
-### 17.4 Required conformance evidence
+### 16.4 Required conformance evidence
 
 | Area | Evidence |
 | --- | --- |
@@ -1985,7 +2094,7 @@ electrical or behavioral compatibility.
 | Security and privacy | Malicious peripheral/project/package inputs, least privilege, local IPC, secret-store and no-userinfo checks, developer-session expiry, update integrity/rollback, dependency provenance, privacy export/delete, ownership transfer, physical recovery, and denial-of-service tests |
 | Power source | Source identity, voltage/current/transient, isolation, fuse/protection, budget, connect/disconnect, foldback, brownout, reverse, charging/battery when present, thermal, service, and recovery tests |
 | Cable and link assembly | Cable identity, pinout, continuity, voltage drop, current/thermal derating, bend, pull, strain, misconfiguration, topology, and fault tests |
-| Mechanical | Datum inspection, fit gauges, insertion/retention, drop, cable pull, thermal, antenna, and manufacturing-process tests |
+| Mechanical | Catalog/rights resolution, body/mass/material/load records, datum and fit gauges, insertion/retention/removal, mates, joints/closed loops, multi-member transmissions, capability-state binding, collision/tool access, drop, cable pull, thermal/antenna, accessible replacement-fabrication, asset coordinate/semantic mapping and round-trip tests |
 | Electronic interface | Resolved contract/profile closure; exact connector/contact/pinout; source-cable-sink intersection; operating, absolute, ripple, transient, sleep/idle/nominal/continuous/peak/inrush/limit/fault/leakage/backfeed envelopes; sequencing, grounding/isolation, hot plug, cable/signal margin, thermal derating, telemetry, COTS/alternate records, fault matrix, ESD/EMC evidence, and recovery tests |
 | Motor | Torque-speed-current, control modes, encoder, backlash, thermal, stall, stop, lifetime, and sample variation |
 | Light | Current, color/intensity, update rate, flicker, thermal, effects, and lifetime assumptions |
@@ -1996,9 +2105,12 @@ electrical or behavioral compatibility.
 | Program runtime | Reproducible build, lock integrity, permission denial, resource exhaustion, lifecycle, rollback, crash, lease cleanup, logs, and debug-safety tests |
 | Developer tooling | Headless CLI, VS Code, independent client, offline install, workspace trust, secret handling, target locality, conflict, round trip, and remote-control expiry tests |
 | Whole ecosystem | Released hub/IMU, power source, two cables, input control, open-loop and feedback actuation, light, distance, color/reflectance, touch/force, mechanics, program, Workbench, twin, simulator, replacement/repair, recovery, and independent-build integration run |
-| Market benchmark | Exact purchased revisions, provenance, raw measurements, fixtures, uncertainty, compatibility dimensions, lifecycle, and side-by-side reference report |
+| Legal/IP and market access | Exact revision/act/territory/date scope, mark/design/patent/copyright/database/license and protocol-research registers, counsel/competent-review evidence IDs, mitigations/residual risks, product classification, conformity route, technical file, declarations, traceability, and post-market owner |
 | Open release and service | Editable-source audit, license/SPDX, prior-art ledger, reproducible builds, SBOM/provenance, mirrors, fixtures, repair/disassembly, spares, end-of-life, and primary-host-loss drill |
 | Governance and documentation | Contribution/patent terms, public decision/appeal, registry allocation, conflicts, archives, security response, accessible/offline documentation, translation, and classroom-material review |
+| Implementation catalog | Scoped family-coverage matrix, exact design/variant/offer identities, requirement matches, openness/license grades, current lifecycle/availability, critical alternates, BOM closure, change history, and unresolved-slot report |
+| Cost and affordability | Dated quantity-tier BOM and quotes, landed COGS, yield/test pilot, NRE/compliance/support/warranty/channel/tax model, optimistic/base/stress cases, exact included/excluded SKU, actual advertised offer, and price-claim expiry |
+| Market benchmark | Exact purchased revisions, provenance, raw measurements, fixtures, uncertainty, compatibility dimensions, lifecycle, and side-by-side reference report |
 
 At least two independent interoperable implementations of the native link and
 manifest MUST pass the public suite before the project declares version 1.0.
@@ -2006,7 +2118,7 @@ The reference VS Code Workbench and an independently implemented CLI or .NET
 client MUST also complete the same golden project without private endpoints or
 client-specific semantic state.
 
-### 17.5 Governance minimum
+### 16.5 Governance minimum
 
 Before 0.2, the project establishes:
 
@@ -2026,6 +2138,86 @@ Before 0.2, the project establishes:
 | GOV-012 | Translation and accessible-format contributions SHOULD be first-class, but the canonical language and process for resolving translation conflicts MUST be declared for each release. |
 | GOV-013 | Before any profile is claimable, its release MUST include a machine-readable matrix mapping claimant type to exact requirement IDs, mandatory, conditional, or not-applicable rules, allowed not-applicable rationale, evidence IDs, test versions, and aggregation logic. Prefix-level orientation tables are not a conformance calculation. |
 
+## 17. Implementation catalog and cost model
+
+### 17.1 Implementation catalog and candidate openness
+
+The implementation catalog records what OMBR can reuse, adapt, purchase, or
+must design to build the open reference system. The initial, deliberately
+provisional match is published in
+[IMPLEMENTATION-CATALOG.md](IMPLEMENTATION-CATALOG.md). It covers the
+controller, power, native link, cables, motors and other actuators, lights,
+sensors, mechanics, firmware, developer tooling, CAD, twin, and simulation.
+Section 21 separately evaluates obtainable systems and components as
+benchmarks; benchmark similarity is never implementation qualification.
+
+“Exhaustive” is bounded and testable. For a release it means complete semantic
+family coverage plus every selected design, variant, and procurement record in
+the declared source/date/region scope. It does not mean scraping or
+redistributing every third-party SKU, image, CAD file, or seller listing.
+External catalog source, design identity, color/material element or SKU,
+engineering model, and seller offer are separate records. A discontinued part
+may still have stock; a current design may have no current offer.
+
+OMBR uses this openness ladder for implementation candidates:
+
+| Grade | Meaning |
+| --- | --- |
+| `OH-certified` | Complete editable design is released under an open-hardware license and has a current OSHWA certification record for the exact revision. |
+| `open-design` | Complete editable design and commercial make/modify/distribute rights are published under an explicit open-hardware license, but no exact-revision certification is claimed. |
+| `open-source-software` | Preferred source is under an OSI-approved software license with reproducible build and dependency evidence assessed separately. |
+| `source-available` | Some source is published, but permissions or required editable artifacts do not satisfy the Open Source Hardware Definition or Open Source Definition. |
+| `documented-COTS` | A purchasable closed component has adequate public datasheets and lifecycle evidence; it remains an explicit, replaceable non-open boundary. |
+| `opaque` | Required information or permission is missing. An opaque part cannot be a mandatory constituent of the open reference path. |
+
+| ID | Requirement |
+| --- | --- |
+| CAT-001 | Every catalog release MUST declare its source scope, regions, observation interval, inclusion and exclusion rules, record count, family-coverage matrix, identifier-mapping coverage, unresolved records, and whether it is a complete scoped inventory or a curated subset. |
+| CAT-002 | Catalog data MUST distinguish source catalog, design identity, material/color/packaging variant or SKU, detailed engineering model, OMBR-native replacement, lifecycle claim, availability observation, and seller offer. These identities MUST NOT be collapsed into one part number. |
+| CAT-003 | Every implementation candidate MUST record manufacturer and exact MPN or immutable project design ID, revision, lifecycle, official documentation, architecture role, interfaces, matched and unmet OMBR requirement IDs, evidence, limitations, security status, source/build status, and an openness grade from this section. Unknown values MUST be explicit. |
+| CAT-004 | Every license and openness claim MUST name exact artifacts, holders, SPDX expressions or terms, preferred editable source, allowed commercial acts, and review date. Public documentation, a downloadable binary, a public repository, or an open SDK MUST NOT be used to label closed silicon or an incomplete board design open hardware. |
+| CAT-005 | A selected component MUST have a versioned requirement-to-evidence match. Marketing similarity, connector shape, nominal voltage, or availability alone MUST NOT establish suitability. |
+| CAT-006 | Each critical single-source component MUST have at least one evaluated alternate or a documented redesign/migration path, pin/software impact, qualification work, last-time-buy policy, and maximum acceptable interruption. |
+| CAT-007 | Availability, lead time, lifecycle, and price are dated, regional observations with condition, quantity, MOQ, seller or quote, currency, tax, shipping, and evidence. They MUST NOT be immutable properties of the design. |
+| CAT-008 | Project-controlled schematics, PCB, firmware, CAD, fixtures, protocols, and tests MUST expose and isolate every documented-COTS boundary sufficiently to replace it without changing unrelated public semantics. |
+| CAT-009 | Third-party metadata, geometry, images, documentation, and measured data MUST each carry their own provenance, rights, redistribution/cache status, attribution, revision, digest where obtainable, and limitations. “No restriction found” MUST NOT be treated as permission. |
+| CAT-010 | The catalog family matrix MUST cover at least compute, safety control, storage, power input and conversion, port protection and physical layer, connectors and cables, motor drive, motors and position actuators, lights, distance/proximity, color/reflectance, touch/force, orientation/motion, environmental sensors, user input, structural parts, pins/axles/joints, gears and other transmissions, wheels/tracks/rails, flexible/stored-energy parts, firmware, SDK/runtime, developer clients, CAD, twin, simulation, fixtures, repair, and compliance evidence. |
+| CAT-011 | A stable reference release MUST resolve a currently obtainable, qualified candidate for every mandatory slot and publish complete BOM closure including passives, contacts, fasteners, consumables, programming/test fixtures, and licensed software. An acquisition class or generic marketplace description is not a resolved candidate. |
+| CAT-012 | Catalog snapshots and changes MUST be content-addressed, diffable, archivable under their actual permissions, and refreshed at every specification/reference-hardware release. Restricted sources MAY be represented by factual metadata and links without mirroring restricted content. |
+
+### 17.2 Affordability target and cost requirements
+
+The cost target is a design gate, not a claim that prototype quantities already
+meet it. `OMBR-AFFORDABLE-HUB-1` means an assembled, tested base controller is
+offered at an advertised price of no more than **EUR 49.99 including the
+applicable German VAT**, excluding delivery, for a named date and sales
+channel. At 19% VAT, EUR 49.99 leaves approximately EUR 42.01 net revenue
+before payment, channel, warranty, compliance, and development costs.
+
+The target SKU contains the enclosure and brick/beam mounting features,
+Raspberry Pi Zero 2 W, required storage, safety MCU and hardware output gate,
+Wi-Fi and Bluetooth, IMU, protected logic and motor power paths, at least four
+qualified native/controller ports, recovery path, indicators, buttons, and all
+internal contacts and fasteners needed to operate as a controller. It excludes
+delivery, external power supply or battery, charger, external cables, motors,
+lights, sensors, gamepad, and loose construction elements. Any differently
+scoped product MUST use a different cost-profile name.
+
+| ID | Requirement |
+| --- | --- |
+| COST-001 | A reference-hardware decision MUST include a costed BOM for quantities 1, 10, 100, and 1000 plus the intended production lot. Each input MUST record exact MPN/revision, supplier or quote, currency, quantity break, MOQ, stock and lead time, price date and expiry, tax/shipping/duty basis, yield assumption, and qualified alternate. |
+| COST-002 | Landed COGS MUST include compute and storage, PCB and PCBA, components, connectors and contacts, enclosure and fasteners, assembly, programming, calibration, functional test, fixtures amortization, expected yield/scrap/rework, inbound freight, duty and brokerage, licenses/royalties, packaging, and required accessories in the advertised SKU. |
+| COST-003 | The commercial model MUST separately show landed COGS, non-recurring engineering, tooling/fixture and certification amortization, security/update support, warranty/returns reserve, payment/platform fees, distributor and retailer margins, outbound fulfilment, VAT and other taxes, net revenue, contribution margin, and cash requirement. A BOM subtotal MUST NOT be called a retail cost. |
+| COST-004 | Every public price comparison MUST use the same included contents, tax and delivery basis, region, date, channel, warranty, and volume or state the differences prominently. Foreign-currency inputs MUST use a dated published rate plus a declared reserve. |
+| COST-005 | `OMBR-AFFORDABLE-HUB-1` MUST satisfy the exact EUR 49.99 VAT-inclusive base-SKU scope above through an actual generally available offer; a coupon, subsidy, loss-leading batch, bare PCB, self-build BOM, mandatory add-on, or price excluding tax MUST NOT establish the claim. |
+| COST-006 | Before the target is called feasible, a design-to-cost budget MUST demonstrate positive contribution margin in the stated direct or channel model after all COST-002 and COST-003 items. For direct sale in Germany, the draft planning ceiling is EUR 27 landed COGS at 1000 units; this planning value MUST be replaced by quotes and is not a conformance limit. |
+| COST-007 | Community self-build, direct retail, distributor/retailer, education bundle, and complete starter-kit scenarios MUST be modeled separately. Success in one channel MUST NOT be generalized to another. |
+| COST-008 | A complete starter kit containing power, cables, actuator, light, sensors, and construction elements has its own contents and price target; it MUST NOT be implied by the EUR 49.99 controller-only target. |
+| COST-009 | Cost reduction MUST NOT remove the independent safe-stop path, required protection, rated contacts and conductors, owner recovery, test coverage, open editable source, legally required evidence, or declared thermal/current margin. |
+| COST-010 | Cost gates MUST run at concept, architecture freeze, EVT, DVT, PVT, launch, and at least quarterly while sold, using optimistic, base, and stress cases for price, FX, yield, freight, warranty, and volume. Breach requires an explicit rescope, redesign, price/profile change, or stop decision. |
+| COST-011 | Certification, legal/IP review, security maintenance, vulnerability handling, documentation, spares, warranty, and end-of-life obligations MUST be budgeted; volunteer labor or grants MAY be reported separately but MUST NOT be silently valued at zero in a sustainable retail model. |
+| COST-012 | The affordability claim requires dated production quotes, a pilot build with measured yield/test time, an applicable compliance plan, and a documented sales-channel agreement or direct-fulfilment model. Until then its status is `target-unproven`. |
+
 ## 18. Reference implementation plan
 
 ### Phase 0: specification and bench proof
@@ -2035,13 +2227,19 @@ Deliver:
 - this specification plus component, project, interface-contract,
   endpoint-electrical-profile, fault-matrix, safety-policy, control-binding,
   timeline, and program syntax schemas and golden vectors;
-- draft ecosystem-release, benchmark-record/report, compatibility-matrix, and
-  conformance-evidence schemas;
+- draft ecosystem-release, compatibility-matrix, conformance-evidence,
+  implementation-catalog, cost-model, and benchmark-record/report schemas;
 - governance package covering the specification license, contribution and
   patent terms, code of conduct, decisions/appeals, security, trademark,
   registry, archival, release, and support processes;
 - tooling-core skeleton, headless validator/packager CLI, and read-only VS Code
   project/twin explorer;
+- machine-readable implementation-catalog and price-observation schemas,
+  family-coverage matrix, first complete controller/peripheral/mechanical/
+  software candidate match, and retained failed-candidate records;
+- quote-ready four-port hub BOM and cost model at quantities 1, 10, 100, 1000,
+  and intended production volume, with direct/channel scenarios and an
+  explicit `OMBR-AFFORDABLE-HUB-1` gap report;
 - benchmark record schema/template, fixture metadata contract, initial
   purchase/sample plan, and open-prior-art reuse ledger;
 - Pi-to-safety-MCU protocol prototype;
@@ -2053,7 +2251,11 @@ Deliver:
 - simulated motor, light, and distance-sensor components;
 - threat model and safety-state table; and
 - initial territorial IP register and clean-room/benchmark evidence plan for
-  connector, attachment, adapter, dataset, and naming work.
+  connector, attachment, adapter, dataset, naming, controller architecture,
+  mechanical library, and twin/tooling work; and
+- initial product-classification and EU market-access matrix covering the
+  maker/education intent, radio/EMC/environmental/cybersecurity duties, toy
+  transition decision, economic-operator roles, test plan, and cost owner.
 
 Exit criteria:
 
@@ -2067,7 +2269,10 @@ Exit criteria:
 - connector P0 limitations are documented by measurement; and
 - contribution/patent terms are effective before normative contributions, with
   the public decision, registry, security, trademark, and archival processes
-  operational.
+  operational; and
+- the catalog has no unclassified mandatory slot, while every unresolved
+  critical component, rights issue, regulation, and affordability assumption
+  has an owner, evidence plan, and stop/redesign trigger.
 
 ### Phase 1: Hub R0 developer carrier
 
@@ -2083,6 +2288,9 @@ Deliver:
 - first developer-service build, generated TypeScript/.NET/Python SDK
   contracts, VS Code device view, and lease-bounded remote control;
 - open KiCad source, BOM, firmware, enclosure source, and fixtures;
+- quote-backed P0 price book, measured assembly/test time and yield, and an
+  updated direct-retail affordability gap without claiming EUR 49.99 unless
+  every COST gate actually passes;
 - complete COTS/derating records, interface contracts, endpoint profiles,
   electrical fault matrices, and characterization reports for the carrier,
   source, compute, recovery, and every exposed port; and
@@ -2097,11 +2305,12 @@ Exit criteria:
   component identities and capability values;
 - the owner can reimage and recover without vendor infrastructure;
 - source-to-artifact build is reproducible;
-- hub, source, control-input, and power benchmark records publish raw evidence;
-  and
+- exact selected candidates, alternates, rights status, and market-access
+  change triggers resolve in the release catalog;
 - hub, source, cable, compute, and port electrical envelopes reproduce within
   their stated uncertainty and all four ports pass simultaneous-load, inrush,
-  brownout, short, backfeed, hot-plug, and thermal-derating tests.
+  brownout, short, backfeed, hot-plug, and thermal-derating tests; and
+- hub, source, control-input, and power benchmark records publish raw evidence.
 
 ### Phase 2: open peripheral starter set
 
@@ -2147,7 +2356,7 @@ Deliver:
 
 Exit criteria:
 
-- the golden ecosystem rover passes the round-trip acceptance in section 14.7;
+- the golden ecosystem rover passes the round-trip acceptance in section 13.7;
 - the integration prototype publishes an ECO-001 through ECO-012 gap checklist
   with evidence for every delivered row and no unsupported ecosystem claim;
 - multiple fabrication processes pass declared fit classes;
@@ -2165,7 +2374,16 @@ Deliver:
 - hardware revisions that incorporate EMC, thermal, lifecycle, and safety
   results;
 - qualified territorial IP review and recorded dispositions for the selected
-  connector, attachments, adapters, datasets, product name, and marks;
+  controller architecture, connector, attachments, gears, adapters, protocols,
+  datasets, product name, and marks;
+- final-SKU product classification, applicable conformity assessment,
+  technical file, declarations/marking, traceability, cybersecurity/update
+  support, incident/recall owner, and post-market budget for every intended
+  territory and configuration;
+- an actual generally available EUR 49.99 offer if and only if
+  `OMBR-AFFORDABLE-HUB-1` passes, otherwise a published target-gap report and
+  separately named/priced hub profile rather than a misleading affordability
+  claim;
 - two independent implementations;
 - OSHWA certification submissions for eligible project-controlled reference
   hardware, without using certification as a safety claim;
@@ -2195,7 +2413,8 @@ Exit criteria:
 | Hub port count | Four native plus expander, or six native | PCB/enclosure fit, thermals, battery, simultaneous current, cost |
 | Battery profile | Protected removable 2S Li-ion, LiFePO4, certified external pack | Safety, supply chain, charging, replaceability, motor performance, transport, age group |
 | Compute production profile | Replaceable Zero 2 W, soldered wireless CM0, both | Availability, openness boundary, storage reliability, RF, repairability, assembly cost |
-| Mechanical production process | FDM, resin, CNC, injection moulding, hybrid | Fit distribution, strength, heat, RF, surface, lifecycle, tooling openness |
+| OMBR-native replacement fabrication | FDM, resin, CNC, documented service bureau, hybrid | Fit distribution, strength, heat, RF, surface, lifecycle, accessible source/process, unit cost; production-mould engineering remains outside OMBR scope |
+| Affordable hub architecture | Four fully protected ports; two-port affordable hub plus expander; owner-supplied-Pi community carrier; higher-priced full hub | Quote-backed BOM/COGS at all quantities, port isolation/current/thermal evidence, exact SKU contents, EUR 42.01 net-revenue budget at German EUR 49.99 gross, direct and channel margin, pilot yield/test time, compliance/support/warranty cost, stress case |
 | Intended age and market | 14+ maker kit, education kit, child-directed toy | Formal product classification and applicable safety/compliance plan |
 | BLE and local API | Discovery-only BLE versus full commissioning/control GATT; OpenAPI endpoint and event model | Two-client interoperability, security, fragmentation, recovery, rate, and offline tests |
 | Simulation fidelity tiers | Kinematic, control, dynamic, and sensor tiers | Mandatory metrics, reference traces, sample windows, and maximum error ceilings |
@@ -2242,14 +2461,138 @@ The concept has succeeded when a third party can, without private information:
     recovery artifacts and operate after every primary host or external service
     is unavailable; and
 12. fork the project, implement compatible products, and participate in
-    governance without private agreements or trademark dependence.
+    governance without private agreements or trademark dependence;
+13. select every mandatory hardware, mechanical, and software constituent from
+    a complete scoped catalog that distinguishes genuinely open artifacts from
+    documented COTS, publishes alternates and lifecycle/offer evidence, and
+    contains no opaque required dependency; and
+14. show an auditable exact-SKU cost and market-access record: either the
+    controller is actually offered under `OMBR-AFFORDABLE-HUB-1` with positive
+    sustainable unit economics and all required safety/open/legal/regulatory
+    evidence, or the release states the gap and uses a different price/profile
+    without hiding mandatory costs.
 
-## 21. Primary references
+## 21. Benchmark program and market context
+
+This section is informative and deliberately evidence-bounded.
+Official-source evidence was reviewed on 13 July 2026.
+
+| System | Documented strength | Gap addressed by OMBR |
+| --- | --- | --- |
+| BrickController2 | Broad receiver support, transport abstraction, gamepad and HTTP inputs, profiles, sequences, normalized output, local storage | No hub PCB, open peripheral electrical standard, source CAD, or digital-twin contract |
+| BuWizz 3.0 Pro | Six ports, high motor power, replaceable battery, current sensing, BLE, and brick-compatible mounting | Its official product page documents BLE, not Wi-Fi, and does not document an open PCB/CAD/BOM or digital-twin contract |
+| Raspberry Pi Build HAT | Pi integration, four LPF2 ports, and an RP2040 handling low-level control; firmware is now open | It is an accessory rather than a complete open hub ecosystem, and LPF2 is not a complete open native connector specification |
+| M5Stack | Standard module families, schematics, software libraries, Grove and M-Bus interfaces, and a coherent maker ecosystem | It is not a Pi/Linux-based brick-mechanical system |
+| SPIKE/MINDSTORMS large hub | Six ports, BLE/USB, IMU, removable battery, and brick geometry | Official specifications do not document Wi-Fi or an open, reproducible hardware design |
+
+The defensible opportunity statement is:
+
+> None of the compared official product documentation demonstrates the full
+> combination of Raspberry Pi-class Linux compute, Wi-Fi and Bluetooth,
+> brick-compatible mounting, open carrier and peripheral hardware, an open
+> native wired peripheral contract, and synchronized CAD/simulation assets.
+
+BuWizz facts are drawn from its
+[official product page](https://buwizz.com/shop/buwizz-3-0-pro/). M5Stack's
+[ecosystem documentation](https://docs.m5stack.com/en/learn/intro) describes
+its module and interface approach. Raspberry Pi documents the
+[Build HAT](https://www.raspberrypi.com/products/build-hat/) and its
+[open firmware](https://github.com/raspberrypi/buildhat). LEGO Education's
+[SPIKE Prime Large Hub technical specification](https://assets.education.lego.com/v3/assets/blt293eea581807678a/bltf512a371e82f6420/5f8801baf4f4cf0fa39d2feb/techspecs_techniclargehub.pdf)
+supports the corresponding comparison row.
+
+### 21.1 BrickController2 concepts retained, not imposed
+
+OMBR retains these repository concepts while removing vendor-specific
+assumptions:
+
+- A **Creation** remains the user-owned unit of a robot or model.
+- A **Control Profile** remains a collection of input-to-action bindings.
+- A **Control Source** exposes typed, bounded capabilities rather than a fixed
+  gamepad layout.
+- A **Binding** maps one capability to one or more actuator actions and may
+  apply inversion, dead zones, curves, scaling, limiting, and mixing.
+- A **Timeline** retains reusable value/duration control points, looping, and
+  interpolation.
+- A **Component** replaces a hard-coded receiver type.
+- A **Capability** replaces assumptions that every channel is a motor.
+- A stable instance UUID replaces the current device-type-plus-BLE-address
+  identity.
+- Requested, accepted, applied, and observed values are distinct states.
+
+The source model is visible in
+[Creation.cs](../../../BrickController2/BrickController2/CreationManagement/Creation.cs),
+[ControllerProfile.cs](../../../BrickController2/BrickController2/CreationManagement/ControllerProfile.cs),
+[ControllerAction.cs](../../../BrickController2/BrickController2/CreationManagement/ControllerAction.cs),
+[Sequence.cs](../../../BrickController2/BrickController2/CreationManagement/Sequence.cs),
+and the generic
+[HTTP capability model](../../../BrickController2/BrickController2/InputDeviceManagement/HttpControl/HttpControlModels.cs).
+
+BrickController2 is a useful compatibility client and proving ground for
+device discovery, profiles, gamepads, sequences, and remote-control behavior.
+Its MAUI views, local database, concrete receiver classes, and application
+lifecycle are not normative OMBR interfaces. A hub, project, program, digital
+twin, or simulator MUST remain usable through the public schemas and APIs
+without installing BrickController2 or Visual Studio Code.
+
+### 21.2 Purchasable-component benchmark program
+
+OMBR reference classes are grounded in components that builders can buy or
+obtain, not only idealized requirements. The benchmark catalog records exact
+product and hardware revision, purchase date and region, lifecycle state,
+official documentation, independently measured samples, uncertainty, and the
+OMBR profile or adapter behavior being compared. Availability and price are
+evidence fields, never permanent conformance properties.
+
+The initial informative benchmark set is:
+
+| OMBR area | Purchasable or documented reference examples | What is benchmarked, not copied |
+| --- | --- | --- |
+| Hub/controller | [BuWizz 3.0 Pro](https://buwizz.com/shop/buwizz-3-0-pro/), [LEGO Hub 88009](https://www.lego.com/de-de/product/hub-88009), [M5Stack controller/module families](https://docs.m5stack.com/en/learn/intro) | Envelope, mounting, ports, battery service, radio workflow, responsiveness, ecosystem modularity |
+| Battery, charging, and bench power | Replaceable packs in current brick hubs, documented USB-C power paths, and certified current-limited maker bench supplies | Energy, voltage/current, service, charging while operating, protection, thermal behavior, fault energy, connector and lifecycle |
+| Human input and remote control | Generic USB/Bluetooth HID gamepads, [LEGO Powered Up Remote 88010](https://www.lego.com/de-de/product/remote-control-88010), keyboards, touch and assistive inputs | Capability descriptors, range/neutral, rate, latency, mapping, disconnect, battery, accessibility and feedback |
+| Passive motion | Currently sold PF-style M, L, XL, buggy, train, and micro motors from multiple vendors | Envelope class, mounting, axle output, voltage, speed, current, torque, thermal behavior, cable exit |
+| Feedback motion and steering | [LEGO Technic Large Motor 88013](https://www.lego.com/de-de/product/technic-large-motor-88013) and currently sold compatible position motors or steering servos | Position topology, range, zeroing, repeatability, backlash, speed, load, current, safe stop; connector shape alone is not equivalence |
+| Lights | [LEGO Powered Up Light 88005](https://www.lego.com/de-de/product/light-88005), PF-style dual lights, SBrick Light, addressable RGB modules | Mounting, intensity/color capability, current, update rate, thermal behavior, effects, cable handling |
+| Distance/proximity | [M5Stack ToF4M](https://shop.m5stack.com/products/time-of-flight-distance-unit-vl53l1x) and [ultrasonic units](https://shop.m5stack.com/products/ultrasonic-distance-unit-i-o-rcwl-9620), plus legally acquired brick-system sensors | Range, field of view, surface/ambient sensitivity, rate, latency, uncertainty, saturation, envelope and mounting |
+| Color/reflectance | [M5Stack Color Unit](https://shop.m5stack.com/products/color-unit) and [reflective-sensor units](https://shop.m5stack.com/products/infrared-reflective-sensor-unit) | Illumination geometry, raw and calibrated channels, color space, distance, ambient rejection, rate and repeatability |
+| Motion/orientation | [M5Stack 6-axis IMU Unit](https://shop.m5stack.com/products/6-axis-imu-unitmpu6886) and hub-integrated IMUs | Axis frame, selectable range, noise, bias, drift, rate, latency, calibration and temperature behavior |
+| Force/touch | [M5Stack scale kit with Weight Unit and load cells](https://shop.m5stack.com/products/scale-kit-with-weight-unit), exact switches, and bumper/contact sensors selected by the acquisition plan | Force range, overload, creep, hysteresis, rate, mechanics, calibration and replacement; an HX711 front end alone is not a force reference |
+| Cables/adapters | Current PF-style and Powered Up extension leads, Grove/HY2.0 modules, and project P0 cables | Usable length, routing, bend/pull, contact lifecycle, voltage drop, keying, repair, identification and adapter boundaries |
+| Brick mechanics | Selected genuine studless beams, pins, axles, bricks and plates plus M5Stack units with documented compatible holes | Grid, fit distributions, insertion/retention, envelope, mounting access, wear, material/process variation and legally redistributable reference frames |
+
+The repository's current
+[controllers and powered equipment survey](../../../docs/controllers-and-equipment.md)
+is a seed catalog, not conformance evidence by itself. It distinguishes
+Power Functions-style power/control, Powered Up/LPF2 identification and
+feedback, and incompatible servo signaling that a similar plug can hide.
+Rows without an exact linked model are acquisition classes only; Phase 0 must
+replace them with archived manufacturer evidence and purchased exact SKUs,
+revisions, dates, and regions before they define any numeric target.
+
+| ID | Requirement |
+| --- | --- |
+| BENCH-001 | Every benchmark record MUST identify manufacturer, product name and number, hardware and firmware revision where observable, acquisition source, purchase or observation date, region, sample count, lifecycle state, official source URLs plus archived capture and content digest, and whether each datum is documented, measured, inferred, or unknown. |
+| BENCH-002 | Raw measurements, fixture source, instrument and calibration data, environment, supply conditions, procedure, uncertainty, analysis code, photos permitted for redistribution, and anonymized sample results MUST accompany a published benchmark conclusion. Data, code, fixture, image, and report licenses MUST be explicit. |
+| BENCH-003 | A reference class MUST specify which dimensions are envelope, attachment, electrical, protocol, capability, performance, usability, or lifecycle targets. Meeting one dimension MUST NOT imply another. |
+| BENCH-004 | Claims MUST use `benchmark-comparable`, `mechanically compatible`, `electrically adaptable`, `protocol adaptable`, `behaviorally compatible`, or `drop-in compatible` precisely. `Drop-in compatible` requires every relevant mechanical, electrical, protocol, behavioral, safety, and performance test. |
+| BENCH-005 | A proprietary purchased product MAY be a measurement reference or supported adapter endpoint, but MUST remain an identified COTS boundary and MUST NOT become required closed source for the open starter workflow. |
+| BENCH-006 | Benchmark geometry and behavior MUST be independently measured or taken from redistribution-permitted sources. The project MUST NOT copy logos, firmware, PCB artwork, ornamental housing surfaces, or restricted CAD. Independent measurement alone does not grant patent, design, trademark, copyright, database, or other rights. |
+| BENCH-007 | A numeric stable class target MUST be supported by at least three physical samples across two lots or documented revisions. If that evidence cannot be obtained, the target remains provisional and cannot support a stable benchmark or compatibility profile. The report MUST separately state sample count, lots/revisions, and number of independent products and manufacturers. |
+| BENCH-008 | A component class MUST publish minimum, target, and stretch ranges where appropriate rather than selecting one competitor's accidental value as a universal requirement. Safety ceilings remain absolute and are not benchmark averages. |
+| BENCH-009 | Adapters MUST identify exactly which mechanical, electrical, identity, feedback, command, calibration, and update features they translate, pass through, emulate, or do not support. |
+| BENCH-010 | The catalog MUST retain discontinued and failed combinations with lifecycle and evidence status so builders can repair old systems and avoid repeating unsafe compatibility assumptions. |
+| BENCH-011 | Availability evidence MUST be refreshed for each specification release and marked by date and region. A retail listing alone MUST NOT establish electrical, behavioral, safety, or open-hardware compliance. |
+| BENCH-012 | The first stable starter family MUST publish side-by-side benchmark reports for its hub, battery/charger or bench source, control input, each cable class, mechanical attachment set, open-loop motor path, feedback actuator, light, and every included sensor against at least one obtainable functional reference. |
+
+## 22. Primary references
 
 ### Repository
 
 - [BrickController2 README](../../../README.md)
 - [Controllers and powered equipment](../../../docs/controllers-and-equipment.md)
+- [OMBR implementation catalog](IMPLEMENTATION-CATALOG.md)
+- [OMBR legal, IP, and market-access register](LEGAL-IP-REGISTER.md)
 - [Linux headless API](../../../docs/linux-headless-api.md)
 - [Unofficial BuWizz protocol notes](../../../BuWizz_protocol.md)
 
@@ -2257,6 +2600,8 @@ The concept has succeeded when a third party can, without private information:
 
 - [Raspberry Pi Zero 2 W product brief](https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf)
 - [Raspberry Pi Zero 2 W product information portal](https://pip.raspberrypi.com/categories/584-raspberry-pi-zero-2-w)
+- [Raspberry Pi RP2040 specifications](https://www.raspberrypi.com/products/rp2040/specifications/)
+- [Raspberry Pi Pico SDK](https://github.com/raspberrypi/pico-sdk)
 - [Raspberry Pi Build HAT](https://www.raspberrypi.com/products/build-hat/)
 - [Build HAT serial protocol](https://datasheets.raspberrypi.com/build-hat/build-hat-serial-protocol.pdf)
 - [Build HAT firmware](https://github.com/raspberrypi/buildhat)
@@ -2266,6 +2611,12 @@ The concept has succeeded when a third party can, without private information:
 - [M5Stack ecosystem overview](https://docs.m5stack.com/en/learn/intro)
 - [BuWizz 3.0 Pro](https://buwizz.com/shop/buwizz-3-0-pro/)
 - [SPIKE Prime Large Hub technical specification](https://assets.education.lego.com/v3/assets/blt293eea581807678a/bltf512a371e82f6420/5f8801baf4f4cf0fa39d2feb/techspecs_techniclargehub.pdf)
+- [TI TPS3431 watchdog](https://www.ti.com/product/TPS3431)
+- [TI DRV8876 motor driver](https://www.ti.com/product/DRV8876)
+- [TI TPS25947 eFuse](https://www.ti.com/product/TPS25947)
+- [TI TPS54302 buck converter](https://www.ti.com/product/TPS54302)
+- [Microchip MCP2518FD CAN FD controller](https://www.microchip.com/en-us/product/mcp2518fd)
+- [Microchip MCP2562FD CAN FD transceiver](https://www.microchip.com/en-us/product/MCP2562FD)
 - [Molex Micro-Fit 3.0 eight-circuit header](https://www.molex.com/en-us/products/part-detail/0430450800)
 - [Molex Micro-Fit 3.0 eight-circuit receptacle](https://www.molex.com/en-us/products/part-detail/430250800)
 - [Molex Micro-Fit 3.0 20–24 AWG female contact](https://www.molex.com/en-us/products/part-detail/430300001)
@@ -2278,6 +2629,7 @@ The concept has succeeded when a third party can, without private information:
 - [OSHWA Certification Requirements](https://certification.oshwa.org/requirements.html)
 - [CERN Open Hardware Licence variants](https://ohwr.org/licences/)
 - [Community Specification 1.0](https://github.com/CommunitySpecification/1.0)
+- [Open Web Foundation Agreement 1.0](https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0)
 - [REUSE specification](https://reuse.software/spec/)
 - [Reproducible Builds documentation](https://reproducible-builds.org/docs/)
 - [SLSA 1.2](https://slsa.dev/spec/v1.2/)
@@ -2332,6 +2684,13 @@ The concept has succeeded when a third party can, without private information:
 
 ### CAD and simulation
 
+- [LEGO piece-number guidance](https://www.lego.com/en-gb/service/help-topics/article/identifying-lego-set-and-piece-numbers)
+- [LEGO Pick a Brick](https://www.lego.com/en-us/pick-and-build/pick-a-brick)
+- [LEGO Technic building guidance](https://www.lego.com/en-ca/service/help-topics/article/tips-for-building-with-lego-technic-elements)
+- [LEGO Technic measurement chart](https://www.lego.com/cdn/product-assets/product.bi.additional.info.pdf/42055_X_Measurements.pdf)
+- [BrickLink Studio introduction](https://studiohelp.bricklink.com/hc/en-us/articles/5404381697559-Introduction-to-Studio)
+- [BrickLink Studio license](https://studiohelp.bricklink.com/hc/en-us/articles/6606313426711-Studio-Software-License-Agreement)
+- [LDraw Parts Library](https://library.ldraw.org/)
 - [LDraw file format](https://www.ldraw.org/article/218.html)
 - [LDraw legal and parts-library information](https://www.ldraw.org/legal-info)
 - [glTF 2.0](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html)
@@ -2341,44 +2700,63 @@ The concept has succeeded when a third party can, without private information:
 - [3MF Core 1.3.0](https://3mf.io/spec/core-v1-3-0/)
 - [Open Container Initiative image specification](https://specs.opencontainers.org/image-spec/)
 
-### Trademark guidance
+### Legal, IP, regulation, and cost
 
-- [LEGO Fair Play](https://www.lego.com/en-it/legal/notices-and-policies/fair-play)
+- [LEGO Fair Play](https://www.lego.com/en-in/legal/notices-and-policies/fair-play)
+- [EU Trade Mark Regulation](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R1001)
+- [EU Designs Regulation, consolidated 1 July 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02002R0006-20260701)
+- [EPO Espacenet](https://www.epo.org/en/searching-for-patents/technical/espacenet)
+- [EPO legal-event data](https://www.epo.org/en/searching-for-patents/helpful-resources/first-time-here/legal-event-data)
+- [WIPO PATENTSCOPE](https://www.wipo.int/en/web/patentscope/)
+- [WIPO Global Brand Database](https://www.wipo.int/en/web/global-brand-database)
+- [EUIPO IP search](https://www.euipo.europa.eu/en/search-ip)
+- [EU Radio Equipment Directive](https://eur-lex.europa.eu/eli/dir/2014/53/oj/eng)
+- [EU General Product Safety Regulation](https://eur-lex.europa.eu/eli/reg/2023/988/2026-05-29/eng)
+- [EU Cyber Resilience Act](https://eur-lex.europa.eu/eli/reg/2024/2847/2024-11-20/eng)
+- [EU Batteries Regulation](https://eur-lex.europa.eu/eli/reg/2023/1542/oj)
+- [EU Toy Safety Regulation](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2509)
+- [EU VAT rules and rates](https://europa.eu/youreurope/business/taxation/vat/vat-rules-rates/index_en.htm)
+- [ECB exchange-rate methodology](https://data.ecb.europa.eu/methodology/exchange-rates)
 
 ## Appendix A. Requirement summary
 
-The normative requirements in this draft are grouped by prefix:
+The normative requirements in this draft are grouped by prefix and listed in
+their logical document order:
 
 | Prefix | Area |
 | --- | --- |
-| ECO | Whole-ecosystem completeness and integration |
-| BENCH | Purchasable-component benchmarks and compatibility claims |
 | PRIN | Cross-cutting design principles |
+| ECO | Whole-ecosystem completeness and integration |
 | OPEN | Open source hardware, software, tooling, documentation, and release artifacts |
+| IP | Patents/FTO, designs, trademarks, copyright/database rights, licensing, and clean-room evidence |
+| REG | Product classification, conformity, market access, and post-market obligations |
 | HUB | Hub functions and serviceability |
 | SAFE | Real-time safety controller |
 | PWR | Battery and power |
 | ELEC | Complete electronic component and interface contracts |
 | LINK | Native peripheral interface |
+| TIME | Motion-command lifetime and synchronization |
 | MECH | Brick-grid mechanical compatibility |
-| PKG | Project archive and semantic validation |
 | PER | Common peripheral behavior |
-| ADAPTER | Legacy and maker-component adaptation |
 | MOTOR | Motor and position actuator |
 | LIGHT | Light |
 | SENSOR | Sensor |
-| TIME | Motion-command lifetime and synchronization |
+| ADAPTER | Legacy and maker-component adaptation |
 | INPUT | Handheld, gamepad, UI, and other control sources |
 | CTRL | Creation bindings and control |
+| PROG | Portable programs, runtimes, lifecycle, and debugging |
 | NET | Discovery and network |
 | API | HTTP and event API |
+| PKG | Project archive and semantic validation |
 | TWIN | CAD, identity, assets, and digital twin |
 | SIM | Simulation fidelity and parity |
 | SEC | Security, privacy, and ownership |
-| PROG | Portable programs, runtimes, lifecycle, and debugging |
 | DEV | Developer service, CLI, VS Code, .NET, and operator clients |
 | SW | Common software, firmware, storage, and updates |
 | GOV | Open governance, contribution, registries, and release stewardship |
+| CAT | Implementation candidates, openness grades, lifecycle, availability, offers, and BOM closure |
+| COST | Quantity-tier costing, landed COGS, channels, sustainability, and affordability claims |
+| BENCH | Purchasable-component benchmarks and compatibility claims |
 
 ## Appendix B. Draft maturity labels
 
@@ -2391,12 +2769,13 @@ Current status:
 
 | Area | Maturity |
 | --- | --- |
-| Object, capability, creation, and twin model | Prototype syntax schema; design/deployment/runtime split still required |
+| Object, capability, creation, and twin model | Prototype syntax schema; full body/mate/joint/multi-member-transmission/assembly model plus design/as-built/simulation/runtime state split still required |
 | Pi/safety-MCU architecture | Prototype pending independent watchdog, output-gate, and stop-loop circuit evidence |
 | Electronic interface contract and endpoint schema | Prototype syntax with resolved example contracts; stable field semantics, fault-matrix schema, semantic validator, COTS selection, fixtures, and measured evidence pending |
 | Open release contract | Specified |
 | Whole-ecosystem completeness contract | Specified requirements; integrated starter release not yet built |
-| Purchasable-component benchmark catalog | Seeded by repository market survey; controlled measurements and class ranges not yet published |
+| Legal/IP register | Screening framework published; OMBR mark, feature-specific FTO, modular-design, CAD/catalog, contributor-patent, and commercial compatibility reviews remain open |
+| Product classification and EU market access | Requirements specified; exact intended age/use/SKU, RED/EMC/environmental/cyber/toy applicability, conformity path, test evidence, and economic operator remain open |
 | Motor, light, and sensor behavioral profiles | Research requirements; fixtures and limits not frozen |
 | Cable models and reference cable family | Research; P0 cable is illustrative only |
 | Adapter profiles | Requirements specified; endpoint fixtures, rights review, and measured compatibility matrix pending |
@@ -2406,7 +2785,7 @@ Current status:
 | Production connector | Research |
 | Bench power source class | Prototype-only requirements and example; source fixture not built |
 | Battery and charging implementation | Research; OMBR-POWER-BATTERY-1 not frozen |
-| Brick manufacturing tolerances | Blocked on metrology |
+| Brick/beam functional fit and tolerance evidence | Blocked on metrology; production-mould engineering is outside scope |
 | BLE commissioning/control and OpenAPI | Research; radio/discovery only in 0.1 |
 | Simulation fidelity tiers | Research; 0.1 results are characterization only |
 | Program descriptor and runtime profiles | Prototype syntax pending golden Python/.NET bundles and sandbox contract |
@@ -2416,3 +2795,6 @@ Current status:
 | Open governance and archival | Required before 0.2; specification license and institutions not yet established |
 | Commercial trademark and product classification | Blocked on qualified legal/compliance review |
 | Full hardware BOM and KiCad design | Planned reference implementation |
+| Implementation component catalog | Broad family coverage and P0 candidate match published; machine-readable records, exact alternates, purchases, build evidence, and qualification pending |
+| EUR 49.99 controller target | Target-unproven; current pre-quote four-port model estimates EUR 39–57 COGS at 1000 units and indicates roughly EUR 65–95 initial direct retail, so small-batch or distributor EUR 49.99 is not presently credible |
+| Purchasable-component benchmark catalog | Seeded by repository market survey; controlled measurements and class ranges not yet published |

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/ombr/0.1/schema/ombr-project.schema.json",
   "title": "OMBR project manifest",
-  "description": "Prototype syntax seed for an OMBR 0.1 project, electronic interface contract, endpoint electrical profile, timeline, program, safety policy, and digital-twin manifest; it is not a claimable OMBR profile schema. The example.invalid identifier is deliberately non-resolving until project governance assigns a permanent specification URI.",
+  "description": "Prototype syntax seed for an OMBR 0.1 automation project, mechanical reference catalogs and mating profiles, electronic interface contract, endpoint electrical profile, timeline, program, safety policy, and digital-twin manifest; it is not a claimable OMBR profile schema. The example.invalid identifier is deliberately non-resolving until project governance assigns a permanent specification URI.",
   "type": "object",
   "required": [
     "specVersion",
@@ -12,6 +12,8 @@
     "name",
     "license",
     "coordinateSystem",
+    "mechanicalReferenceCatalogs",
+    "mechanicalMatingProfiles",
     "artifacts",
     "interfaceContracts",
     "electricalEndpointProfiles",
@@ -55,9 +57,6 @@
       "type": "object",
       "required": [
         "handedness",
-        "x",
-        "y",
-        "z",
         "lengthUnit",
         "angleUnit"
       ],
@@ -66,13 +65,22 @@
           "const": "right"
         },
         "x": {
-          "const": "forward"
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Optional application-specific semantic label for the positive X axis; not a universal vehicle direction."
         },
         "y": {
-          "const": "left"
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Optional application-specific semantic label for the positive Y axis."
         },
         "z": {
-          "const": "up"
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Optional application-specific semantic label for the positive Z axis; gravity belongs to a named world frame."
         },
         "lengthUnit": {
           "const": "m"
@@ -82,6 +90,22 @@
         }
       },
       "additionalProperties": false
+    },
+    "mechanicalReferenceCatalogs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mechanicalReferenceCatalog"
+      },
+      "minItems": 1,
+      "maxItems": 256
+    },
+    "mechanicalMatingProfiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mechanicalMatingProfile"
+      },
+      "minItems": 1,
+      "maxItems": 4096
     },
     "artifacts": {
       "type": "array",
@@ -323,6 +347,1185 @@
       },
       "additionalProperties": false
     },
+    "mechanicalCatalogReference": {
+      "type": "object",
+      "required": [
+        "catalogRef",
+        "catalogRevision"
+      ],
+      "properties": {
+        "catalogRef": {
+          "$ref": "#/$defs/identifier"
+        },
+        "catalogRevision": {
+          "$ref": "#/$defs/revision"
+        }
+      },
+      "additionalProperties": false
+    },
+    "mechanicalReferenceCatalog": {
+      "type": "object",
+      "required": [
+        "id",
+        "revision",
+        "name",
+        "publisher",
+        "sourceUri",
+        "reviewedAt",
+        "license",
+        "authorityClass",
+        "identifierSchemes",
+        "evidenceLevels",
+        "snapshotStatus",
+        "limitations"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceUri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "reviewedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "license": {
+          "$ref": "#/$defs/license"
+        },
+        "accessTermsUri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "authorityClass": {
+          "enum": [
+            "manufacturer-published-catalog",
+            "manufacturer-published-digital-tool",
+            "manufacturer-published-engineering",
+            "community-cad",
+            "independent-metrology",
+            "ombr-native-source",
+            "other"
+          ]
+        },
+        "identifierSchemes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "evidenceLevels": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "identity",
+              "availability",
+              "inventory",
+              "visual-geometry",
+              "connection-semantics",
+              "nominal-dimensions",
+              "tolerance-distributions",
+              "materials",
+              "load-and-life",
+              "open-replacement-source"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 10,
+          "uniqueItems": true
+        },
+        "snapshotStatus": {
+          "enum": [
+            "packaged",
+            "external-record-only",
+            "dynamic-query",
+            "unavailable"
+          ]
+        },
+        "snapshotDigest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "snapshotArtifactRef": {
+          "$ref": "#/$defs/identifier"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 1,
+          "maxItems": 64
+        }
+      },
+      "additionalProperties": false
+    },
+    "mechanicalIdentifier": {
+      "type": "object",
+      "required": [
+        "scheme",
+        "value",
+        "scope",
+        "catalogRef",
+        "catalogRevision",
+        "sourceUri",
+        "observedAt"
+      ],
+      "properties": {
+        "scheme": {
+          "$ref": "#/$defs/identifier"
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "scope": {
+          "enum": [
+            "shape-design",
+            "shape-color-material-element",
+            "catalog-item",
+            "cad-file",
+            "project-part",
+            "other"
+          ]
+        },
+        "catalogRef": {
+          "$ref": "#/$defs/identifier"
+        },
+        "catalogRevision": {
+          "$ref": "#/$defs/revision"
+        },
+        "sourceUri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    },
+    "mechanicalParameter": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "name",
+            "quantity",
+            "status",
+            "value",
+            "unit",
+            "provenance"
+          ],
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/identifier"
+            },
+            "quantity": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "status": {
+              "const": "known"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 48
+            },
+            "minimum": {
+              "type": "number"
+            },
+            "maximum": {
+              "type": "number"
+            },
+            "toleranceMinus": {
+              "type": "number",
+              "minimum": 0
+            },
+            "tolerancePlus": {
+              "type": "number",
+              "minimum": 0
+            },
+            "evidenceArtifactRefs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/identifier"
+              },
+              "maxItems": 256,
+              "uniqueItems": true
+            },
+            "provenance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "name",
+            "quantity",
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/identifier"
+            },
+            "quantity": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "status": {
+              "const": "unknown"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "mechanicalDegreesOfFreedom": {
+      "type": "object",
+      "required": [
+        "translationX",
+        "translationY",
+        "translationZ",
+        "rotationX",
+        "rotationY",
+        "rotationZ"
+      ],
+      "properties": {
+        "translationX": {
+          "enum": [
+            "locked",
+            "free",
+            "limited"
+          ]
+        },
+        "translationY": {
+          "enum": [
+            "locked",
+            "free",
+            "limited"
+          ]
+        },
+        "translationZ": {
+          "enum": [
+            "locked",
+            "free",
+            "limited"
+          ]
+        },
+        "rotationX": {
+          "enum": [
+            "locked",
+            "free",
+            "limited"
+          ]
+        },
+        "rotationY": {
+          "enum": [
+            "locked",
+            "free",
+            "limited"
+          ]
+        },
+        "rotationZ": {
+          "enum": [
+            "locked",
+            "free",
+            "limited"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "mechanicalMatingProfile": {
+      "type": "object",
+      "required": [
+        "id",
+        "revision",
+        "name",
+        "kind",
+        "maturity",
+        "roles",
+        "geometryBasis",
+        "degreesOfFreedom",
+        "fitClasses",
+        "parameters",
+        "evidenceArtifactRefs",
+        "provenance",
+        "limitations"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "kind": {
+          "enum": [
+            "attachment-grid",
+            "stud-tube",
+            "pin-hole",
+            "axle-hole",
+            "hinge",
+            "ball-joint",
+            "turntable",
+            "gear-mesh",
+            "rack-mesh",
+            "worm-mesh",
+            "belt-pulley",
+            "chain-sprocket",
+            "wheel-hub",
+            "track-link",
+            "rail-guide",
+            "flexible",
+            "fastener",
+            "other"
+          ]
+        },
+        "maturity": {
+          "enum": [
+            "illustrative",
+            "provisional",
+            "measured",
+            "stable"
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 2,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "sourceCatalogRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mechanicalCatalogReference"
+          },
+          "maxItems": 32
+        },
+        "geometryBasis": {
+          "enum": [
+            "ombr-parametric-source",
+            "independent-metrology",
+            "manufacturer-published",
+            "licensed-external-source",
+            "nominal-grid-derived",
+            "mixed",
+            "unknown"
+          ]
+        },
+        "degreesOfFreedom": {
+          "$ref": "#/$defs/mechanicalDegreesOfFreedom"
+        },
+        "fitClasses": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "free",
+              "loose",
+              "nominal",
+              "friction",
+              "tight",
+              "press",
+              "not-applicable"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 7,
+          "uniqueItems": true
+        },
+        "allowedOrientationsRad": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mechanicalParameter"
+          },
+          "minItems": 1,
+          "maxItems": 512
+        },
+        "evidenceArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "provenance": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 1,
+          "maxItems": 128
+        }
+      },
+      "additionalProperties": false
+    },
+    "replacementFabricationDefinition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "status",
+            "process",
+            "materialSpecification",
+            "sourceArtifactRefs",
+            "drawingArtifactRef",
+            "inspectionArtifactRef",
+            "parameters",
+            "provenance"
+          ],
+          "properties": {
+            "status": {
+              "const": "complete"
+            },
+            "process": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "materialSpecification": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "sourceArtifactRefs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/identifier"
+              },
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true
+            },
+            "drawingArtifactRef": {
+              "$ref": "#/$defs/identifier"
+            },
+            "inspectionArtifactRef": {
+              "$ref": "#/$defs/identifier"
+            },
+            "parameters": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/mechanicalParameter"
+              },
+              "minItems": 1,
+              "maxItems": 512
+            },
+            "provenance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "status",
+            "reason",
+            "provenance"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "incomplete",
+                "unavailable",
+                "not-applicable",
+                "unknown"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "provenance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "gearGeometry": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "status",
+            "gearType",
+            "analyticalProfile",
+            "toothCount",
+            "moduleM",
+            "pressureAngleRad",
+            "helixAngleRad",
+            "coneAngleRad",
+            "pitchDiameterM",
+            "baseDiameterM",
+            "tipDiameterM",
+            "rootDiameterM",
+            "addendumM",
+            "dedendumM",
+            "profileShiftCoefficient",
+            "rootFilletRadiusM",
+            "faceWidthM",
+            "clearanceM",
+            "backlashM",
+            "axisFrame",
+            "boreMatingProfileRef",
+            "boreMatingProfileRevision",
+            "meshMatingProfileRef",
+            "meshMatingProfileRevision",
+            "runoutMaxM",
+            "maxTorqueNm",
+            "maxSpeedRadPerS",
+            "efficiencyMin",
+            "efficiencyMax",
+            "temperatureMinK",
+            "temperatureMaxK",
+            "lubrication",
+            "duty",
+            "wearLifeCycles",
+            "generatorArtifactRef",
+            "evidenceArtifactRefs",
+            "provenance",
+            "limitations"
+          ],
+          "properties": {
+            "status": {
+              "const": "complete"
+            },
+            "gearType": {
+              "enum": [
+                "spur",
+                "helical",
+                "bevel",
+                "double-bevel",
+                "crown",
+                "worm-wheel",
+                "internal"
+              ]
+            },
+            "analyticalProfile": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "toothCount": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4096
+            },
+            "moduleM": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "pressureAngleRad": {
+              "type": "number",
+              "minimum": 0,
+              "exclusiveMaximum": 1.5707963267948966
+            },
+            "helixAngleRad": {
+              "type": "number",
+              "exclusiveMinimum": -1.5707963267948966,
+              "exclusiveMaximum": 1.5707963267948966
+            },
+            "coneAngleRad": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1.5707963267948966
+            },
+            "pitchDiameterM": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "baseDiameterM": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "tipDiameterM": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "rootDiameterM": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "addendumM": {
+              "type": "number",
+              "minimum": 0
+            },
+            "dedendumM": {
+              "type": "number",
+              "minimum": 0
+            },
+            "profileShiftCoefficient": {
+              "type": "number"
+            },
+            "rootFilletRadiusM": {
+              "type": "number",
+              "minimum": 0
+            },
+            "faceWidthM": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "clearanceM": {
+              "type": "number",
+              "minimum": 0
+            },
+            "backlashM": {
+              "type": "number",
+              "minimum": 0
+            },
+            "axisFrame": {
+              "$ref": "#/$defs/identifier"
+            },
+            "boreMatingProfileRef": {
+              "$ref": "#/$defs/identifier"
+            },
+            "boreMatingProfileRevision": {
+              "$ref": "#/$defs/revision"
+            },
+            "meshMatingProfileRef": {
+              "$ref": "#/$defs/identifier"
+            },
+            "meshMatingProfileRevision": {
+              "$ref": "#/$defs/revision"
+            },
+            "runoutMaxM": {
+              "type": "number",
+              "minimum": 0
+            },
+            "maxTorqueNm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "maxSpeedRadPerS": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "efficiencyMin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "efficiencyMax": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "temperatureMinK": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "temperatureMaxK": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "lubrication": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "duty": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "wearLifeCycles": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "generatorArtifactRef": {
+              "$ref": "#/$defs/identifier"
+            },
+            "evidenceArtifactRefs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/identifier"
+              },
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true
+            },
+            "provenance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "minItems": 1,
+              "maxItems": 128
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "status",
+            "reason",
+            "provenance",
+            "limitations"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "incomplete",
+                "unknown",
+                "unavailable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "provenance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "minItems": 1,
+              "maxItems": 128
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "mechanicalPartDefinition": {
+      "type": "object",
+      "required": [
+        "partKind",
+        "maturity",
+        "externalIdentifiers",
+        "geometryAuthority",
+        "geometryFidelity",
+        "dimensionalBasis",
+        "sourceKind",
+        "datumFrame",
+        "parameters",
+        "evidenceArtifactRefs",
+        "provenance",
+        "limitations"
+      ],
+      "properties": {
+        "partKind": {
+          "enum": [
+            "brick",
+            "plate",
+            "tile",
+            "beam",
+            "frame",
+            "panel",
+            "bracket",
+            "shell",
+            "pin",
+            "axle",
+            "bushing",
+            "connector",
+            "hinge",
+            "ball-joint",
+            "universal-joint",
+            "turntable",
+            "gear",
+            "bevel-gear",
+            "crown-gear",
+            "worm",
+            "rack",
+            "differential",
+            "clutch",
+            "pulley",
+            "belt",
+            "chain",
+            "sprocket",
+            "wheel",
+            "tyre",
+            "track",
+            "rail-guide",
+            "spring",
+            "elastomer",
+            "string",
+            "hose",
+            "pneumatic",
+            "counterweight",
+            "fastener",
+            "adapter",
+            "other"
+          ]
+        },
+        "maturity": {
+          "enum": [
+            "illustrative",
+            "provisional",
+            "measured",
+            "stable"
+          ]
+        },
+        "sourceKind": {
+          "enum": [
+            "purchased-catalog-part",
+            "ombr-native-replacement",
+            "licensed-third-party-design",
+            "functional-reference-only",
+            "unknown"
+          ]
+        },
+        "externalIdentifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mechanicalIdentifier"
+          },
+          "maxItems": 256
+        },
+        "geometryAuthority": {
+          "enum": [
+            "project-parametric-source",
+            "manufacturer-published-engineering",
+            "manufacturer-digital-building-asset",
+            "licensed-community-cad",
+            "independently-measured",
+            "envelope-only",
+            "unknown"
+          ]
+        },
+        "geometryFidelity": {
+          "enum": [
+            "fabrication-source",
+            "dimensioned-reference",
+            "connection-and-collision",
+            "visualization-only",
+            "catalog-image-only",
+            "unknown"
+          ]
+        },
+        "dimensionalBasis": {
+          "enum": [
+            "manufacturer-specified",
+            "independent-metrology",
+            "nominal-grid-derived",
+            "community-asset-derived",
+            "mixed",
+            "unknown"
+          ]
+        },
+        "fabricationAuthority": {
+          "enum": [
+            "open-replacement-source",
+            "licensed-third-party-source",
+            "not-applicable",
+            "unknown"
+          ]
+        },
+        "datumFrame": {
+          "$ref": "#/$defs/identifier"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mechanicalParameter"
+          },
+          "minItems": 1,
+          "maxItems": 1024
+        },
+        "replacementFabrication": {
+          "$ref": "#/$defs/replacementFabricationDefinition"
+        },
+        "gearGeometry": {
+          "$ref": "#/$defs/gearGeometry"
+        },
+        "evidenceArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "provenance": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 1,
+          "maxItems": 128
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "partKind": {
+                "enum": [
+                  "gear",
+                  "bevel-gear",
+                  "crown-gear",
+                  "worm",
+                  "rack"
+                ]
+              }
+            },
+            "required": [
+              "partKind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "gearGeometry": true
+            },
+            "required": [
+              "gearGeometry"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sourceKind": {
+                "const": "ombr-native-replacement"
+              }
+            },
+            "required": [
+              "sourceKind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "replacementFabrication": true
+            },
+            "required": [
+              "replacementFabrication"
+            ]
+          }
+        }
+      ]
+    },
+    "mechanicalRelation": {
+      "type": "object",
+      "required": [
+        "type",
+        "status",
+        "parameters",
+        "evidenceArtifactRefs",
+        "provenance",
+        "limitations"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "fixed",
+            "revolute",
+            "prismatic",
+            "spherical",
+            "planar",
+            "screw",
+            "detachable",
+            "gear-mesh",
+            "rack-and-pinion",
+            "belt",
+            "chain",
+            "flexible"
+          ]
+        },
+        "status": {
+          "enum": [
+            "known",
+            "illustrative",
+            "unknown"
+          ]
+        },
+        "axisA": {
+          "$ref": "#/$defs/vector3"
+        },
+        "axisB": {
+          "$ref": "#/$defs/vector3"
+        },
+        "positionUnit": {
+          "enum": [
+            "rad",
+            "m",
+            "not-applicable"
+          ]
+        },
+        "lowerLimit": {
+          "type": "number"
+        },
+        "upperLimit": {
+          "type": "number"
+        },
+        "zeroPosition": {
+          "type": "number"
+        },
+        "centerDistanceM": {
+          "type": "number",
+          "minimum": 0
+        },
+        "signedRatio": {
+          "type": "number"
+        },
+        "phaseOffsetRad": {
+          "type": "number"
+        },
+        "efficiency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "backlashRad": {
+          "type": "number",
+          "minimum": 0
+        },
+        "complianceRadPerNm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "dampingNmsPerRad": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxTorqueNm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxForceN": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxSpeedRadPerS": {
+          "type": "number",
+          "minimum": 0
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mechanicalParameter"
+          },
+          "maxItems": 512
+        },
+        "evidenceArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "provenance": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 1,
+          "maxItems": 128
+        }
+      },
+      "additionalProperties": false
+    },
     "artifact": {
       "type": "object",
       "required": [
@@ -346,6 +1549,11 @@
             "legacy-stl",
             "visual-gltf",
             "ldraw",
+            "mechanical-catalog-snapshot",
+            "mechanical-drawing",
+            "mechanical-metrology",
+            "mechanical-characterization",
+            "gear-parameters",
             "sdf",
             "urdf",
             "openusd",
@@ -1946,11 +3154,36 @@
         },
         "fitClass": {
           "enum": [
+            "free",
             "loose",
             "nominal",
+            "friction",
             "tight",
+            "press",
             "not-applicable"
           ]
+        },
+        "mechanicalMatingProfileRef": {
+          "$ref": "#/$defs/identifier"
+        },
+        "mechanicalMatingProfileRevision": {
+          "$ref": "#/$defs/revision"
+        },
+        "matingRole": {
+          "$ref": "#/$defs/identifier"
+        },
+        "engagementAxis": {
+          "$ref": "#/$defs/vector3"
+        },
+        "assemblyPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "partialMateOutcome": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
         },
         "contractRef": {
           "$ref": "#/$defs/identifier"
@@ -1999,6 +3232,43 @@
               "contractRevision",
               "electricalProfileRef",
               "electricalProfileRevision"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "mechanical",
+                  "shaft"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "profile": true,
+              "fitClass": true,
+              "mechanicalMatingProfileRef": true,
+              "mechanicalMatingProfileRevision": true,
+              "matingRole": true,
+              "engagementAxis": true,
+              "assemblyPath": true,
+              "partialMateOutcome": true
+            },
+            "required": [
+              "profile",
+              "fitClass",
+              "mechanicalMatingProfileRef",
+              "mechanicalMatingProfileRevision",
+              "matingRole",
+              "engagementAxis",
+              "assemblyPath",
+              "partialMateOutcome"
             ]
           }
         }
@@ -2546,6 +3816,9 @@
         "physical": {
           "$ref": "#/$defs/physicalProperties"
         },
+        "mechanicalPart": {
+          "$ref": "#/$defs/mechanicalPartDefinition"
+        },
         "requiredExtensions": {
           "$ref": "#/$defs/extensionNames"
         },
@@ -2553,7 +3826,31 @@
           "$ref": "#/$defs/extensions"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "const": "mechanical"
+              }
+            },
+            "required": [
+              "role"
+            ]
+          },
+          "then": {
+            "properties": {
+              "physical": true,
+              "mechanicalPart": true
+            },
+            "required": [
+              "physical",
+              "mechanicalPart"
+            ]
+          }
+        }
+      ]
     },
     "componentInstance": {
       "type": "object",
@@ -2685,6 +3982,15 @@
         "detachable": {
           "type": "boolean"
         },
+        "mechanicalMatingProfileRef": {
+          "$ref": "#/$defs/identifier"
+        },
+        "mechanicalMatingProfileRevision": {
+          "$ref": "#/$defs/revision"
+        },
+        "mechanicalRelation": {
+          "$ref": "#/$defs/mechanicalRelation"
+        },
         "cableModelId": {
           "type": "string",
           "format": "uri"
@@ -2723,14 +4029,20 @@
               "allowedOrientationsRad": true,
               "insertionDepthM": true,
               "toleranceClass": true,
-              "detachable": true
+              "detachable": true,
+              "mechanicalMatingProfileRef": true,
+              "mechanicalMatingProfileRevision": true,
+              "mechanicalRelation": true
             },
             "required": [
               "relativePose",
               "allowedOrientationsRad",
               "insertionDepthM",
               "toleranceClass",
-              "detachable"
+              "detachable",
+              "mechanicalMatingProfileRef",
+              "mechanicalMatingProfileRevision",
+              "mechanicalRelation"
             ]
           }
         },

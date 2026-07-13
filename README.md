@@ -51,8 +51,22 @@ For a researched overview of supported controllers, receiver hubs, motors, light
 
 For the proposed open-hardware successor ecosystem—Raspberry Pi Zero compute,
 Wi-Fi and Bluetooth, open motors/lights/sensors, brick-compatible source CAD,
-and a synchronized CAD/simulation digital twin—see the
+gears and mechanical reference parts, and a synchronized CAD/simulation
+digital twin for robots, vehicles, stationary machines, and general
+automation—see the
 [Open Modular Brick Robotics 0.1 draft specification](spec/ombr/0.1/OMBR-SPEC.md).
+For a decision-maker overview, use the two-page
+[OMBR executive summary](spec/ombr/0.1/OMBR-EXECUTIVE-SUMMARY.md)
+([A4 PDF](output/pdf/OMBR-Executive-Summary.pdf)).
+
+The companion
+[OMBR implementation catalog](spec/ombr/0.1/IMPLEMENTATION-CATALOG.md) maps
+the whole controller/peripheral/mechanical/software stack to open designs,
+open-source software, and documented COTS candidates, with explicit openness
+grades, alternates, gaps, and a quantity-tier cost model. The
+[legal, IP, and market-access register](spec/ombr/0.1/LEGAL-IP-REGISTER.md)
+tracks patent/FTO, design, trademark, CAD/catalog, protocol, licensing, product
+classification, and regulatory gates without claiming legal clearance.
 
 BrickController2 is an interim compatibility and remote-control client within
 that larger effort. The OMBR specification covers the complete open ecosystem:

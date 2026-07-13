@@ -4,8 +4,8 @@
   "kind": "ombr-project",
   "projectId": "urn:uuid:64f63e14-4d8a-4dc1-9e44-7d3e16f4a001",
   "revision": "0.1.0-demo",
-  "name": "OMBR syntax rover",
-  "description": "Illustrative, non-deployable manifest showing one hub, a supervised P0 bench source and cable, one smart motor, one distance sensor, reusable full electronic interface contracts and endpoint envelopes, P0 peripheral cables, a logical control source, a portable Python program, twin assets, and a simple controller binding. Artifact paths, ratings, and digests are examples, not released hardware or measured evidence.",
+  "name": "OMBR automation syntax rover",
+  "description": "Illustrative, non-deployable automation manifest showing mechanical source catalogs and mating profiles, original OMBR beam and gear component records, one hub, a supervised P0 bench source and cable, one smart motor, one distance sensor, reusable full electronic interface contracts and endpoint envelopes, P0 peripheral cables, a logical control source, a portable Python program, twin assets, and a simple controller binding. Artifact paths, mechanical dimensions, ratings, and digests are examples, not released hardware or measured evidence and do not claim compatibility with any third-party part.",
   "license": "Apache-2.0",
   "coordinateSystem": {
     "handedness": "right",
@@ -15,7 +15,547 @@
     "lengthUnit": "m",
     "angleUnit": "rad"
   },
+  "mechanicalReferenceCatalogs": [
+    {
+      "id": "ombr-native-mechanical",
+      "revision": "0.1.0-demo",
+      "name": "Illustrative OMBR Mechanical Reference Library",
+      "publisher": "OMBR project placeholder",
+      "sourceUri": "https://example.invalid/ombr/mechanical/0.1.0-demo",
+      "reviewedAt": "2026-07-13",
+      "license": "CERN-OHL-W-2.0",
+      "authorityClass": "ombr-native-source",
+      "identifierSchemes": [
+        "ombr-part-id"
+      ],
+      "evidenceLevels": [
+        "identity",
+        "visual-geometry",
+        "connection-semantics",
+        "nominal-dimensions",
+        "open-replacement-source"
+      ],
+      "snapshotStatus": "packaged",
+      "snapshotDigest": "sha256:2020202020202020202020202020202020202020202020202020202020202020",
+      "snapshotArtifactRef": "mechanical-reference-notes",
+      "limitations": [
+        "This syntax-only snapshot has illustrative values and no physical metrology, load, life, or fabrication evidence."
+      ]
+    },
+    {
+      "id": "lego-public-elements",
+      "revision": "2026.7.13",
+      "name": "LEGO public element identity and retail sources",
+      "publisher": "LEGO System A/S",
+      "sourceUri": "https://www.lego.com/en-us/pick-and-build/pick-a-brick",
+      "reviewedAt": "2026-07-13",
+      "license": "LicenseRef-LEGO-Terms-of-Use",
+      "accessTermsUri": "https://www.lego.com/en-us/legal/terms-of-use",
+      "authorityClass": "manufacturer-published-catalog",
+      "identifierSchemes": [
+        "lego-design-id",
+        "lego-element-id"
+      ],
+      "evidenceLevels": [
+        "identity",
+        "availability",
+        "inventory"
+      ],
+      "snapshotStatus": "external-record-only",
+      "limitations": [
+        "Identity and retail evidence only; no redistributable engineering CAD, tolerances, materials, gear profiles, loads, or lifecycle specifications are asserted."
+      ]
+    },
+    {
+      "id": "bricklink-studio-public",
+      "revision": "2026.7.13",
+      "name": "BrickLink Studio public virtual building system",
+      "publisher": "LEGO BrickLink, Inc.",
+      "sourceUri": "https://studiohelp.bricklink.com/hc/en-us/articles/5404381697559-Introduction-to-Studio",
+      "reviewedAt": "2026-07-13",
+      "license": "LicenseRef-BrickLink-Studio",
+      "accessTermsUri": "https://studiohelp.bricklink.com/hc/en-us/articles/6606313426711-Studio-Software-License-Agreement",
+      "authorityClass": "manufacturer-published-digital-tool",
+      "identifierSchemes": [
+        "bricklink-item-number"
+      ],
+      "evidenceLevels": [
+        "identity",
+        "inventory",
+        "visual-geometry",
+        "connection-semantics"
+      ],
+      "snapshotStatus": "external-record-only",
+      "limitations": [
+        "Studio is proprietary, documents missing parts and approximate collision behavior, and is not an open manufacturing-CAD source or conformance oracle."
+      ]
+    },
+    {
+      "id": "ldraw-parts-library",
+      "revision": "2026.6.0",
+      "name": "LDraw Parts Library 2026-06",
+      "publisher": "LDraw.org community",
+      "sourceUri": "https://library.ldraw.org/updates?latest=",
+      "reviewedAt": "2026-07-13",
+      "license": "NOASSERTION",
+      "accessTermsUri": "https://www.ldraw.org/legal-info",
+      "authorityClass": "community-cad",
+      "identifierSchemes": [
+        "ldraw-file"
+      ],
+      "evidenceLevels": [
+        "identity",
+        "visual-geometry"
+      ],
+      "snapshotStatus": "external-record-only",
+      "limitations": [
+        "LDraw is unofficial and community-run; Official means LDraw-certified, real-world LDU conversion is approximate, and every file license must be resolved separately.",
+        "LDraw geometry is an assembly and visualization reference, not OMBR manufacturing, tolerance, fit, mass, or load authority."
+      ]
+    }
+  ],
+  "mechanicalMatingProfiles": [
+    {
+      "id": "ombr-attachment-grid-p0",
+      "revision": "0.1.0-demo",
+      "name": "Illustrative brick-grid attachment host",
+      "kind": "attachment-grid",
+      "maturity": "illustrative",
+      "roles": [
+        "grid-host",
+        "grid-member"
+      ],
+      "sourceCatalogRefs": [
+        {
+          "catalogRef": "ombr-native-mechanical",
+          "catalogRevision": "0.1.0-demo"
+        }
+      ],
+      "geometryBasis": "nominal-grid-derived",
+      "degreesOfFreedom": {
+        "translationX": "locked",
+        "translationY": "locked",
+        "translationZ": "locked",
+        "rotationX": "locked",
+        "rotationY": "locked",
+        "rotationZ": "locked"
+      },
+      "fitClasses": [
+        "nominal"
+      ],
+      "allowedOrientationsRad": [
+        0,
+        1.5707963267948966,
+        3.141592653589793,
+        4.71238898038469
+      ],
+      "parameters": [
+        {
+          "name": "horizontal-module",
+          "quantity": "horizontal grid module",
+          "status": "known",
+          "value": 0.008,
+          "unit": "m",
+          "provenance": "OMBR draft nominal grid, not a manufacturing tolerance."
+        },
+        {
+          "name": "retention-envelope",
+          "quantity": "attachment retention and release force",
+          "status": "unknown",
+          "reason": "No released coupon, material, conditioning, or force evidence exists for this syntax example."
+        }
+      ],
+      "evidenceArtifactRefs": [
+        "mechanical-reference-notes"
+      ],
+      "provenance": "OMBR syntax example derived from the nominal exchange grid.",
+      "limitations": [
+        "Not a stable fit profile and not a claim of compatibility with any third-party part."
+      ]
+    },
+    {
+      "id": "ombr-pin-hole-p0",
+      "revision": "0.1.0-demo",
+      "name": "Illustrative round pin and beam-hole interface",
+      "kind": "pin-hole",
+      "maturity": "illustrative",
+      "roles": [
+        "round-pin",
+        "round-hole"
+      ],
+      "sourceCatalogRefs": [
+        {
+          "catalogRef": "ombr-native-mechanical",
+          "catalogRevision": "0.1.0-demo"
+        }
+      ],
+      "geometryBasis": "nominal-grid-derived",
+      "degreesOfFreedom": {
+        "translationX": "locked",
+        "translationY": "locked",
+        "translationZ": "locked",
+        "rotationX": "locked",
+        "rotationY": "locked",
+        "rotationZ": "free"
+      },
+      "fitClasses": [
+        "free",
+        "friction"
+      ],
+      "parameters": [
+        {
+          "name": "hole-centre-pitch",
+          "quantity": "nominal adjacent hole centre pitch",
+          "status": "known",
+          "value": 0.008,
+          "unit": "m",
+          "provenance": "OMBR draft nominal grid, not a measured hole profile."
+        },
+        {
+          "name": "functional-profile",
+          "quantity": "pin and hole profile with tolerances",
+          "status": "unknown",
+          "reason": "Independent multi-lot metrology and lawful open parametric geometry remain Phase 3 work."
+        },
+        {
+          "name": "cycle-life",
+          "quantity": "mating cycles before leaving force window",
+          "status": "unknown",
+          "reason": "No physical coupon or wear dataset exists for the syntax example."
+        }
+      ],
+      "evidenceArtifactRefs": [
+        "mechanical-reference-notes"
+      ],
+      "provenance": "OMBR syntax-only profile.",
+      "limitations": [
+        "Diameter, chamfer, friction ribs, retention, force windows, materials, and tolerances are intentionally unfrozen."
+      ]
+    },
+    {
+      "id": "ombr-cross-axle-p0",
+      "revision": "0.1.0-demo",
+      "name": "Illustrative cross-axle torque coupling",
+      "kind": "axle-hole",
+      "maturity": "illustrative",
+      "roles": [
+        "cross-axle",
+        "cross-hole"
+      ],
+      "sourceCatalogRefs": [
+        {
+          "catalogRef": "ombr-native-mechanical",
+          "catalogRevision": "0.1.0-demo"
+        }
+      ],
+      "geometryBasis": "unknown",
+      "degreesOfFreedom": {
+        "translationX": "locked",
+        "translationY": "locked",
+        "translationZ": "locked",
+        "rotationX": "locked",
+        "rotationY": "locked",
+        "rotationZ": "locked"
+      },
+      "fitClasses": [
+        "nominal",
+        "friction"
+      ],
+      "allowedOrientationsRad": [
+        0,
+        1.5707963267948966,
+        3.141592653589793,
+        4.71238898038469
+      ],
+      "parameters": [
+        {
+          "name": "functional-profile",
+          "quantity": "cross axle and hole profile with fit tolerances",
+          "status": "unknown",
+          "reason": "This example deliberately does not infer a manufacturing profile from LDraw or Studio geometry."
+        },
+        {
+          "name": "torque-limit",
+          "quantity": "permitted continuous transmitted torque",
+          "status": "unknown",
+          "reason": "Material, process, temperature, engagement, and wear tests are not available."
+        }
+      ],
+      "evidenceArtifactRefs": [
+        "mechanical-reference-notes"
+      ],
+      "provenance": "OMBR syntax-only profile.",
+      "limitations": [
+        "Not a stable axle fit or torque rating."
+      ]
+    },
+    {
+      "id": "ombr-spur-gear-module-1-p0",
+      "revision": "0.1.0-demo",
+      "name": "Illustrative OMBR-native module 1 spur gear mesh",
+      "kind": "gear-mesh",
+      "maturity": "illustrative",
+      "roles": [
+        "spur-gear-a",
+        "spur-gear-b"
+      ],
+      "sourceCatalogRefs": [
+        {
+          "catalogRef": "ombr-native-mechanical",
+          "catalogRevision": "0.1.0-demo"
+        }
+      ],
+      "geometryBasis": "ombr-parametric-source",
+      "degreesOfFreedom": {
+        "translationX": "locked",
+        "translationY": "locked",
+        "translationZ": "locked",
+        "rotationX": "locked",
+        "rotationY": "locked",
+        "rotationZ": "free"
+      },
+      "fitClasses": [
+        "not-applicable"
+      ],
+      "parameters": [
+        {
+          "name": "normal-module",
+          "quantity": "normal gear module",
+          "status": "known",
+          "value": 0.001,
+          "unit": "m",
+          "provenance": "Illustrative OMBR-native analytical gear system; not measured from a LEGO element."
+        },
+        {
+          "name": "pressure-angle",
+          "quantity": "reference pressure angle",
+          "status": "known",
+          "value": 0.3490658503988659,
+          "unit": "rad",
+          "provenance": "Illustrative analytical input only."
+        },
+        {
+          "name": "centre-distance-rule",
+          "quantity": "nominal centre distance",
+          "status": "known",
+          "value": "moduleM * (toothCountA + toothCountB) / 2",
+          "unit": "expression",
+          "provenance": "Illustrative external-spur-gear rule; physical backlash and compensation remain unvalidated."
+        }
+      ],
+      "evidenceArtifactRefs": [
+        "gear24-parameters",
+        "gear24-characterization"
+      ],
+      "provenance": "Independently defined syntax example, not copied third-party geometry.",
+      "limitations": [
+        "No physical mesh, load, efficiency, temperature, lubrication, wear, or life claim is made."
+      ]
+    }
+  ],
   "artifacts": [
+    {
+      "id": "mechanical-reference-notes",
+      "role": "documentation",
+      "path": "mechanical/reference-library-p0.md",
+      "mediaType": "text/markdown",
+      "digest": "sha256:2020202020202020202020202020202020202020202020202020202020202020",
+      "license": "CERN-OHL-W-2.0",
+      "source": true
+    },
+    {
+      "id": "beam5-native-cad",
+      "role": "native-cad",
+      "path": "mechanical/parts/beam-5/source/beam-5.FCStd",
+      "mediaType": "application/vnd.freecad",
+      "digest": "sha256:2121212121212121212121212121212121212121212121212121212121212121",
+      "license": "CERN-OHL-W-2.0",
+      "source": true
+    },
+    {
+      "id": "beam5-step",
+      "role": "step",
+      "path": "mechanical/parts/beam-5/exchange/beam-5.step",
+      "mediaType": "model/step",
+      "digest": "sha256:2221222122212221222122212221222122212221222122212221222122212221",
+      "license": "CERN-OHL-W-2.0",
+      "source": false,
+      "generatedFrom": [
+        "beam5-native-cad"
+      ],
+      "sourceSnapshotDigest": "sha256:2121212121212121212121212121212121212121212121212121212121212121",
+      "generator": {
+        "name": "illustrative-freecad-export",
+        "version": "0.1.0-demo",
+        "settingsDigest": "sha256:2323232323232323232323232323232323232323232323232323232323232323"
+      }
+    },
+    {
+      "id": "beam5-visual",
+      "role": "visual-gltf",
+      "path": "mechanical/parts/beam-5/visual/beam-5.glb",
+      "mediaType": "model/gltf-binary",
+      "digest": "sha256:2424242424242424242424242424242424242424242424242424242424242424",
+      "license": "CC-BY-4.0",
+      "source": false,
+      "generatedFrom": [
+        "beam5-native-cad"
+      ],
+      "sourceSnapshotDigest": "sha256:2121212121212121212121212121212121212121212121212121212121212121",
+      "generator": {
+        "name": "illustrative-gltf-export",
+        "version": "0.1.0-demo",
+        "settingsDigest": "sha256:2525252525252525252525252525252525252525252525252525252525252525"
+      }
+    },
+    {
+      "id": "beam5-ldraw",
+      "role": "ldraw",
+      "path": "mechanical/parts/beam-5/assembly/ombr-beam-5.dat",
+      "mediaType": "text/plain",
+      "digest": "sha256:2626262626262626262626262626262626262626262626262626262626262626",
+      "license": "CERN-OHL-W-2.0",
+      "source": false,
+      "generatedFrom": [
+        "beam5-native-cad"
+      ],
+      "sourceSnapshotDigest": "sha256:2121212121212121212121212121212121212121212121212121212121212121",
+      "generator": {
+        "name": "illustrative-ldraw-export",
+        "version": "0.1.0-demo",
+        "settingsDigest": "sha256:2727272727272727272727272727272727272727272727272727272727272727"
+      }
+    },
+    {
+      "id": "beam5-drawing",
+      "role": "mechanical-drawing",
+      "path": "mechanical/parts/beam-5/drawings/beam-5.pdf",
+      "mediaType": "application/pdf",
+      "digest": "sha256:2828282828282828282828282828282828282828282828282828282828282828",
+      "license": "CERN-OHL-W-2.0",
+      "source": false,
+      "generatedFrom": [
+        "beam5-native-cad"
+      ],
+      "sourceSnapshotDigest": "sha256:2121212121212121212121212121212121212121212121212121212121212121",
+      "generator": {
+        "name": "illustrative-drawing-export",
+        "version": "0.1.0-demo",
+        "settingsDigest": "sha256:2929292929292929292929292929292929292929292929292929292929292929"
+      }
+    },
+    {
+      "id": "beam5-characterization",
+      "role": "mechanical-characterization",
+      "path": "mechanical/parts/beam-5/evidence/characterization.json",
+      "mediaType": "application/json",
+      "digest": "sha256:3030303030303030303030303030303030303030303030303030303030303030",
+      "license": "CC0-1.0",
+      "source": true
+    },
+    {
+      "id": "gear24-native-cad",
+      "role": "native-cad",
+      "path": "mechanical/parts/gear-24/source/gear-24.FCStd",
+      "mediaType": "application/vnd.freecad",
+      "digest": "sha256:3131313131313131313131313131313131313131313131313131313131313131",
+      "license": "CERN-OHL-W-2.0",
+      "source": true
+    },
+    {
+      "id": "gear24-step",
+      "role": "step",
+      "path": "mechanical/parts/gear-24/exchange/gear-24.step",
+      "mediaType": "model/step",
+      "digest": "sha256:3232323232323232323232323232323232323232323232323232323232323232",
+      "license": "CERN-OHL-W-2.0",
+      "source": false,
+      "generatedFrom": [
+        "gear24-native-cad",
+        "gear24-parameters"
+      ],
+      "sourceSnapshotDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "generator": {
+        "name": "illustrative-parametric-gear-export",
+        "version": "0.1.0-demo",
+        "settingsDigest": "sha256:3434343434343434343434343434343434343434343434343434343434343434"
+      }
+    },
+    {
+      "id": "gear24-visual",
+      "role": "visual-gltf",
+      "path": "mechanical/parts/gear-24/visual/gear-24.glb",
+      "mediaType": "model/gltf-binary",
+      "digest": "sha256:3535353535353535353535353535353535353535353535353535353535353535",
+      "license": "CC-BY-4.0",
+      "source": false,
+      "generatedFrom": [
+        "gear24-native-cad",
+        "gear24-parameters"
+      ],
+      "sourceSnapshotDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "generator": {
+        "name": "illustrative-gltf-export",
+        "version": "0.1.0-demo",
+        "settingsDigest": "sha256:3636363636363636363636363636363636363636363636363636363636363636"
+      }
+    },
+    {
+      "id": "gear24-ldraw",
+      "role": "ldraw",
+      "path": "mechanical/parts/gear-24/assembly/ombr-gear-24.dat",
+      "mediaType": "text/plain",
+      "digest": "sha256:3737373737373737373737373737373737373737373737373737373737373737",
+      "license": "CERN-OHL-W-2.0",
+      "source": false,
+      "generatedFrom": [
+        "gear24-native-cad",
+        "gear24-parameters"
+      ],
+      "sourceSnapshotDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "generator": {
+        "name": "illustrative-ldraw-export",
+        "version": "0.1.0-demo",
+        "settingsDigest": "sha256:3838383838383838383838383838383838383838383838383838383838383838"
+      }
+    },
+    {
+      "id": "gear24-drawing",
+      "role": "mechanical-drawing",
+      "path": "mechanical/parts/gear-24/drawings/gear-24.pdf",
+      "mediaType": "application/pdf",
+      "digest": "sha256:3939393939393939393939393939393939393939393939393939393939393939",
+      "license": "CERN-OHL-W-2.0",
+      "source": false,
+      "generatedFrom": [
+        "gear24-native-cad",
+        "gear24-parameters"
+      ],
+      "sourceSnapshotDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "generator": {
+        "name": "illustrative-drawing-export",
+        "version": "0.1.0-demo",
+        "settingsDigest": "sha256:4040404040404040404040404040404040404040404040404040404040404040"
+      }
+    },
+    {
+      "id": "gear24-parameters",
+      "role": "gear-parameters",
+      "path": "mechanical/parts/gear-24/source/gear-24.parameters.json",
+      "mediaType": "application/json",
+      "digest": "sha256:4141414141414141414141414141414141414141414141414141414141414141",
+      "license": "CERN-OHL-W-2.0",
+      "source": true
+    },
+    {
+      "id": "gear24-characterization",
+      "role": "mechanical-characterization",
+      "path": "mechanical/parts/gear-24/evidence/characterization.json",
+      "mediaType": "application/json",
+      "digest": "sha256:4242424242424242424242424242424242424242424242424242424242424242",
+      "license": "CC0-1.0",
+      "source": true
+    },
     {
       "id": "hub-native-cad",
       "role": "native-cad",
@@ -464,7 +1004,7 @@
           "dataBitRateBps": 2000000,
           "clockTolerancePpmMax": 100,
           "encoding": "RFC 8949 Core Deterministic CBOR with definite lengths and unique map keys",
-          "framing": "OMBR P0 header and CRC-32C envelope defined by section 9.4 and the schema artifact",
+          "framing": "OMBR P0 header and CRC-32C envelope defined by section 8.4 and the schema artifact",
           "byteOrder": "little-endian",
           "maximumPayloadBytes": 64,
           "startup": "Presence, HELLO, DESCRIBE, validation, CONFIGURE, READY, then explicit ARM",
@@ -1762,6 +2302,283 @@
   ],
   "componentModels": [
     {
+      "modelId": "https://example.invalid/ombr/models/beam-5-p0",
+      "revision": "0.1.0-demo",
+      "name": "Illustrative OMBR-native five-module beam",
+      "role": "mechanical",
+      "license": "CERN-OHL-W-2.0",
+      "artifactRefs": [
+        "beam5-native-cad",
+        "beam5-step",
+        "beam5-visual",
+        "beam5-ldraw",
+        "beam5-drawing",
+        "beam5-characterization"
+      ],
+      "frames": [
+        {
+          "id": "body",
+          "pose": {
+            "translationM": [
+              0,
+              0,
+              0
+            ],
+            "rotationXyzw": [
+              0,
+              0,
+              0,
+              1
+            ]
+          }
+        },
+        {
+          "id": "hole-0-frame",
+          "parent": "body",
+          "pose": {
+            "translationM": [
+              -0.016,
+              0,
+              0
+            ],
+            "rotationXyzw": [
+              0,
+              0,
+              0,
+              1
+            ]
+          }
+        }
+      ],
+      "interfaces": [
+        {
+          "id": "hole-0",
+          "kind": "mechanical",
+          "profile": "OMBR-MECH-BRICK-BEAM-P0",
+          "frame": "hole-0-frame",
+          "fitClass": "friction",
+          "mechanicalMatingProfileRef": "ombr-pin-hole-p0",
+          "mechanicalMatingProfileRevision": "0.1.0-demo",
+          "matingRole": "round-hole",
+          "engagementAxis": [
+            0,
+            0,
+            1
+          ],
+          "assemblyPath": "Align the illustrative round-pin axis and insert along local positive or negative Z according to the assembly plan.",
+          "partialMateOutcome": "The mate is invalid for retention or load; no fit or force behavior is claimed by this example."
+        }
+      ],
+      "capabilities": [],
+      "physical": {
+        "status": "unknown",
+        "reason": "No fabricated sample or authoritative mass-property source exists for this syntax-only beam."
+      },
+      "mechanicalPart": {
+        "partKind": "beam",
+        "maturity": "illustrative",
+        "sourceKind": "ombr-native-replacement",
+        "externalIdentifiers": [
+          {
+            "scheme": "ombr-part-id",
+            "value": "beam-5-p0",
+            "scope": "project-part",
+            "catalogRef": "ombr-native-mechanical",
+            "catalogRevision": "0.1.0-demo",
+            "sourceUri": "https://example.invalid/ombr/mechanical/beam-5-p0",
+            "observedAt": "2026-07-13"
+          }
+        ],
+        "geometryAuthority": "project-parametric-source",
+        "geometryFidelity": "dimensioned-reference",
+        "dimensionalBasis": "nominal-grid-derived",
+        "fabricationAuthority": "open-replacement-source",
+        "datumFrame": "body",
+        "parameters": [
+          {
+            "name": "hole-count",
+            "quantity": "number of nominal beam holes",
+            "status": "known",
+            "value": 5,
+            "unit": "1",
+            "provenance": "Illustrative project-authored parametric input."
+          },
+          {
+            "name": "functional-hole-profile",
+            "quantity": "hole profile, tolerances, force and wear",
+            "status": "unknown",
+            "reason": "Metrology, process coupons and multi-cycle physical evidence are not available."
+          }
+        ],
+        "replacementFabrication": {
+          "status": "incomplete",
+          "reason": "The source artifacts are syntax placeholders; no accessible fabrication process has passed fit, load, thermal or lifecycle tests.",
+          "provenance": "OMBR syntax example only."
+        },
+        "evidenceArtifactRefs": [
+          "beam5-drawing",
+          "beam5-characterization"
+        ],
+        "provenance": "Independently authored OMBR syntax example using the nominal exchange grid; no third-party geometry is asserted.",
+        "limitations": [
+          "Only one of five intended repeated hole interfaces is expanded in this compact syntax example.",
+          "Not qualified for fit, load, fabrication, or third-party compatibility."
+        ]
+      }
+    },
+    {
+      "modelId": "https://example.invalid/ombr/models/gear-24-p0",
+      "revision": "0.1.0-demo",
+      "name": "Illustrative OMBR-native 24-tooth spur gear",
+      "role": "mechanical",
+      "license": "CERN-OHL-W-2.0",
+      "artifactRefs": [
+        "gear24-native-cad",
+        "gear24-step",
+        "gear24-visual",
+        "gear24-ldraw",
+        "gear24-drawing",
+        "gear24-parameters",
+        "gear24-characterization"
+      ],
+      "frames": [
+        {
+          "id": "body",
+          "pose": {
+            "translationM": [
+              0,
+              0,
+              0
+            ],
+            "rotationXyzw": [
+              0,
+              0,
+              0,
+              1
+            ]
+          }
+        },
+        {
+          "id": "axis",
+          "parent": "body",
+          "pose": {
+            "translationM": [
+              0,
+              0,
+              0
+            ],
+            "rotationXyzw": [
+              0,
+              0,
+              0,
+              1
+            ]
+          }
+        }
+      ],
+      "interfaces": [
+        {
+          "id": "bore",
+          "kind": "shaft",
+          "profile": "OMBR-MECH-BRICK-BEAM-P0",
+          "frame": "axis",
+          "fitClass": "nominal",
+          "mechanicalMatingProfileRef": "ombr-cross-axle-p0",
+          "mechanicalMatingProfileRevision": "0.1.0-demo",
+          "matingRole": "cross-hole",
+          "engagementAxis": [
+            0,
+            0,
+            1
+          ],
+          "assemblyPath": "Align the keyed bore and slide it along the local Z axis.",
+          "partialMateOutcome": "Torque, axial retention and runout are invalid until the declared engagement is complete and tested."
+        },
+        {
+          "id": "teeth",
+          "kind": "mechanical",
+          "profile": "OMBR-MECH-GEAR-P0",
+          "frame": "axis",
+          "fitClass": "not-applicable",
+          "mechanicalMatingProfileRef": "ombr-spur-gear-module-1-p0",
+          "mechanicalMatingProfileRevision": "0.1.0-demo",
+          "matingRole": "spur-gear-a",
+          "engagementAxis": [
+            0,
+            0,
+            1
+          ],
+          "assemblyPath": "Place the mating gear on a parallel axis at the centre distance resolved by the transmission relation.",
+          "partialMateOutcome": "An unresolved or interfering mesh is invalid and must not transmit load."
+        }
+      ],
+      "capabilities": [],
+      "physical": {
+        "status": "unknown",
+        "reason": "Mass and inertia depend on the unqualified material and fabrication process."
+      },
+      "mechanicalPart": {
+        "partKind": "gear",
+        "maturity": "illustrative",
+        "sourceKind": "ombr-native-replacement",
+        "externalIdentifiers": [
+          {
+            "scheme": "ombr-part-id",
+            "value": "gear-24-p0",
+            "scope": "project-part",
+            "catalogRef": "ombr-native-mechanical",
+            "catalogRevision": "0.1.0-demo",
+            "sourceUri": "https://example.invalid/ombr/mechanical/gear-24-p0",
+            "observedAt": "2026-07-13"
+          }
+        ],
+        "geometryAuthority": "project-parametric-source",
+        "geometryFidelity": "dimensioned-reference",
+        "dimensionalBasis": "nominal-grid-derived",
+        "fabricationAuthority": "open-replacement-source",
+        "datumFrame": "axis",
+        "parameters": [
+          {
+            "name": "tooth-count",
+            "quantity": "spur gear tooth count",
+            "status": "known",
+            "value": 24,
+            "unit": "1",
+            "provenance": "Illustrative OMBR-native analytical input."
+          },
+          {
+            "name": "normal-module",
+            "quantity": "normal module",
+            "status": "known",
+            "value": 0.001,
+            "unit": "m",
+            "provenance": "Illustrative analytical input, not measured from a third-party part."
+          }
+        ],
+        "replacementFabrication": {
+          "status": "incomplete",
+          "reason": "No process/material combination has passed tooth, bore, runout, torque, thermal, wear or lifecycle qualification.",
+          "provenance": "OMBR syntax example only."
+        },
+        "gearGeometry": {
+          "status": "incomplete",
+          "reason": "The example demonstrates identity and profile references without claiming a complete manufacturable tooth/load definition.",
+          "provenance": "Project-authored module/count inputs only.",
+          "limitations": [
+            "Pressure profile, tolerances, backlash, runout, torque, speed, material and wear evidence remain unresolved."
+          ]
+        },
+        "evidenceArtifactRefs": [
+          "gear24-parameters",
+          "gear24-characterization"
+        ],
+        "provenance": "Independently authored OMBR syntax example; not a copy or compatibility claim for a third-party gear.",
+        "limitations": [
+          "Not qualified for fabrication, mesh compatibility, load, life, or third-party fit."
+        ]
+      }
+    },
+    {
       "modelId": "https://example.invalid/ombr/models/hub-r0",
       "revision": "0.1.0-demo",
       "name": "Reference Hub R0",
@@ -1845,7 +2662,17 @@
           "kind": "mechanical",
           "profile": "OMBR-MECH-1-draft",
           "frame": "body",
-          "fitClass": "nominal"
+          "fitClass": "nominal",
+          "mechanicalMatingProfileRef": "ombr-attachment-grid-p0",
+          "mechanicalMatingProfileRevision": "0.1.0-demo",
+          "matingRole": "grid-host",
+          "engagementAxis": [
+            0,
+            0,
+            1
+          ],
+          "assemblyPath": "Approach along the local positive Z axis with the declared grid orientation; this is syntax only.",
+          "partialMateOutcome": "Attachment is invalid and must not carry load until all selected grid features pass the referenced profile."
         },
         {
           "id": "port-1",
@@ -1997,7 +2824,17 @@
           "kind": "shaft",
           "profile": "OMBR-MECH-1-draft",
           "frame": "shaft",
-          "fitClass": "nominal"
+          "fitClass": "nominal",
+          "mechanicalMatingProfileRef": "ombr-cross-axle-p0",
+          "mechanicalMatingProfileRevision": "0.1.0-demo",
+          "matingRole": "cross-axle",
+          "engagementAxis": [
+            1,
+            0,
+            0
+          ],
+          "assemblyPath": "Slide the mating bore onto the local positive X output axis after aligning the keyed profile.",
+          "partialMateOutcome": "Torque transfer and axial retention are invalid; the creation must remain unarmed."
         }
       ],
       "capabilities": [
