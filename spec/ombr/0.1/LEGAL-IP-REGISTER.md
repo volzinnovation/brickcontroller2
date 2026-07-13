@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: MIT -->
 
-# OMBR legal, IP, and market-access register
+# HOMBRE legal, IP, and market-access register for OMBR 0.1
 
 Version: 0.1.0-seed
 
@@ -8,33 +8,41 @@ Reviewed: 13 July 2026
 
 Status: Screening framework; all commercial-clearance rows remain open
 
-This public companion to the [OMBR draft](OMBR-SPEC.md) records known legal,
-intellectual-property, and regulatory work. It is not legal advice, a freedom-
-to-operate opinion, product certification, or permission from any third party.
-Only qualified counsel and competent conformity professionals working with an
-exact design, intended act, market, and date can close the applicable gates.
+This public HOMBRE companion to the [OMBR draft](OMBR-SPEC.md) records known
+legal, intellectual-property, and regulatory work. It is not legal advice, a
+freedom-to-operate opinion, product certification, or permission from any
+third party. Only qualified counsel and competent conformity professionals
+working with an exact design, intended act, market, and date can close the
+applicable gates.
 
 ## 1. Current executive register
 
 | Area | Current status | Why it matters | Required next evidence | Release effect |
 | --- | --- | --- | --- | --- |
-| `OMBR` word/name clearance | `open-high` | The working name may conflict with earlier marks, names or domains in relevant countries/classes | EUIPO/WIPO and national searches, company/domain search, counsel review, owner and search date; repeat for final logo/device mark | Do not invest in commercial branding or certification marks before clearance |
-| LEGO/TECHNIC/MINDSTORMS references | `controlled-open` | Factual compatibility can still become confusing mark use or imply endorsement | Naming/style guide, exact compatibility wording, test-linked claims, mark attribution, commercial review | Plain-text minimal references only; never in OMBR product/domain/package/badge names |
+| `HOMBRE` project/name clearance | `open-high` | The adopted umbrella name may conflict with earlier marks, names or domains in relevant countries/classes | EUIPO/WIPO and national searches, company/domain search, counsel review, owner and search date; repeat for final logo/device mark | Do not invest in commercial branding under HOMBRE before clearance |
+| `OMBR` technical identifier and conformance-mark clearance | `open-high` | A technical prefix, namespace, profile family, or future conformance mark can still conflict with earlier rights | EUIPO/WIPO and national searches covering the intended technical and certification uses, namespace/package search, counsel review, owner and search date | Keep OMBR technical in this draft; do not present it as an authorized certification or cleared commercial mark |
+| LEGO/TECHNIC/MINDSTORMS references | `controlled-open` | Factual compatibility can still become confusing mark use or imply endorsement | Naming/style guide, exact compatibility wording, test-linked claims, mark attribution, commercial review | Plain-text minimal references only; never in HOMBRE product/domain/package/badge names or OMBR namespaces, profiles, or conformance marks |
 | Logos, colors and trade dress | `open-high` | Logos and source-indicating appearance create confusion risk independently of functional fit | Original visual identity and enclosure, overall-impression review, dated design history | No third-party logo, stylized mark, copied ornamental shell, or look-alike packaging |
 | Modular element and interface designs | `open-high` | Technical or must-fit features are not automatically outside design protection; modular-system rules can remain relevant | Feature-by-feature interface-necessity map, alternatives, independent metrology/CAD history, registered/unregistered design searches and counsel review | Freeze only necessary mating geometry; redesign all nonfunctional appearance; affected release blocked until disposition |
 | Connector/contact system | `open-high` | A new connector may engage patent/design/mark rights; a proprietary legacy plug can create supply and rights dependence | Candidate claims/design search, supplier terms, tooling/supply rights, exact interface FTO and alternate | P0 remains experimental; no production selection before gate |
 | Hub electrical architecture | `open-high` | Power switching, motor drive, safety gating, hot plug and multi-port functions may meet live patent claims | Feature decomposition, claims/family/status search in target countries, counsel claim charts and mitigation | No commercial design freeze before FTO disposition |
+| Mini/Midi/Maxi compute candidates | `documented-COTS-open-review` | BBC micro:bit, Raspberry Pi and NVIDIA Jetson names, boards/modules, firmware, radio stacks and developer kits have separate rights, licenses, lifecycle and product-use boundaries; public documentation is not a license to clone or rebrand them | Exact module/carrier/firmware/BSP and mark-use inventory; license/notices; supplier and lifecycle terms; radio-module integration and product-review record; original HOMBRE carrier/enclosure | Use plain factual candidate names only; never claim the complete hub or upstream board is wholly HOMBRE open hardware; Jetson developer kit remains prototype evidence, not production lifecycle evidence |
 | Motors, sensors, gears and adapters | `open-high` | Open CAD/firmware does not clear cartridge, encoder, gear/interface, adapter or protocol claims | Exact candidate/supplier terms, patent/design searches, interface tests, clean-room or license records | Each released component/revision needs its own record |
+| SO-101/LeRobot arm reference and adapter | `controlled-open` | Apache-2.0 repositories permit covered reuse subject to their terms, but SO-101/LeRobot/Feetech and supplier names, unversioned upstream content, COTS servos/firmware, external CAD links and comparative claims remain separate rights and accuracy questions | Pin upstream commits/releases and every artifact/license/notice; identify exact purchased reference and servo/PSU variants; original brick design history; upstream-compatible adapter; trademark/non-affiliation style; side-by-side raw test evidence and commercial counsel review | Describe only the exact dated benchmark; do not put third-party marks in HOMBRE product/profile names or imply endorsement, drop-in compatibility, safety, payload or performance not established by evidence |
+| MQTT, Sparkplug and coordination stack | `open-medium` | MQTT is an OASIS standard; Sparkplug, broker/client projects and names have their own specification, software and trademark terms; interoperability does not authorize certification marks | Exact OASIS/specification and implementation licenses/notices, trademark style, version/TCK claims, broker/orchestrator/data-store dependency inventory and export/security obligations | OMBR may define its own MQTT 5 profile; do not claim Sparkplug compatibility/certification unless its current program and tests are met |
+| AI models, datasets and camera records | `open-high` | Model code, architecture, weights, training/evaluation data, labels and outputs may have different copyright, database, privacy, biometric, publicity, contract and field-of-use restrictions | Artifact-by-artifact SPDX/terms and provenance; training/collection/consent basis; privacy/data-flow/retention/deletion assessment; model/runtime patent and export-control screening; redaction and dataset/model-card evidence | No model, weight or dataset becomes a required open reference unless redistribution and intended use are authorized; no personal recording in public evidence without a valid basis |
 | LEGO/BrickLink/Studio catalog and CAD data | `restricted` | Website, instruction, image, Studio and bulk catalog rights do not form an open engineering library | Terms review per source; sparse factual aliases only; independent photos/renders/metrology/CAD; release-tree scanner | No scraping, bulk mirroring, Studio asset extraction or restricted redistribution |
 | LDraw data | `per-file-review` | LDraw is community-authored and files can have different licenses; geometry/units are not fit authority | Per-file source, author, license, attribution, digest, modification and redistribution record | Optional visual/assembly import only after file review; never sole engineering authority |
 | Legacy protocol interoperability | `open-high` | Observation/decompilation/repair exceptions are narrow, territorial and purpose limited | Lawful-acquisition file, unavailable-information record, necessity/minimization, jurisdictional review, clean-room outputs | No extracted firmware/source/keys/assets; publish only independently authored interface/test material |
 | Specification contributor patents | `open-high` | A copyright license alone does not ensure implementations receive essential patent rights | Patent-aware specification license, contributor/corporate CLA or equivalent, essential-claim disclosure and counsel review | Normative 1.0 contributions blocked until policy is effective |
 | Hardware/software/data licensing | `open-medium` | One project contains differently protected artifacts and reciprocal scopes | SPDX/REUSE inventory, preferred source, holders/notices, patent clauses, compatibility and outbound policy | CI blocks unknown/NC/ND/field-of-use/revocable required assets |
+| Creation Portal, user publications and dependency namespaces | `open-high` | Hosting source, CAD, binaries, instructions, comments, signatures and mirrors creates copyright, mark, privacy, security, moderation, notice/takedown, consumer and platform-governance duties; a digest or user upload does not transfer rights | Exact Forgejo/OCI/ORAS/runtime license and deployment inventory; publisher terms/attestation; namespace and impersonation policy; privacy/data-flow and age/access review; notice, counter-notice, appeal, restoration and transparency procedure; signing/key, malicious-content, mirror, retention, backup/export and operator-jurisdiction records | No public production portal or conformance badge before accountable operator, policies, security/privacy design, TCO, and qualified territorial review; local Git/release workflow remains available |
 | Product classification | `open-high` | Hub, kit, toy, education product, machine component and radio product have different duties | Exact SKU/intended-use/age/market/economic-operator record and competent review | No CE/market claim against a generic source repository |
-| EU radio/EMC/environment | `open-high` | Wi-Fi/Bluetooth makes the final controller radio equipment; upstream Pi testing is not final-product conformity | Final enclosure/antenna/cable/power configuration, RED/EMC/RoHS/REACH/WEEE matrix, risk file, lab plan and DoC owner | Commercial EU controller blocked until applicable conformity route passes |
+| EU radio/EMC/environment | `open-high` | Wi-Fi/BLE makes the final controller radio equipment; upstream Pi testing is not final-product conformity | Final enclosure/antenna/cable/power configuration, RED/EMC/RoHS/REACH/WEEE matrix, risk file, lab plan and DoC owner | Commercial EU controller blocked until applicable conformity route passes |
 | EU cybersecurity/data | `open-high` | RED cybersecurity duties, CRA transition, Data Act and privacy may apply to connected products/services | Product/security risk assessment, SBOM, update/recovery/support period, vulnerability/reporting owner, data inventory/export/delete/access design | Must be architected from Phase 0; not an after-launch documentation task |
 | Toy/child-directed use | `decision-open` | Objective design/marketing/use may make a product a toy; a 14+ label is not decisive by itself | Intended-age/marketing decision, toy classification, chemical/mechanical/electrical/flammability/hygiene assessment and date-specific transition plan | Base draft remains maker/education research, not a toy claim |
 | Machine/vehicle use | `decision-open` | “Machine” and “vehicle” are use cases, not one legal category; hazardous or occupant/public-road uses expand obligations | Sector/use classification, energy/risk assessment, guarding and separately qualified safety chain | Base profile excludes safety-related, occupant, public-road, medical, aviation and hazardous production control |
+| Multi-Creation workcell and assembly farm | `open-high` | Coordinated manipulators, fixtures, tools, guards, remote observation and automated production can make the integrator responsible for a machine/assembly, workplace safety, cybersecurity, records and product quality even when each component is separately sold | Exact intended use and integrator/economic-operator map; machinery/work-equipment and workplace assessment; independently assessed protective system; commissioning/validation; operator training; camera/privacy and incident/maintenance records | MQTT/OMBR conformance is not machinery or functional-safety certification; no unattended or production claim before cell-level review and evidence |
 | Product liability, warranty, recall and insurance | `open-high` | Open source does not remove manufacturer/importer/distributor obligations | Economic-operator map, terms/warranty, traceability, incident/recall procedure, insurance and reserve | Include in cost and launch gate |
 
 `Open-high` means the issue is material and not yet dispositioned. It does not
@@ -43,8 +51,8 @@ rule exists but final review is incomplete.
 
 ## 2. Required review record
 
-Every legal/IP record must be tied to a concrete subject rather than to OMBR in
-the abstract:
+Every legal/IP record must be tied to a concrete subject rather than to HOMBRE
+or OMBR in the abstract:
 
 ```text
 review_id
@@ -70,8 +78,12 @@ replace them with an unexplained `cleared` flag.
 
 ## 3. Trademark and compatibility controls
 
-The project will use OMBR as a working technical identifier until word and
-device-mark clearance. No repository name alone proves availability.
+HOMBRE is the adopted umbrella project and ecosystem name. OMBR is its
+technical identifier for the specification, profiles, schemas, package
+formats, APIs, tests, and conformance vocabulary. Both remain subject to word-
+and device-mark clearance for each intended market and use. No repository
+name, domain, package name, or earlier search proves availability. Editorial
+adoption of HOMBRE does not itself authorize a certification mark.
 
 Required compatibility style:
 
@@ -117,7 +129,12 @@ The search plan covers:
    behavior;
 7. design/as-built/runtime twin synchronization, CAD semantics, simulation,
    calibration and trace comparison; and
-8. Workbench, deployment, debugging, visual programming and package flow.
+8. Workbench, deployment, debugging, visual programming and package flow;
+9. compute-tier carriers, accelerator/model deployment, perception/planning,
+   collective orchestration, resource leasing and automated assembly process;
+   and
+10. Creation publication, portal discovery, dependency namespaces, signatures,
+   mirrors, moderation, withdrawal/tombstones, and hosted-service behavior.
 
 For each feature, search keywords and synonyms, IPC/CPC classifications,
 applicants/inventors, citations and families in
@@ -140,7 +157,7 @@ The reference library separates four things:
 4. an independently authored OMBR functional model or open replacement.
 
 There is no public open manufacturer-grade LEGO element CAD/tolerance/load
-catalog identified by this review. OMBR must not build one by extracting
+catalog identified by this review. HOMBRE must not build one by extracting
 BrickLink Studio, official instructions, product images, Pick a Brick, or
 bulk catalog/API data. The [Studio license](https://studiohelp.bricklink.com/hc/en-us/articles/6606313426711-Studio-Software-License-Agreement),
 [BrickLink terms](https://v2.bricklink.com/en-us/terms-of-service), and
@@ -167,7 +184,7 @@ system treatment. No exception is assumed without counsel.
 
 ## 6. Protocol and repair research controls
 
-OMBR promotes repair and interoperability subject to safety, security,
+HOMBRE promotes repair and interoperability subject to safety, security,
 privacy, contract and IP law. A protocol research record identifies lawful
 access/ownership, exact interoperability purpose, information unavailable from
 the vendor, acts performed, necessity/minimization, territory, roles and
@@ -190,7 +207,9 @@ The final policy needs separate, compatible layers:
 | Specification contributions | Corporate-capable copyright and patent contribution agreement plus provenance attestation | Employer authority, known essential claims, confidential/third-party material and DCO role |
 | Project hardware/CAD | Deliberately selected CERN-OHL-v2 variant | Strong (`S`), weak (`W`) or permissive (`P`) reciprocity boundary and adoption goals |
 | New permissive software | Apache-2.0 where compatible | Dependency/kernel exceptions, generated code and plugin boundaries |
+| Portal and artifact-distribution stack | Exact upstream licenses and notices for Forgejo, OCI/ORAS, registry, database, object store, search, rendering and moderation components | Network-service modifications, database/content terms, plugins, trademarks, security support, export/migration and operator obligations |
 | Tutorials/images/data | Explicit CC BY/CC0 or suitable data license per artifact | Attribution, database rights, privacy and whether patents are relevant |
+| AI code/models/weights/datasets | Artifact-specific open-source, open-weight and data licenses plus model/data cards and provenance; no blanket project label | Redistribution, commercial/field-of-use limits, patents, training-data rights, privacy, export controls, runtime dependencies and whether an “open model” definition is actually met |
 | Marks/conformance | Separate trademark and certification policy | Factual compatibility vs authorized certification, quality control and fork naming |
 
 CC licenses chiefly address copyright and related rights; they must not be
@@ -204,14 +223,16 @@ applicability conclusion.
 
 | SKU/use | Primary areas to assess | Key point |
 | --- | --- | --- |
-| Wi-Fi/Bluetooth controller or radio sensor | RED, integrated-product EMC/safety/spectrum, RoHS/REACH/WEEE, GPSR, CRA transition, privacy/data and consumer duties | Pi compliance evidence is an input; final antenna/enclosure/cables/power/software are assessed together |
+| Wi-Fi/BLE controller or radio sensor | RED, integrated-product EMC/safety/spectrum, RoHS/REACH/WEEE, GPSR, CRA transition, privacy/data and consumer duties | Pi compliance evidence is an input; final antenna/enclosure/cables/power/software are assessed together |
 | Wired motor/light/sensor/module | EMC where apparatus, RoHS/REACH/WEEE, GPSR and use-specific rules | Low voltage does not mean no safety or consumer-product duties |
 | Battery or battery-containing kit | EU Batteries Regulation, transport, protection, labeling/EPR, replacement, recycling and instructions | Base affordable profile excludes a battery; any included pack is a separately costed/profiled product |
 | Passive brick/gear/adapter | GPSR, REACH/materials, design/IP; toy rules if intended for play by under-14 users | Passive does not mean unregulated or free of design rights |
 | Child/play/education kit | Current and transition-date toy rules plus radio/electrical/environmental/cyber overlays | Marketing, appearance and objective use matter; `14+` text alone is not determinative |
 | Stationary machine/automation component | Machinery rules depending on final function, EMC/electrical/product rules and end-system risk assessment | Base OMBR is not a safety-related control system or production-machine certification |
+| Coordinated assembly workcell/farm | Machinery/work-equipment and workplace rules, functional/protective safety, EMC/radio, cybersecurity, operator access, maintenance, traceability and product-quality obligations | The final integrated cell and substantial modifications require their own assessment; independent local protective systems cannot be replaced by MQTT or ordinary HOMBRE controllers |
 | Vehicle creation | Toy, mobile machinery, road/type approval, light transport, marine, unmanned aircraft or other sector rules depending on use | Base profile is non-occupant and off-public-road only |
 | Digital twin/connected service | CRA, Data Act, GDPR/ePrivacy where personal data, consumer and contract duties | Local-first exportable telemetry supports compliance but does not prove it |
+| AI/vision Maxi or remote inference service | Radio/electrical/cyber/product rules plus GDPR/ePrivacy and sector rules where cameras, personal data or automated decisions are involved; model/data licenses and export controls may apply | Edge processing and owner control reduce exposure but do not by themselves establish lawfulness, safety, accuracy or permissible model/data use |
 
 The [EU Blue Guide](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52022XC0629(04))
 explains integrated-product and substantial-modification responsibilities. The
@@ -229,7 +250,8 @@ required.
 A public commercial reference product must not ship while any applicable item
 below is unresolved:
 
-- OMBR product/mark clearance and final compatibility style;
+- HOMBRE project and word/device-mark clearance, OMBR technical and
+  conformance-mark clearance, and final compatibility style;
 - feature- and territory-specific patent/FTO counsel disposition;
 - registered/unregistered design and overall-impression disposition;
 - unknown or incompatible source/CAD/data/software/hardware license;

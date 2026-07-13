@@ -4,8 +4,8 @@
   "kind": "ombr-project",
   "projectId": "urn:uuid:64f63e14-4d8a-4dc1-9e44-7d3e16f4a001",
   "revision": "0.1.0-demo",
-  "name": "OMBR automation syntax rover",
-  "description": "Illustrative, non-deployable automation manifest showing mechanical source catalogs and mating profiles, original OMBR beam and gear component records, one hub, a supervised P0 bench source and cable, one smart motor, one distance sensor, reusable full electronic interface contracts and endpoint envelopes, P0 peripheral cables, a logical control source, a portable Python program, twin assets, and a simple controller binding. Artifact paths, mechanical dimensions, ratings, and digests are examples, not released hardware or measured evidence and do not claim compatibility with any third-party part.",
+  "name": "HOMBRE automation syntax rover",
+  "description": "Illustrative, non-deployable automation manifest showing mechanical source catalogs and mating profiles, original OMBR beam and gear component records, one hub, a supervised P0 bench source and cable, one smart motor, one distance sensor, reusable full electronic interface contracts and endpoint envelopes, P0 peripheral cables, a logical control source, a draft target-bound Python program descriptor, twin assets, and a simple controller binding. Artifact paths, mechanical dimensions, ratings, and digests are examples, not released hardware or measured evidence and do not claim compatibility with any third-party part.",
   "license": "Apache-2.0",
   "coordinateSystem": {
     "handedness": "right",
@@ -20,7 +20,7 @@
       "id": "ombr-native-mechanical",
       "revision": "0.1.0-demo",
       "name": "Illustrative OMBR Mechanical Reference Library",
-      "publisher": "OMBR project placeholder",
+      "publisher": "HOMBRE project placeholder",
       "sourceUri": "https://example.invalid/ombr/mechanical/0.1.0-demo",
       "reviewedAt": "2026-07-13",
       "license": "CERN-OHL-W-2.0",
@@ -3584,7 +3584,7 @@
       "id": "drive-program",
       "revision": "0.1.0-demo",
       "name": "Reference distance-aware drive program",
-      "description": "A non-executable descriptor example for one program bundle that targets the physical hub and simulator through the same capability IDs.",
+      "description": "A non-executable syntax example bound to component UUIDs in this manifest; it names physical-hub and simulator targets but is not portable under the future logical-alias requirements.",
       "language": "python",
       "runtime": {
         "runtimeId": "https://example.invalid/ombr/runtimes/cpython",

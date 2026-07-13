@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the plain, two-page A4 OMBR executive summary from Markdown."""
+"""Render the plain, two-page A4 HOMBRE executive summary from Markdown."""
 
 from pathlib import Path
 import re
@@ -164,7 +164,7 @@ def page_decor(canvas: Canvas, doc):
 
     canvas.setFont("Helvetica-Bold", 6.7)
     canvas.setFillColor(MUTED)
-    canvas.drawString(19 * mm, PAGE_H - 9.5 * mm, "OMBR EXECUTIVE SUMMARY")
+    canvas.drawString(19 * mm, PAGE_H - 9.5 * mm, "HOMBRE EXECUTIVE SUMMARY")
     canvas.setFont("Helvetica", 6.7)
     canvas.drawRightString(PAGE_W - 19 * mm, PAGE_H - 9.5 * mm, "0.1 PROPOSAL | 13 JULY 2026")
     canvas.drawString(19 * mm, 9.5 * mm, "github.com/volzinnovation/brickcontroller2")
@@ -189,7 +189,7 @@ def build_story(source: Path):
     )
 
     for heading, blocks in sections:
-        if heading == "Implementation strategy":
+        if heading == "Controller family":
             story.append(PageBreak())
         story.append(Paragraph(inline_markup(heading), STYLES["section"]))
         for kind, text in blocks:
@@ -210,10 +210,10 @@ def render(source: Path, output: Path):
         rightMargin=19 * mm,
         topMargin=16 * mm,
         bottomMargin=17 * mm,
-        title="OMBR Executive Summary",
-        author="Open Modular Brick Robotics project",
-        subject="Plain two-page A4 executive summary for the OMBR 0.1 proposal",
-        creator="OMBR ReportLab renderer",
+        title="HOMBRE Executive Summary",
+        author="HOMBRE - Holistic Open Modular Brick Robotics Ecosystem",
+        subject="Plain two-page A4 executive summary for HOMBRE and the OMBR 0.1 proposal",
+        creator="HOMBRE ReportLab renderer",
         pageCompression=1,
     )
     doc.build(build_story(source), onFirstPage=page_decor, onLaterPages=page_decor)
@@ -221,7 +221,7 @@ def render(source: Path, output: Path):
 
 if __name__ == "__main__":
     repo_root = Path(__file__).resolve().parents[4]
-    source_path = repo_root / "spec" / "ombr" / "0.1" / "OMBR-EXECUTIVE-SUMMARY.md"
-    output_path = repo_root / "output" / "pdf" / "OMBR-Executive-Summary.pdf"
+    source_path = repo_root / "spec" / "ombr" / "0.1" / "HOMBRE-EXECUTIVE-SUMMARY.md"
+    output_path = repo_root / "output" / "pdf" / "HOMBRE-Executive-Summary.pdf"
     render(source_path, output_path)
     print(output_path)

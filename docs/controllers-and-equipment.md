@@ -4,9 +4,10 @@ This page is a practical overview of controllers, receiver/hubs, motors, servos,
 
 Availability was checked on **12 July 2026**, primarily in manufacturers' German or European stores. Stock and regional availability can change. “Supported” below means that BrickController2 has a device implementation; it does not guarantee that every peripheral which fits a receiver's socket has been tested. Products for which no verifiable manufacturer, distributor, current retail, or archived market catalog was found are omitted.
 
-This survey is also the seed inventory for the purchasable-component benchmark
-program in the [OMBR draft](../spec/ombr/0.1/OMBR-SPEC.md). A listing here is
-not yet an OMBR benchmark or compatibility result; that requires exact revision
+This survey is also the seed inventory for HOMBRE's purchasable-component
+benchmark program, defined by the
+[OMBR draft](../spec/ombr/0.1/OMBR-SPEC.md). A listing here is not yet an OMBR
+benchmark or compatibility result; that requires exact revision
 identity, controlled measurements, public fixtures, uncertainty, raw data, and
 the claim categories defined by BENCH-001 through BENCH-012.
 

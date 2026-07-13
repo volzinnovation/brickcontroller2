@@ -2,16 +2,27 @@
 
 # Specifications
 
-## Open Modular Brick Robotics
+## HOMBRE — Holistic Open Modular Brick Robotics Ecosystem
 
-[Two-page executive summary](ombr/0.1/OMBR-EXECUTIVE-SUMMARY.md)
-([A4 PDF](../output/pdf/OMBR-Executive-Summary.pdf))
+[Two-page HOMBRE executive summary](ombr/0.1/HOMBRE-EXECUTIVE-SUMMARY.md)
+([A4 PDF](../output/pdf/HOMBRE-Executive-Summary.pdf))
 
-[OMBR 0.1.0 draft](ombr/0.1/OMBR-SPEC.md) proposes an open, Raspberry Pi
-Zero-based, brick-compatible robotics and automation ecosystem for robots,
-vehicles, stationary machines, instruments, and programmable mechanisms with:
+[HOMBRE education curriculum draft](../docs/education/HOMBRE-EDUCATION-CURRICULUM-DRAFT.md)
 
-- Wi-Fi and Bluetooth;
+[Brick arm and assembly-farm engineering challenge](../docs/use-cases/HOMBRE-BRICK-ARM-AND-ASSEMBLY-FARM-CHALLENGE.md)
+
+HOMBRE is the umbrella project and ecosystem. Its normative technical
+foundation, the [Open Modular Brick Robotics (OMBR) 0.1.0 draft
+specification](ombr/0.1/OMBR-SPEC.md), defines a capability-based Mini,
+Raspberry Pi Zero-class Midi, and accelerated AI/vision Maxi,
+brick-compatible robotics and automation system for robots, vehicles,
+stationary machines, instruments, and programmable mechanisms. OMBR remains
+the stable identifier family for profiles, schemas, APIs, project packages,
+tests, and conformance claims. The system includes:
+
+- Wi-Fi and BLE;
+- MQTT-based coordination of independently safe Creations in Collectives,
+  workcells, and assembly farms;
 - a separate real-time safety controller;
 - complete machine-readable electronic interface contracts for every component
   boundary, including exact connectors/pinouts, protocol, source/sink roles,
@@ -25,10 +36,21 @@ vehicles, stationary machines, instruments, and programmable mechanisms with:
 - transport-neutral capabilities and control profiles;
 - portable Python/.NET and future language runtimes, a headless CLI/service,
   an open Visual Studio Code Workbench, and an independent .NET client path;
-- and synchronized CAD, simulation, and runtime digital twins.
+- Git-friendly versioned Creation folders, deterministic releases, and an
+  optional open portal for publishing, verifying, mirroring, and forking the
+  complete CAD/software/instruction package;
+- synchronized CAD, simulation, and runtime digital twins using the same App
+  API and logical capabilities as the physical controller;
+- reproducible AI/vision model packages, camera/calibration contracts, and
+  accelerator-neutral inference with explicit resource and fallback evidence;
+- automated-assembly recipes, task/resource leases, inspection, work-product
+  provenance, and a five-axis arm plus gripper challenge profile; and
+- authentic multidisciplinary engineering education using the same open
+  requirements, Git, CAD, interface, program, simulation, test, evidence, and
+  release practices as the implementation ecosystem.
 
-The draft is accompanied by an
-[implementation catalog](ombr/0.1/IMPLEMENTATION-CATALOG.md) that maps every
+The OMBR draft is accompanied by a
+[HOMBRE implementation catalog](ombr/0.1/IMPLEMENTATION-CATALOG.md) that maps every
 functional family to candidate open designs, open-source software, or honestly
 identified COTS parts and includes a quantity-tier controller cost model. Its
 [legal, IP, and market-access register](ombr/0.1/LEGAL-IP-REGISTER.md) defines
@@ -36,16 +58,17 @@ the patent/FTO, modular-design, trademark, CAD/data-license, protocol,
 contributor-patent, product-classification, and regulatory gates. Neither file
 claims that unresolved candidates are qualified or legally cleared.
 
-The controller-only affordability goal is EUR 49.99 including German VAT, but
-it is explicitly `target-unproven`: the current pre-quote four-port model
-estimates EUR 39–57 unit COGS at 1000 units before several excluded commercial
-costs and indicates roughly EUR 65–95 initial direct retail unless the design,
-volume, and supply economics improve.
+The [`OMBR-AFFORDABLE-HUB-MIDI-1`](ombr/0.1/OMBR-SPEC.md#17-implementation-catalog-and-cost-model)
+controller-only affordability goal is EUR 49.99 including German VAT. It is
+explicitly `target-unproven`, applies only to the exact Midi base SKU and
+excludes delivery and named external accessories: the current pre-quote
+four-port model estimates EUR 39–57 unit COGS at 1000 units and roughly EUR
+65–95 initial direct retail unless design, volume, and supply economics improve.
 
-This is a whole programmable brick-automation ecosystem specification, not a
-proposal for only a robot, controller brick, or application. BrickController2
-contributes proven concepts and transitional compatibility, but is not the
-canonical OMBR UI, storage model, API, or runtime.
+HOMBRE is a whole programmable brick-automation ecosystem, not only a robot,
+controller brick, or application. BrickController2 contributes proven concepts
+and transitional compatibility, but is not the canonical HOMBRE Workbench or
+an OMBR storage model, API, or runtime.
 
 The draft includes a
 [machine-readable project, program, and twin syntax schema](ombr/0.1/schema/ombr-project.schema.json)

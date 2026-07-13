@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: MIT -->
 
-# Open Modular Brick Robotics Specification
+# Open Modular Brick Robotics (OMBR) Specification
 
 Version: 0.1.0-draft
 
@@ -8,16 +8,19 @@ Date: 13 July 2026
 
 Status: Proposal for public review
 
-Short name: OMBR
+Ecosystem: HOMBRE — Holistic Open Modular Brick Robotics Ecosystem
 
-OMBR is a working technical identifier, not a final product name or
-certification mark.
+Specification short name and identifier prefix: OMBR
 
-“Robotics” in the working name is historical shorthand. OMBR's technical
-scope is modular brick automation: mobile and stationary robots, vehicles,
-machines, instruments, kinetic installations, and other programmable
-mechanisms use the same open component, mechanical, control, and twin
-contracts.
+HOMBRE is the umbrella project, community, and ecosystem. OMBR is HOMBRE's
+normative technical specification and stable identifier family for profiles,
+schemas, APIs, package formats, tests, and conformance claims. Neither
+designation is a product certification or a claim of trademark clearance.
+
+“Robotics” in both names is historical shorthand. HOMBRE's scope is modular
+brick automation: mobile and stationary robots, vehicles, machines,
+instruments, kinetic installations, and other programmable mechanisms use the
+same open component, mechanical, control, and twin contracts.
 
 Current draft license: MIT under the repository's [LICENSE.txt](../../../LICENSE.txt).
 The patent-aware specification license proposed in section 6.3 is a future
@@ -25,10 +28,13 @@ governance decision and does not silently relicense this draft.
 
 ## Abstract
 
-This document specifies an open, brick-compatible robotics and automation
-ecosystem built around Raspberry Pi Zero-class compute. It covers:
+This document specifies the technical foundation of HOMBRE: an open,
+brick-compatible robotics and automation ecosystem whose reference compute
+family spans an educational MCU-class Mini, a Raspberry Pi Zero-class Midi,
+and an accelerated AI/vision Maxi. It covers:
 
-- a Wi-Fi- and Bluetooth-capable controller hub;
+- Wi-Fi- and BLE-capable controller hubs with capability-based Mini,
+  Midi, and Maxi compute profiles;
 - a separate real-time safety controller;
 - an open native peripheral interface;
 - openly documented motors, lights, sensors, cables, and adapters;
@@ -37,28 +43,33 @@ ecosystem built around Raspberry Pi Zero-class compute. It covers:
 - a transport-neutral capability and control model;
 - an editor-independent programming, deployment, debugging, and operator
   toolchain;
-- an offline-first digital twin linked to CAD and simulation; and
+- an offline-first digital twin linked to CAD and simulation;
+- MQTT-based coordination of independently safe Creations in collectives,
+  workcells, and assembly farms;
+- reproducible AI/vision model packages and accelerator-neutral inference;
 - a maintained implementation catalog that maps requirements to honestly
   graded open designs and documented commercial components;
-- an auditable cost model with an aggressive EUR 49.99 base-hub target; and
+- an auditable cost model with an aggressive EUR 49.99 Midi base-hub target;
+- an authentic engineering-education path that teaches professional practice
+  through the same open artifacts, tools, tests, and lifecycle; and
 - licensing, legal/IP, product-regulatory, governance, security, safety, and
   conformance requirements.
 
 The design deliberately separates the open project-controlled hardware from
 the Raspberry Pi module and other third-party components. A Raspberry Pi Zero
 2 W is a documented and replaceable commercial component, but its silicon,
-PCB, and firmware are not completely open hardware. OMBR therefore does not
-claim that every atom or upstream dependency is open. It requires every
-project-controlled carrier, peripheral, enclosure, protocol, tool, and
-manufacturing artifact to be open and reproducible.
+PCB, and firmware are not completely open hardware. HOMBRE therefore does not
+claim that every atom or upstream dependency is open. The OMBR Specification
+requires every project-controlled carrier, peripheral, enclosure, protocol,
+tool, and manufacturing artifact to be open and reproducible.
 
 This proposal is informed by BrickController2's proven control model:
 Creations contain profiles, inputs expose capabilities, profiles bind inputs
 to device actions, actuator values can be normalized, and timelines can be
-looped or interpolated. OMBR generalizes those ideas into a versioned hardware,
-network, programming, CAD, and simulation contract. BrickController2 is an
-interim integration vehicle and one possible client, not the required OMBR
-development environment or system boundary.
+looped or interpolated. The OMBR Specification generalizes those ideas into a
+versioned hardware, network, programming, CAD, and simulation contract.
+BrickController2 is an interim integration vehicle and one possible HOMBRE
+client, not the required HOMBRE Workbench or the OMBR system boundary.
 
 ## 1. Design principles
 
@@ -71,7 +82,7 @@ an exception to them.
 | --- | --- |
 | PRIN-001 | Local ownership: the owner can build, repair, reflash, operate, and recover the system without a vendor service. |
 | PRIN-002 | Honest openness: third-party closed components are identified rather than hidden behind a whole-product open-hardware claim. |
-| PRIN-003 | Safety below Linux: loss, crash, or compromise of Linux cannot prevent a hardware-enforced safe stop. |
+| PRIN-003 | Safety below application compute: loss, crash, or compromise of Linux, an MCU runtime, AI, networking, or orchestration cannot prevent a hardware-enforced safe stop. |
 | PRIN-004 | One capability model: physical hardware, simulated hardware, BLE, Wi-Fi, and local programs use the same meanings and units. |
 | PRIN-005 | CAD is source: editable parametric files and machine-readable interfaces are primary; meshes are derivatives. |
 | PRIN-006 | Offline first: internet connectivity extends the system but is never required for core operation. |
@@ -93,6 +104,17 @@ an exception to them.
 | PRIN-022 | Mechanical authority is explicit: catalog identity, visualization mesh, connection metadata, measured functional geometry, and open-replacement fabrication source are different evidence levels and MUST NOT be substituted for one another. |
 | PRIN-023 | Affordable means a complete, dated SKU and channel model: required parts, tax, margin, test, compliance, support, warranty, and exclusions are visible rather than hidden behind a bare-BOM headline. |
 | PRIN-024 | Open licensing and technical conformance do not grant third-party patent, design, copyright, database, trademark, or regulatory clearance; each release carries a scoped rights and market-access record. |
+| PRIN-025 | Authentic engineering education: HOMBRE learning experiences introduce modern engineering practice from the first Creation—explicit requirements, safety analysis, interface contracts, source control, review, measurement, simulation, testing, reproducible releases, documentation, and reflection. Complexity MAY be readiness-appropriate, but educational tooling MUST NOT replace these practices with opaque or vendor-locked equivalents. |
+| PRIN-026 | Capability-based scale: Mini, Midi, Maxi, workstation, and future compute implementations MAY differ radically in resources, but compute placement MUST NOT fork capability meanings, units, Creation identity, App API behavior, safety ceilings, or simulation contracts. |
+| PRIN-027 | Coordination is not safety: a broker, network, AI model, scheduler, or fleet orchestrator MAY request bounded work but MUST NOT be the sole means of stopping hazardous motion or enforcing a Creation's local safety envelope. |
+| PRIN-028 | Autonomous decisions are versioned evidence: perception, planning, and AI outputs identify model, data contract, calibration, time, uncertainty, resource state, and fallback; an opaque score or successful demonstration is not a reusable engineering claim. |
+| PRIN-029 | Design for robotic assembly: a claim that Creations can build another Creation requires machine-readable presentation, grasp, mating, tooling, inspection, recovery, provenance, yield, and human-intervention evidence, not only human-readable build instructions. |
+
+The separately versioned, informative
+[HOMBRE education curriculum draft](../../../docs/education/HOMBRE-EDUCATION-CURRICULUM-DRAFT.md)
+turns PRIN-025 into a proposed multidisciplinary learning sequence. It is not
+an accreditation, teacher certification, age classification, or OMBR
+conformance profile.
 
 ## 2. Status and interpretation
 
@@ -114,8 +136,8 @@ component candidates, and roadmaps do not create conformance requirements.
 
 ## 3. Vision and scope
 
-OMBR should make a physical brick creation and its digital representation two
-views of the same system, whether that creation is a robot, vehicle,
+HOMBRE should make a physical brick creation and its digital representation
+two views of the same system, whether that creation is a robot, vehicle,
 stationary machine, instrument, or installation:
 
 1. design the assembly from brick and project-authored parts;
@@ -168,6 +190,10 @@ needed for CAD.
 
 | Term | Meaning |
 | --- | --- |
+| HOMBRE | Holistic Open Modular Brick Robotics Ecosystem: the umbrella project, community, implementation program, and complete physical-digital ecosystem governed by this specification. |
+| OMBR Specification | Open Modular Brick Robotics Specification: HOMBRE's normative technical standard. `OMBR` is also the stable prefix for technical profiles, schemas, APIs, packages, tests, and conformance vocabulary. |
+| OMBR-native | A project-controlled design or semantic identity defined against the OMBR Specification. The term is technical; it does not by itself establish qualification, certification, trademark rights, or legal clearance. |
+| OMBR ecosystem release | A content-addressed aggregate release evaluated against `OMBR-ECOSYSTEM-1`; it is a technical conformance object, not a synonym for the HOMBRE project or community. |
 | Hub | A networked controller that hosts compute, storage, control orchestration, port management, and local APIs. |
 | Safety controller | The real-time MCU that owns watchdogs, output enables, power limits, and deterministic stop behavior. |
 | Port | A physical connection point with independently described electrical, data, and safety limits. |
@@ -176,6 +202,14 @@ needed for CAD.
 | Component instance | A physical or simulated occurrence with owner-resettable identity, revision, and calibration. |
 | Capability | A typed property, action, or event with units, bounds, access rules, and quality metadata. |
 | Creation | A user-owned assembly graph, control configuration, asset set, and twin configuration for a robot, vehicle, stationary machine, instrument, installation, or other automated mechanism. |
+| Creation collective | A versioned composition of independently identifiable Creations, workcells, shared resources, spatial relationships, coordination policies, and recipes. Membership does not erase each Creation's ownership, release identity, local controller, or safety boundary. |
+| Workcell | A bounded operating area containing one or more Creations, fixtures, tools, material locations, people or access points, and shared hazards governed by an explicit workcell safety and coordination policy. |
+| Orchestrator | A replaceable service that decomposes jobs, assigns expiring tasks, leases shared resources, observes results, and coordinates recovery. It is not a motion servo or safety controller. |
+| Assembly recipe | A versioned process graph that maps a target design/BOM to part presentation, grasp, mate, fastening, inspection, calibration, recovery, and acceptance operations. |
+| Work product | A serialized or otherwise traceable as-built result of a recipe, linked to its target Creation release, material/part lots, operations, measurements, deviations, calibration, and acceptance decision. |
+| Creation source revision | An immutable snapshot of the tracked Creation source tree, identified by Creation ID, VCS type and object format, commit and root-tree IDs, and manifest digest. The 0.1 reference VCS is Git; another VCS requires a future profile defining equivalent immutable identity and export. A source revision need not have a release version and may be used for an explicitly marked development run. |
+| Creation release | An immutable, named and versioned package produced from one validated Creation source revision. Its canonical content identity is the Creation ID, release version, and release-manifest digest; each deterministic archive or registry encoding has an additional transport digest. Portal listings and signatures refer to those digests but are outside the release bytes. |
+| Creation Portal | An optional open and federatable service for publishing, discovering, verifying, versioning, forking, and mirroring complete Creation releases; it is not source, runtime, twin, or conformance authority. |
 | Mechanical reference catalog | A versioned description of an external or OMBR-native part source, its authority, license, coverage, snapshot, identifiers, and limitations. |
 | Mechanical mating profile | A versioned functional geometry and behavior contract for a connection or transmission interface such as a stud, pin, axle, hole, gear mesh, rack, joint, wheel, or track. |
 | Implementation candidate | An exact open design, open-source package, or documented COTS component evaluated against named OMBR requirements; inclusion is not endorsement or qualification. |
@@ -188,9 +222,17 @@ needed for CAD.
 | Native source | The preferred editable representation used to modify an artifact. |
 | Derived artifact | A generated exchange, visualization, manufacturing, or deployment output. |
 | Program descriptor | A portable declaration of source, runtime, entry point, permissions, dependencies, resources, lifecycle, and execution target. |
+| Program release | An immutable descriptor, source/build provenance, dependency locks, configuration schema, and one or more exactly selectable deployable artifacts identified by digest. |
+| Program management plane | The public build, install, deploy, start, stop, status, log, debug, export, and recovery interface used by Workbenches, the CLI, CI, and authorized operator tools. |
+| OMBR App API | The application-scoped, target-neutral data-plane interface exposed to a running program in its selected physical, simulation, or replay target for context, capabilities, state, control, time, events, lifecycle, and observability; it never grants raw hardware access. |
+| Target provider | A physical, simulation, or replay implementation behind the OMBR App API and common capability/control broker. |
+| Run Context | An immutable resolution of Creation release (or explicitly typed development snapshot), program release and artifact, deployment target/session, bindings, grants, configuration, safety policy, runtime, and API versions for one execution. |
+| Run record | A content-addressed record of the exact Run Context, initial state, external inputs, clocks, seeds, events, and traces needed to inspect, compare, restart, or replay a named execution. |
 | Developer service | A headless, user-owned process that exposes discovery, pairing, validation, build, deployment, simulation, debugging, twin, and control operations to tools. |
 | Tool client | A Visual Studio Code extension, standalone application, CLI, CI job, notebook, or other consumer of the public developer and hub APIs. |
 | Execution target | The declared place where a program runs: hub, workstation, simulator, or an explicitly supported peripheral runtime. |
+| Compute profile | A vendor-neutral contract for execution architecture, memory, storage, radios, I/O, accelerator, power/thermal envelope, supported runtime roles, resource reporting, artifact selection, and conformance evidence. Mini, Midi, and Maxi are human-readable tier names, not sufficient conformance claims. |
+| AI model package | A content-addressed model release containing weights or an explicit external digest, executable format, licenses, provenance, input/output contracts, preprocessing and postprocessing, runtime/accelerator requirements, resource and accuracy evidence, safety role, and fallback behavior. |
 | Interface contract | The immutable, versioned connector, contact, pinout, protocol, electrical, timing, environmental, protection, and evidence definition shared by compatible endpoints. |
 | Operating range | Values over which all declared functions and accuracy are guaranteed under the stated conditions. It is narrower than transient-survival and absolute-maximum limits. |
 | Absolute maximum | A non-operating stress boundary whose exceedance may cause permanent damage; operation at or near it is not implied. |
@@ -198,87 +240,140 @@ needed for CAD.
 
 ## 5. System architecture
 
+### 5.1 Creation-centered lifecycle and integration boundary
+
+The **Creation** is HOMBRE's central system object. A Creation is authored in
+design, instantiated in simulation, and deployed into operation under
+observation and control. Those contexts share identity and contracts, but they
+do not share mutable state implicitly:
+
+- **design** owns editable mechanics, electronics, controls, programs,
+  documentation, and their Git history;
+- **simulation** runs an immutable Creation release, or an explicitly labeled
+  development snapshot, against a pinned virtual world and target provider; and
+- **operation** binds that exact release or snapshot to as-built hardware, calibration,
+  permissions, programs, and a controller boot or run identity.
+
 ~~~mermaid
-flowchart LR
-    subgraph Tools["Open developer toolchain"]
-        VSC["Visual Studio Code extension"]
-        APP["Cross-platform .NET application"]
-        CLI["ombr CLI / CI / automation"]
-        DEV["Developer service (ombrd) + shared SDK"]
-        VSC --> DEV
-        APP --> DEV
-        CLI --> DEV
+flowchart TB
+    subgraph Software["Reference and third-party software"]
+        REF["Reference tools<br/>VS Code, .NET, ombr CLI, CI"]
+        EXT["Third-party tools<br/>CAD, EDA, ROS 2, notebooks, operator apps"]
+        CAT["Implementation catalog<br/>candidates, evidence, supplier observations"]
     end
 
-    subgraph Design["Source, design, and simulation"]
-        CODE["Python / .NET / other program source"]
-        CAD["Parametric CAD and brick assembly"]
-        PKG["OMBR project package"]
-        SIM["Pinned simulator / optional ROS"]
-        CODE --> PKG
-        CAD --> PKG
-        PKG <--> SIM
+    OPEN["Open interoperability boundary<br/>Git and content-addressed files, schemas, SDK, CLI<br/>HTTPS, WebSocket, MQTT, versioned adapters"]
+
+    REF <--> OPEN
+    EXT <--> OPEN
+    CAT --> OPEN
+
+    subgraph Lifecycle["Creation lifecycle"]
+        direction LR
+        DESIGN["DESIGN<br/>mechanics, electronics, controls<br/>programs, BOM, build instructions"]
+        GIT["GIT SOURCE<br/>working tree, commits, tags"]
+        REVISION["CREATION SOURCE REVISION<br/>exact commit and root tree<br/>manifest and tracked source"]
+        RELEASE["CREATION RELEASE<br/>version, release manifest and locks<br/>programs and artifact digests"]
+        SIM["SIMULATE<br/>pinned world and virtual target<br/>mechanics, actuator, sensor models"]
+        OPERATE["OPERATE<br/>deployment and as-built bindings<br/>under observation and control"]
+
+        DESIGN -->|edit and validate| GIT
+        GIT -->|snapshot exact tree| REVISION
+        REVISION -->|validate, lock, build, pack| RELEASE
+        RELEASE -->|immutable package| SIM
+        RELEASE -->|validate and deploy| OPERATE
     end
 
-    subgraph Hub["OMBR hub"]
-        API["BLE discovery + HTTPS + MQTT"]
-        RUNTIME["Sandboxed user-program runtime"]
-        ORCH["Creation, profiles, timelines"]
-        TWIN["Twin store and event log"]
-        PI["Raspberry Pi Zero 2 W"]
-        MCU["Real-time safety MCU"]
-        POWER["Protected power and port switches"]
-        PI --> API
-        PI --> RUNTIME
-        PI --> ORCH
-        PI --> TWIN
-        RUNTIME --> API
-        ORCH --> MCU
-        MCU --> POWER
+    PORTAL["HOMBRE Creation Portal<br/>publish, discover, version, fork, mirror"]
+    RELEASE <-->|release by digest<br/>optional signature| PORTAL
+
+    OPEN <--> DESIGN
+    OPEN <--> SIM
+    OPEN <--> OPERATE
+    OPEN <--> PORTAL
+
+    subgraph Physical["Physical Creation"]
+        direction TB
+        INPUT["Control source<br/>gamepad, UI, remote client"]
+        POWER["Power source<br/>battery, charger, supervised bench supply"]
+        HUB["Hub controller<br/>profile compute, native apps, capability broker"]
+        SAFE["Safety controller<br/>watchdog, protected power and ports"]
+        LINK["OMBR Link<br/>connectors and interface cables"]
+        SENSOR["Sensors"]
+        ACT["Actuators and lights"]
+        MECH["Mechanics<br/>bricks, beams, gears, joints"]
+
+        INPUT -->|authorized expiring intent| HUB
+        POWER -->|protected power| HUB
+        HUB <--> SAFE
+        SAFE <--> LINK
+        LINK <--> SENSOR
+        LINK <--> ACT
+        ACT -->|force, motion, light| MECH
+        MECH -->|pose, load, environment| SENSOR
+        MECH --- HUB
     end
 
-    subgraph Modules["Open peripherals"]
-        MOTOR["Motor / position actuator"]
-        LIGHT["RGBW / light module"]
-        SENSOR["Distance / color / IMU / force sensor"]
-        ADAPTER["Legacy-port adapter"]
-    end
+    OPERATE -->|activate configuration and programs| HUB
+    HUB -->|reported and observed state, events| OPERATE
 
-    DEV <--> PKG
-    DEV <--> SIM
-    DEV <--> API
-    API <--> TWIN
-    POWER <--> MOTOR
-    POWER <--> LIGHT
-    POWER <--> SENSOR
-    POWER <--> ADAPTER
-    MOTOR --> TWIN
-    LIGHT --> TWIN
-    SENSOR --> TWIN
+    TWIN["DIGITAL TWIN<br/>design | as-built and calibrated<br/>simulation | runtime and history"]
+
+    REVISION -->|design authority| TWIN
+    RELEASE -->|released design baseline| TWIN
+    SIM -->|simulated state and traces| TWIN
+    OPERATE -->|bindings, telemetry, recordings| TWIN
+    OPEN <--> TWIN
+    TWIN -.->|explicit reconcile, calibrate, promote| DESIGN
 ~~~
 
-The public project model, APIs, SDK, and CLI are the product boundary. Visual
-Studio Code is the primary reference workbench; a standalone .NET client and
-other tools are peers over the same contracts. The reference developer
-service owns long-lived workstation device sessions and keeps native USB,
-Bluetooth, credentials, simulation processes, and build tools out of editor
-webviews. It is independently installable and is not required when another
-client implements the public APIs directly.
+Solid arrows represent authored, deployed, commanded, simulated, or observed
+flows. The dotted return is an explicit provenance-bearing reconciliation that
+creates a new design revision; telemetry and simulation never silently mutate
+source. Undirected mechanical lines denote physical attachment or kinematic
+coupling, not data transport.
 
-The Pi owns networking, storage, sandboxed user programs, profiles, API
-translation, package deployment, and twin synchronization. The safety MCU owns output
-enable, watchdogs, hard deadlines, current and temperature faults, and the
-ability to remove motor power without Linux cooperation. Each active
-peripheral adds its own local watchdog and protection.
+Use of a HOMBRE Creation Portal is optional for every owner and Creation; it is
+never part of the runtime control path. An openly deployable reference Portal
+is nevertheless a mandatory implementation constituent of the aggregate
+`OMBR-ECOSYSTEM-1` profile so the exchange contract is proven rather than left
+to a proprietary service. A Portal exchanges immutable Creation releases, build
+instructions, software, CAD, bills of materials, licenses, provenance, tests,
+and evidence by digest. It is neither runtime authority nor a mandatory cloud:
+a checked-out Creation remains buildable, simulatable, deployable, exportable,
+and forkable while every portal is unavailable.
 
-### 5.1 Planned conformance profiles
+The public project model, files, APIs, SDK, CLI, and versioned adapters form the
+integration boundary. Visual Studio Code is the primary reference Workbench; a
+standalone .NET client and third-party CAD, EDA, ROS, analysis, education,
+operator, and CI tools are peers over those same contracts. A third-party tool
+MUST NOT require a private semantic database or privileged path, and every
+import or export adapter records its version, permissions, provenance, and
+semantic loss.
+
+The reference developer service owns long-lived workstation device sessions
+and keeps native USB, Bluetooth, credentials, simulation processes, and build
+tools out of editor webviews. It is independently installable and is not
+required when another client implements the public APIs directly.
+
+The selected application-compute profile owns its declared networking,
+storage, user-program, API-translation, package-deployment, and twin roles.
+The safety MCU owns output enable, watchdogs, hard deadlines, current and
+temperature faults, and the ability to remove actuator power without
+application-compute cooperation. Each active peripheral adds its own local
+watchdog and protection.
+
+### 5.2 Planned conformance profiles
 
 Conformance will be modular after the relevant profile is frozen. No profile
 in this table is claimable in version 0.1.
 
 | Profile | Principal requirement groups | Additional evidence | Draft blocker |
 | --- | --- | --- | --- |
-| OMBR-HUB-1 | OPEN, HUB, SAFE, ELEC, applicable PWR, NET, API, SEC, SW | Hub, selected power-source, radio, safety, and recovery rows in section 16.4 | Fail-safe stop circuit, BLE/API contract, stable power profile, and applicable product classification |
+| OMBR-HUB-1 | OPEN, HUB, SAFE, ELEC, applicable PWR, NET, API, SEC, SW plus exactly one stable COMPUTE profile | Hub, selected compute, power-source, radio, safety, and recovery rows in section 16.4 | Fail-safe stop circuit, BLE/API contract, stable power and compute profiles, and applicable product classification |
+| OMBR-COMPUTE-MCU-1 (Mini) | OPEN, COMPUTE, HUB, API, PROG, NET, SEC, SW | Constrained-runtime, memory/flash, radio, recovery, resource-pressure, artifact-selection, and cross-tier App API tests | Frozen MCU/runtime floor, Wi-Fi companion contract, sandbox/permission subset, and independent safety implementation |
+| OMBR-COMPUTE-LINUX-1 (Midi) | OPEN, COMPUTE, HUB, API, PROG, NET, SEC, SW | Headless Linux, storage, broker/client, resource isolation, recovery, and cross-tier App API tests | Reproducible image, storage/lifecycle limits, runtime budgets, and selected Zero-class reference BOM |
+| OMBR-COMPUTE-AI-1 (Maxi) | OPEN, COMPUTE, HUB, API, PROG, AI, NET, SEC, SW | Accelerator, vision I/O, model-package, latency/power/thermal, fallback, and cross-tier App API tests | Accelerator-neutral model contract, production module/carrier, radio, thermal solution, and reproducible BSP/runtime closure |
 | OMBR-POWER-1 | OPEN, ELEC, PWR, applicable SAFE and SEC | Source, battery/charging when present, protection, energy, thermal, service, and lifecycle rows | Frozen chemistry/source classes, fixtures, limits, regulatory plan, and fault-energy evidence |
 | OMBR-LINK-1 | OPEN, ELEC, LINK, PER, TIME, SEC | Wire, electrical, cable, fault, and interoperability rows | Production connector, physical transport/topology, sender authentication or isolation, framing, timing, and version negotiation |
 | OMBR-MECH-1 | OPEN, MECH, PKG, TWIN | Mechanical and manufacturing rows | Metrology dataset, normative geometry, gauges, force windows, lifecycle, and conditioning |
@@ -286,12 +381,17 @@ in this table is claimable in version 0.1.
 | OMBR-LIGHT-1 | OPEN, ELEC, PER, LIGHT | Optical, electrical, thermal, and effects rows | Calibration and pass limits |
 | OMBR-SENSOR-1 | OPEN, ELEC, PER, SENSOR | Calibration, uncertainty, timing, environment, and simulation rows | Sensor-class fixtures and pass limits |
 | OMBR-TWIN-1 | OPEN, PKG, TWIN, SEC | Schema, archive, identity, replacement, and round-trip rows | Split design/deployment/runtime schemas and golden package |
-| OMBR-SIM-1 | OPEN, PKG, TWIN, SIM | Pinned-run and parity rows | Mandatory fidelity tiers, metrics, and maximum error bounds |
+| OMBR-SIM-1 | OPEN, PKG, TWIN, SIM, PROG, API, TIME, SEC, SW | Pinned run, selected-provider, deterministic clock/random, App API, record/replay, artifact-parity, and hardware-trace rows | App API/provider schemas and golden vectors plus mandatory fidelity tiers, metrics, and maximum error bounds |
 | OMBR-ADAPTER-1 | OPEN, ELEC, ADAPTER, LINK, PER and applicable role profile | Compatibility, isolation, misconfiguration, translation, and legacy-device matrix | Endpoint-specific fixtures, rights review, safe power translation, and independently measured combinations |
 | OMBR-CONTROL-1 | OPEN, INPUT, CTRL, TIME, and applicable ELEC, API, and SEC | Control-source descriptors, calibration, mapping, loss, lease, feedback, and input fixtures | Frozen input descriptors, handheld/generic-HID profile, latency limits, and two-source mapping vectors |
+| OMBR-AI-1 | OPEN, AI, API, PROG, PKG, TWIN, SIM, SENSOR, SEC, SW and applicable COMPUTE | Model/data provenance, input/output semantics, replay, accuracy, latency, resource, privacy, update/rollback, degradation, and safety-envelope evidence | Stable model-package schema, reference vision pipeline, benchmark datasets, accelerator adapters, and independently reproduced vectors |
+| OMBR-COORD-1 | OPEN, COORD, NET, API, TIME, PKG, TWIN, SEC, SW and applicable SAFE | Multi-Creation discovery, MQTT session/state, job/task/lease, duplicate/expiry, partition, broker loss, authorization, recovery, trace, and simulation tests | Collective/job/task schemas, MQTT topic and payload vectors, local-first orchestrator, workcell safety boundary, and two independent clients |
+| OMBR-ASSEMBLY-1 | OPEN, ASSEMBLY, COORD, MECH, PKG, TWIN, SIM, SAFE, SEC and applicable SENSOR/MOTOR/AI | Recipe execution, part presentation, grasp/mate/fasten, inspection, deviation/recovery, provenance, yield, human-intervention, and final acceptance evidence | Recipe/work-product schemas, reference cell, DfRA part metadata, fixtures, process simulation, and reproducible quality dataset |
+| OMBR-ARM-5R-GRIPPER-1 | OPEN, ARM, MECH, MOTOR, SENSOR, CTRL, PROG, API, TWIN, SIM, SAFE and applicable COMPUTE/AI | Five-revolute-axis plus gripper capabilities, workspace, load, repeatability, trajectory, calibration, gripper, teleoperation, safety, and twin-parity tests | Frozen task/fixture dataset, measured reference limits, open actuator choice, LeRobot adapter, and side-by-side physical benchmark |
 | OMBR-WORKBENCH-1 | OPEN, DEV, API, PKG, TWIN, SIM, SEC, SW | Golden project through headless CLI plus VS Code and an independent client | Versioned developer API/CLI, client capability matrix, golden workflows, and offline packages |
-| OMBR-RUNTIME-1 | OPEN, PROG, API, TIME, SEC, SW | Reproducible build, permission, deploy, lifecycle, failure, log, and debug rows | Runtime descriptors, sandbox profile, SDK contracts, and Python/.NET golden programs |
-| OMBR-ECOSYSTEM-1 | Every applicable profile plus ECO, CAT, IP, REG, GOV, and BENCH | Complete public source release, implementation catalog, rights/market-access register, governance evidence, system integration matrix, and benchmark catalog | All constituent profile blockers plus independently reproduced end-to-end starter system |
+| OMBR-RUNTIME-1 | OPEN, PROG, API, PKG, TIME, SEC, SW and applicable TWIN/SIM | Reproducible build, exact artifact resolution, App API negotiation, Run Context, permission, deploy/export, lifecycle, failure, log, debug, and provider-parity rows | Release/Run Context schemas, private IPC and broker, sandbox profile, export/restart contract, SDKs, and Python/.NET golden programs |
+| OMBR-PORTAL-1 | OPEN, PKG, SHARE, SEC, IP, GOV, COST, SW | Publish, fetch, verify, derivative-fork, mirror, withdraw/tombstone, offline-import, and operating-cost workflows using a clean Git-backed Creation release | Release metadata/schema, trust and moderation model, artifact storage, federation/mirroring, rights handling, sustainable TCO owner, and two independent clients |
+| OMBR-ECOSYSTEM-1 | Every applicable profile plus ECO, SHARE, CAT, COST, IP, REG, GOV, and BENCH | Complete public source release, Creation Portal implementation, implementation catalog, price book/TCO records, rights/market-access register, governance evidence, system integration matrix, and benchmark catalog | All constituent profile blockers plus independently reproduced end-to-end starter system |
 
 The requirement-group column is orientation for this draft, not a computable
 claim. GOV-013 requires every stable profile to replace it with an exact,
@@ -300,15 +400,16 @@ machine-readable claimant/applicability/evidence matrix.
 P0 in section 8.8 is an engineering prototype only. OMBR-LINK-1 is blocked
 by the connector, transport/topology, authenticated-session or isolation
 choice, and exact framing/timing/version rules—not by the connector alone.
-`OMBR-AFFORDABLE-HUB-1` is a dated market/price claim governed by COST rather
+`OMBR-AFFORDABLE-HUB-MIDI-1` is a dated market/price claim governed by COST rather
 than a timeless technical conformance profile. Passing OMBR-HUB-1 does not
 establish the price claim, and missing the price target does not permit an
 implementation to weaken HUB, SAFE, ELEC, OPEN, IP, or REG requirements.
 
-### 5.2 Whole-ecosystem completeness
+### 5.3 Whole-ecosystem completeness
 
-OMBR specifies a complete programmable brick-automation ecosystem, not only
-a robot, hub, editor, or connector. Its scope spans the controller and battery;
+HOMBRE is a complete programmable brick-automation ecosystem, not only a
+robot, hub, editor, or connector. The OMBR Specification defines its technical
+contracts across the controller and battery;
 ports, plugs, and cables; sensors; lights and motion actuators; brick-grid
 structural parts, connectors, gears, transmissions, mounting, and source CAD;
 firmware and user-program runtimes; developer and operator tools; the digital
@@ -324,7 +425,7 @@ flowchart TB
     subgraph Physical["Physical product family"]
         INPUT["Handheld / gamepad / accessible control source"]
         POWER["Battery, charger, or supervised bench source"]
-        HUB["Pi hub + safety MCU + protected ports"]
+        HUB["Tiered hub + safety MCU + protected ports"]
         CABLE["Open connectors, cables, extenders, adapters"]
         ACT["Open-loop and feedback motion actuators"]
         LIGHT["White, RGBW, and addressable lights"]
@@ -365,18 +466,20 @@ flowchart TB
 
 | ID | Requirement |
 | --- | --- |
-| ECO-001 | A complete ecosystem release MUST identify the exact hub, power, native link, cable, mechanical, motor or actuator, light, sensor, runtime, developer-tool, twin, and simulation profiles it implements, plus the exact implementation-catalog snapshot, price-book/cost status, rights/market-access register, documentation artifacts, and conformance-suite versions it contains. |
-| ECO-002 | The reference starter system MUST include a buildable hub with IMU, protected power source or bench-power profile, at least two qualified cable lengths, one open-loop motor path, one feedback motion actuator, one controllable light, distance or proximity, color or reflectance, and touch or force sensors, an open handheld control source or documented generic-HID gamepad profile, brick-compatible mounting source, hub runtime, CLI/SDK, Workbench, simulator, and end-to-end example Creation. |
+| ECO-001 | A complete ecosystem release MUST identify the exact hub, power, native link, cable, mechanical, motor or actuator, light, sensor, runtime, developer-tool, twin, simulation, Creation-source/release, and Portal profiles it implements, plus the exact education-material revision, implementation-catalog snapshot, price-book/cost status, rights/market-access register, documentation artifacts, and conformance-suite versions it contains. |
+| ECO-002 | The reference starter system MUST include a buildable hub with IMU, protected power source or bench-power profile, at least two qualified cable lengths, one open-loop motor path, one feedback motion actuator, one controllable light, distance or proximity, color or reflectance, and touch or force sensors, an open handheld control source or documented generic-HID gamepad profile, brick-compatible mounting source, hub runtime, CLI/SDK, Workbench, simulator, deterministic Creation packer, open Portal implementation, introductory multidisciplinary curriculum module, and end-to-end example Creation. |
 | ECO-003 | Constituent components MUST remain independently replaceable and implementable. An aggregate ecosystem claim MUST NOT hide a failed, proprietary, experimental, or untested constituent profile. |
-| ECO-004 | One content-addressed ecosystem release manifest MUST tie together compatible hardware, firmware, schemas, SDKs, tools, CAD, calibration, simulation models, test suites, documentation, and known limitations. |
+| ECO-004 | One content-addressed ecosystem release manifest MUST tie together compatible hardware, firmware, schemas, SDKs, tools, CAD, calibration, simulation models, Creation release/Portal contracts, test suites, documentation, and known limitations. |
 | ECO-005 | A complete reference workflow MUST build, validate, simulate, deploy, operate, recover, and export without a vendor account, proprietary cloud, private registry, or editor marketplace. |
-| ECO-006 | The project MUST publish a versioned compatibility matrix covering model and revision combinations, cables, power profiles, firmware, APIs, SDKs, tools, CAD formats, and simulator versions; an untested combination MUST be marked unknown rather than compatible. |
+| ECO-006 | The HOMBRE project MUST publish a versioned compatibility matrix covering model and revision combinations, cables, power profiles, firmware, APIs, SDKs, tools, CAD formats, and simulator versions; an untested combination MUST be marked unknown rather than compatible. |
 | ECO-007 | Every released component family MUST publish lifecycle state, repair and replacement path, known errata, supported revisions, end-of-life notice, and a migration or independently implementable substitute where feasible. |
 | ECO-008 | Reference tutorials, classroom material, example programs, build instructions, and safety guidance MUST be openly licensed, exportable, printable, and usable offline. |
 | ECO-009 | Ecosystem documentation and reference clients MUST include keyboard operation, non-color-only state cues, machine-readable text alternatives, localization-ready strings, and declared accessibility limitations. |
 | ECO-010 | System integration evidence MUST exercise real hub, cable, actuator, light, sensor, program, Workbench, and twin/simulation paths together; isolated component tests alone are insufficient for OMBR-ECOSYSTEM-1. |
 | ECO-011 | Before a stable ecosystem profile, at least one independently built physical peripheral and one independent CLI or application client MUST complete the public end-to-end test without project-private information. |
 | ECO-012 | Compatibility with third-party brick elements MUST be factual, narrowly scoped, measured, and legally distinct from project ownership, endorsement, or certification. |
+| ECO-013 | A stable OMBR ecosystem release MUST include an openly deployable Creation Portal implementation or a documented independent compatible implementation that can publish, discover, verify, fork, and mirror complete Creation releases. Portal use remains optional for each owner and Creation; Portal availability, an account, or one operator MUST NOT be required to build, simulate, deploy, operate, repair, export, or fork a checked-out Creation. |
+| ECO-014 | Reference education material MUST teach with the same inspectable Creation folder/release structure, interface and capability contracts, OMBR App API, simulator/provider semantics, validator, test evidence, and Git/release workflow used by engineering implementations. A guided or visual interface MAY reduce initial complexity but MUST preserve a visible path to the underlying source, contracts, data, diagnostics, and evidence. |
 
 ## 6. Openness and release contract
 
@@ -404,11 +507,11 @@ flowchart TB
 | OPEN-018 | Normative documentation MUST be available in an open, diffable text source plus stable rendered output; diagrams and datasets MUST include accessible descriptions and machine-readable source. |
 | OPEN-019 | Public interfaces MUST be independently implementable without copying reference implementation code, accepting click-through terms, obtaining a trademark license, or reverse-engineering undisclosed behavior. |
 | OPEN-020 | Stable project-controlled reference hardware SHOULD obtain and publish an OSHWA certification identifier when eligible. OSHWA certification is evidence of openness, not a substitute for OMBR safety, interoperability, or performance conformance. |
-| OPEN-021 | Before implementing a project-controlled subsystem, the project MUST publish an open prior-art and reuse ledger covering maintained open hardware/software candidates, exact source and revision, artifact-level licenses, patent or contributor terms, build status, maintenance, security, reusable scope, incompatibilities, and adopt/adapt/reject rationale. |
+| OPEN-021 | Before implementing a project-controlled subsystem, the HOMBRE project MUST publish an open prior-art and reuse ledger covering maintained open hardware/software candidates, exact source and revision, artifact-level licenses, patent or contributor terms, build status, maintenance, security, reusable scope, incompatibilities, and adopt/adapt/reject rationale. |
 | OPEN-022 | Adopted or forked upstream source MUST retain history and attribution where available, record the exact delta, preserve upstream licenses and notices, track security and releases, and document whether generally useful changes were offered upstream. |
 | OPEN-023 | A maintained, license-compatible open component SHOULD be reused or extended when it meets safety, performance, lifecycle, and architecture needs. A new implementation requires a recorded reason; novelty alone is not one. |
 | OPEN-024 | The reuse ledger MUST distinguish open source, open hardware, open specification, source-available, redistributable binary, public documentation, and proprietary COTS. Public access or a Git repository alone MUST NOT be labeled open. |
-| OPEN-025 | Before freezing a connector, attachment geometry, adapter protocol, dataset, product name, logo, or commercial reference design, the project MUST record qualified territorial review of relevant patents, registered designs or trade dress, trademarks, copyright and database licenses, clean-room evidence, and required mitigations. Measurement or clean-room work MUST NOT be presented as legal clearance by itself. |
+| OPEN-025 | Before freezing a connector, attachment geometry, adapter protocol, dataset, product name, logo, or commercial reference design, the HOMBRE project MUST record qualified territorial review of relevant patents, registered designs or trade dress, trademarks, copyright and database licenses, clean-room evidence, and required mitigations. Measurement or clean-room work MUST NOT be presented as legal clearance by itself. |
 
 These requirements follow the
 [Open Source Hardware Definition](https://oshwa.org/definition/) and
@@ -419,7 +522,8 @@ The optional certification target in OPEN-020 follows the
 
 ### 6.2 Raspberry Pi boundary
 
-The reference hub uses a Raspberry Pi Zero 2 W as a replaceable COTS module.
+The first Midi reference hub uses a Raspberry Pi Zero 2 W as a replaceable
+COTS module.
 Its official brief documents a 65 by 30 mm board, a quad-core 1 GHz
 Cortex-A53, 512 MB RAM, 2.4 GHz Wi-Fi, Bluetooth 4.2/BLE, USB OTG, and a
 40-pin GPIO footprint. See the
@@ -429,10 +533,12 @@ The official portal publishes a reduced schematic and mechanical drawing, not
 complete editable PCB and manufacturing source. A conforming release MUST
 therefore say:
 
-> The OMBR carrier, enclosure, peripherals, protocols, firmware, and tools are
-> open source hardware/software as individually licensed. Raspberry Pi Zero
-> 2 W and identified semiconductor components are replaceable third-party
-> dependencies and are not claimed as project-authored open hardware.
+> The HOMBRE reference carrier, enclosure, peripherals, protocols, firmware,
+> and tools are open source hardware/software as individually licensed.
+> Raspberry Pi Zero 2 W and identified semiconductor components are
+> replaceable third-party dependencies and are not claimed as project-authored
+> open hardware. OMBR identifies the applicable technical contracts and
+> conformance status.
 
 The compute boundary MUST be documented well enough to permit a future
 alternative Linux module without changing peripheral or twin semantics.
@@ -442,7 +548,8 @@ alternative Linux module without changing peripheral or twin semantics.
 The existing BrickController2 code remains under its current MIT license.
 Relicensing it requires agreement from the relevant rights holders.
 
-For new OMBR repositories and artifacts, the project SHOULD adopt:
+For new HOMBRE repositories and OMBR technical artifacts, the HOMBRE project SHOULD
+adopt:
 
 | Artifact | Recommended license |
 | --- | --- |
@@ -485,11 +592,12 @@ them as dependencies:
 
 Each ledger entry records a specific repository/release and evidence. A project
 name in this table does not establish compatible licensing, current
-maintenance, safety, reproducibility, or fitness for OMBR.
+maintenance, safety, reproducibility, or fitness for HOMBRE.
 
 ### 6.5 Legal, intellectual-property, and market-access gates
 
-OMBR defines technical and documentation requirements. It does not grant
+The OMBR Specification defines technical and documentation requirements. It
+does not grant
 rights in third-party patents, designs, copyrights, databases, or trademarks,
 does not certify freedom to operate, and is not legal advice. Conformance does
 not imply affiliation with or endorsement by any third party. Implementers are
@@ -509,7 +617,7 @@ exists or that a particular act is permitted.
 | IP-002 | Rights gates MUST run at concept, architecture freeze, design freeze, prelaunch, and every material change. Outcomes MUST use `no-issue-identified-not-clearance`, `monitor`, `redesign`, `seek-license`, `obtain-counsel-opinion`, or `stop`; unresolved high-impact items block the affected release or feature. |
 | IP-003 | Patent/FTO screening MUST decompose at least the controller architecture, power and motor drive, port/connector/contact system, cable, motor and sensor interfaces, brick/beam mating geometry, gear/transmission features, protocols, firmware behavior, digital-twin synchronization, and CAD/simulation workflow into searchable features. It MUST cover keywords, IPC/CPC classes, applicants/inventors, patent families, published applications and grants, claims, priority/expiry, current official territorial status, and a recorded disposition. Qualified counsel review is REQUIRED before commercial market launch. |
 | IP-004 | Patent records MUST retain family and jurisdiction, applicant/assignee, priority/publication/grant dates, relevant independent claims, claim-chart evidence ID, legal-status source and date, fees/expiry/opposition information where relevant, reviewer, mitigation, and next review. An expired family in one country MUST NOT imply freedom in another country or under another family member. |
-| IP-005 | The OMBR name, logo, certification marks, domains, package namespaces, product names, and presentation MUST receive word/device-mark clearance for the relevant markets and classes before public commercial use. Third-party marks including LEGO, TECHNIC, and MINDSTORMS MUST NOT be incorporated into those identifiers or used as badges, logos, stylized decoration, or source indicators. |
+| IP-005 | The HOMBRE ecosystem name, logo, domains, product names, and presentation, together with the OMBR technical name, package namespaces, and any conformance or certification marks, MUST receive word/device-mark clearance for the relevant markets and classes before public commercial use. Third-party marks including LEGO, TECHNIC, and MINDSTORMS MUST NOT be incorporated into those identifiers or used as badges, logos, stylized decoration, or source indicators. |
 | IP-006 | Third-party marks MAY appear only as minimally necessary plain-text factual references in compatibility, procurement, benchmark, or historical records after review. The claim MUST identify the exact product/interface and revision, separate mechanical, electrical, protocol, and behavioral compatibility, cite tests, attribute the owner, and state non-affiliation nearby. A disclaimer does not cure confusing or otherwise improper use. |
 | IP-007 | Every exterior and compatibility-critical geometry MUST receive target-market registered/unregistered design and trade-dress review. The engineering file MUST map each retained interface feature to its objective function, alternatives considered, independent measurement evidence, and CAD history; shells, colors, ornament, cavities, and nonfunctional geometry MUST be independently designed. “Must fit,” modularity, repair, or technical function MUST NOT be treated as automatic clearance. |
 | IP-008 | LEGO/BrickLink sites, instructions, catalog images, Studio assets, and other restricted sources MUST NOT be scraped, bulk mirrored, extracted, or redistributed as the OMBR library. Sparse factual aliases MAY be recorded with source and date. Release assets MUST use project-authored renders/photos/metrology/CAD or individually licensed material with machine-readable attribution and redistribution rights. |
@@ -560,25 +668,49 @@ date must be verified.
 
 | ID | Requirement |
 | --- | --- |
-| HUB-001 | OMBR-HUB-1 MUST use a Raspberry Pi Zero 2 W or a wireless Raspberry Pi Compute Module Zero derived from the Zero 2 W architecture. A non-Pi substitute requires a separately versioned future compute profile. |
-| HUB-002 | The replaceable reference implementation MUST support Raspberry Pi Zero 2 W; a compact production variant MAY support a wireless Compute Module Zero. |
-| HUB-003 | The compute module MUST be mechanically replaceable in the reference developer hub without replacing the carrier PCB. |
+| HUB-001 | OMBR-HUB-1 MUST declare exactly one stable COMPUTE conformance profile and the exact compute model/revision used. The compute choice MUST NOT weaken common capability, interface, radio, local ownership, recovery, or safety requirements. |
+| HUB-002 | The HOMBRE reference family MUST define interoperable Mini, Midi, and Maxi implementations against `OMBR-COMPUTE-MCU-1`, `OMBR-COMPUTE-LINUX-1`, and `OMBR-COMPUTE-AI-1`; those names describe resource classes, not vendors or enclosure sizes. |
+| HUB-003 | A reference developer hub's application-compute module MUST be mechanically replaceable without replacing the safety/port carrier PCB. A compact product MAY use a soldered module only under a separately identified serviceability and lifecycle claim with a documented replacement-carrier path. |
 | HUB-004 | A separate real-time safety MCU MUST own power limits and motion control, while a de-energize-to-trip hardware gate and independent watchdog MUST be able to disable every motion-power output even if that MCU is wedged or a normal enable GPIO is stuck. |
-| HUB-005 | Linux MUST NOT be capable of bypassing a latched hardware overcurrent, overtemperature, battery, or emergency-stop fault. |
-| HUB-006 | The hub MUST contain working Wi-Fi and BLE radios without an external dongle. Version 0.1 requires interoperable Wi-Fi behavior; BLE application interoperability remains a profile blocker. |
+| HUB-005 | Application compute, whether MCU or Linux-class, MUST NOT be capable of bypassing a latched hardware overcurrent, overtemperature, battery, stop-loop, or emergency-stop fault. |
+| HUB-006 | The complete hub MUST contain qualified Wi-Fi and BLE radios without a user-supplied external dongle. A compute module without one of those radios MAY use an internal documented companion module on the carrier; the complete radio, antenna, coexistence, firmware, update, security, and regulatory boundary remains part of the hub. |
 | HUB-007 | Core creation playback, physical stop, local API, and peripheral operation MUST work without internet access or a hosted account. |
 | HUB-008 | The reference hub MUST provide at least four native peripheral ports; six are the design target. |
 | HUB-009 | Every port MUST expose independent presence, power state, current, voltage, fault, descriptor, and safe-state information. |
-| HUB-010 | A motor stall or port short MUST NOT brown out the Pi power rail. |
+| HUB-010 | A motor stall or port short MUST NOT brown out the application-compute or safety-logic rail. |
 | HUB-011 | The hub MUST include a monotonic clock and SHOULD include an RTC or retained time source for timestamp continuity. |
 | HUB-012 | The hub SHOULD include a six-axis IMU whose frame is declared in the component manifest. |
 | HUB-013 | The owner MUST be able to enter recovery, restore a documented image, rotate credentials, and install self-built firmware. |
 | HUB-014 | The hub MUST provide a physical stop input wired to both the safety MCU for diagnosis and the independent de-energize-to-trip output gate. |
 | HUB-015 | The hub MUST visibly indicate at least booting, ready, wireless pairing, output armed, warning, and fault states. |
 
-### 7.2 Reference compute profile
+### 7.2 Compute profiles
 
-The first reference implementation, **Hub R0**, uses:
+Compute profiles make deployment limits explicit while preserving one HOMBRE
+object and capability model. Mini, Midi, and Maxi are deliberately not three
+incompatible ecosystems: a Creation may contain target-specific program
+artifacts, but it does not rename a joint, sensor, command, frame, release, or
+safe state when compute moves.
+
+| ID | Requirement |
+| --- | --- |
+| COMPUTE-001 | A compute profile MUST declare CPU architecture and minimum performance evidence; RAM/flash/storage capacity and endurance; boot and recovery; radios and wired I/O; camera/media interfaces; accelerators; supported operating system or runtime; supported OMBR service roles; power modes, peak/continuous input, thermal solution, operating limits, lifecycle, openness grade, and exact conformance tests. |
+| COMPUTE-002 | Every hub MUST publish its exact compute profile, board/module and carrier revisions, CPU/ABI target, available runtime and accelerator versions, boot identity, mutable resource state, and unsupported roles through the owner API and Run Context. A tier label alone is insufficient. |
+| COMPUTE-003 | `OMBR-COMPUTE-MCU-1` (Mini) MUST support owner-reflashable compiled or embedded-runtime programs, a bounded App API subset, BLE, hub-provided Wi-Fi, deterministic local capability control, resource reporting, logs, safe cancellation, and offline recovery. It MUST NOT advertise Linux processes, containers, a local full-physics simulator, a full Portal, or local accelerator inference that it cannot provide. |
+| COMPUTE-004 | The Mini reference candidate is a current BBC micro:bit V2-class application board plus a project-controlled carrier and qualified internal Wi-Fi companion. The micro:bit application processor, USB interface processor, and Wi-Fi companion MUST NOT be misrepresented as the independent HOMBRE safety controller; motor power and significant loads use separate protected rails and drivers. |
+| COMPUTE-005 | `OMBR-COMPUTE-LINUX-1` (Midi) MUST support a headless 64-bit Linux service, owner-replaceable persistent storage, Wi-Fi, BLE, local MQTT client and optional broker, the public management API, private run-local App API endpoints, bounded program supervision, trace recording, and remote Workbench/twin operation. |
+| COMPUTE-006 | The Midi reference candidate is Raspberry Pi Zero 2 W. Its 512 MB memory, single USB OTG path, 2.4 GHz-only Wi-Fi, removable-storage behavior, lack of a Zero-class hardware root of trust, radio/enclosure effects, and declared production horizon MUST be treated as measured or documented constraints, not hidden by a generic Linux claim. |
+| COMPUTE-007 | `OMBR-COMPUTE-AI-1` (Maxi) MUST add at least 8 GB RAM, accelerator-backed inference, NVMe-class persistent storage, aggregate support for at least two synchronized camera streams, gigabit-class networking, declared 25 W-class compute cooling, and reproducible AI/vision workload evidence while preserving the same App API and independent safety boundary. |
+| COMPUTE-008 | The Maxi development reference is an NVIDIA Jetson Orin Nano 8 GB-class module and development carrier; a product reference MUST use a lifecycle-supported module on a documented HOMBRE carrier with qualified Wi-Fi/BLE, antennas, power, storage, cooling, recovery, and port/safety interfaces. CUDA, TensorRT, JetPack, or another vendor stack MAY be a pinned implementation dependency but MUST NOT become an OMBR application semantic. |
+| COMPUTE-009 | A Program Release MUST declare minimum and preferred CPU, memory, persistent/scratch storage, process/thread, network, camera, accelerator, inference-runtime, startup, deadline, sustained-power, and thermal resources. Artifact selection MUST fail explicitly when the target cannot satisfy them; tier-name guessing and silent degraded selection are forbidden. |
+| COMPUTE-010 | Target-specific program or model artifacts MUST remain under one content-addressed Program or AI Model Package with exact build provenance, CPU/ABI/accelerator/runtime selectors, dependency locks, and equivalent public capability contracts. A cross-tier claim requires golden behavior vectors and an explicit performance/degradation report. |
+| COMPUTE-011 | The runtime MUST report reserved, available, throttled, and exhausted compute, memory, storage, accelerator, camera-bandwidth, network, energy, and thermal resources with timestamps and quality. Orchestrators MAY use these observations for placement but MUST tolerate races and re-check on activation. |
+| COMPUTE-012 | Remote or split execution MUST declare which process and model stages run on each target, the authenticated transport, data minimization, latency/jitter/throughput bounds, clock uncertainty, loss/partition behavior, fallback, and whether core operation remains offline. Loss of remote compute MUST enter a locally enforced bounded state. |
+| COMPUTE-013 | No application CPU, GPU, NPU, radio companion, broker, container runtime, or AI framework may own the sole hazardous-motion stop path. Safety-controller heartbeat and output gating MUST remain effective during compute crash, overload, out-of-memory, accelerator hang, thermal throttle, reboot, and update. |
+| COMPUTE-014 | Compute replacement and migration MUST preserve owner identities, Creation/Program/Model release references, calibration bindings, public capability IDs, and portable records or emit a machine-readable incompatibility report. Secrets are reprovisioned through the private backup/provisioning path rather than copied into public releases. |
+| COMPUTE-015 | Mini, Midi, and Maxi conformance MUST be tested with at least one shared golden Creation and program that exercises discovery, App API negotiation, control expiry, telemetry, recording, simulated provider, deployment failure, recovery, and deterministic safe behavior within each profile's declared feature subset. |
+
+The first **Midi** reference implementation, Hub R0, uses:
 
 - Raspberry Pi Zero 2 W or Zero 2 W with headers;
 - 64-bit Raspberry Pi OS Lite or another documented Linux distribution;
@@ -588,7 +720,7 @@ The first reference implementation, **Hub R0**, uses:
 - BLE for commissioning, nearby discovery, and bounded local control; and
 - off-device Workbench, CAD, and full physics simulation.
 
-The 512 MB Pi is reserved for headless control, APIs, sandboxed programs,
+The 512 MB Pi is reserved for headless control, APIs, bounded supervised programs,
 telemetry, bounded package storage, and serving pre-generated assets. Full
 authoring UI, authoritative CAD editing, source builds, and full physics
 simulation are workstation responsibilities rather than hub requirements.
@@ -596,7 +728,8 @@ simulation are workstation responsibilities rather than hub requirements.
 The Raspberry Pi Zero 2 W does not have a documented secure-boot process
 equivalent to the Pi 4/CM4 flow described by Raspberry Pi's
 [official secure-boot guide](https://pip.raspberrypi.com/categories/685-whitepapers-app-notes-compliance-guides/documents/RP-003466-WP/Boot-Security-Howto.pdf).
-OMBR MUST report this limitation. A signed update system on Zero 2 W improves
+Every HOMBRE reference release and applicable implementation or conformance
+report MUST disclose this limitation. A signed update system on Zero 2 W improves
 software supply-chain integrity but does not create an immutable hardware root
 of trust against physical microSD replacement.
 
@@ -606,11 +739,11 @@ of trust against physical microSD replacement.
 | --- | --- |
 | SAFE-001 | The MCU MUST start with all high-power outputs disabled. |
 | SAFE-002 | The MCU MUST require a valid versioned configuration and active heartbeat before arming outputs. |
-| SAFE-003 | Loss of Linux heartbeat MUST enter the configured safe state within 100 ms for motion outputs. |
+| SAFE-003 | Loss of the selected application-compute heartbeat MUST enter the configured safe state within 100 ms for motion outputs. |
 | SAFE-004 | Each active motion peripheral, or the smart adapter driving a passive motor, MUST independently enter safe state no later than 250 ms after its last valid motion command or heartbeat. |
 | SAFE-005 | Stop, watchdog, overcurrent, overtemperature, undervoltage, and invalid-configuration events MUST be latched or explicitly acknowledged according to a published fault table. |
-| SAFE-006 | The MCU MUST continue enforcing power and stop behavior while Linux reboots or is absent. |
-| SAFE-007 | Communication between Linux and the MCU MUST be versioned, framed, checksummed, and covered by golden vectors and malformed-input tests. |
+| SAFE-006 | The safety MCU MUST continue enforcing power and stop behavior while the application compute reboots, is wedged, or is absent. |
+| SAFE-007 | Communication between the selected application compute and the safety MCU MUST be versioned, framed, checksummed, and covered by golden vectors and malformed-input tests. |
 | SAFE-008 | The MCU MUST expose reset cause, fault cause, armed state, watchdog state, and per-port power state. |
 | SAFE-009 | A firmware update MUST leave a recoverable bootloader or known-good image. |
 | SAFE-010 | Safety parameters MUST have compile-time or hardware-enforced ceilings that an ordinary network client cannot increase. |
@@ -619,7 +752,7 @@ of trust against physical microSD replacement.
 | SAFE-013 | From a valid physical stop transition to removal of motion-power enable MUST be no more than 20 ms; mechanical stopping time, distance, and energy MUST be characterized separately for the creation. |
 | SAFE-014 | Releasing the physical stop or clearing a fault MUST NOT restart motion. Re-arming requires a healthy stop loop, neutral commands, and a new explicit arm action. |
 | SAFE-015 | Every actuator profile MUST declare whether safe stop means immediate coast, immediate electrical brake, or locally controlled deceleration followed by power removal, and MUST justify the choice against regenerative energy and mechanism hazards. |
-| SAFE-016 | A test MUST demonstrate that a stuck MCU, stuck enable GPIO, crashed Linux host, and broken stop wire each result in de-energized motion outputs within their specified bounds. |
+| SAFE-016 | A test MUST demonstrate that a stuck safety MCU, stuck enable GPIO, crashed or wedged application compute, and broken stop wire each result in de-energized motion outputs within their specified bounds. Linux failure is mandatory where Linux is present. |
 | SAFE-017 | The safety case MUST distinguish electrical output-disable latency from physical stopping performance and MUST NOT imply a safety-rated emergency-stop function without the applicable independent assessment. |
 
 Raspberry Pi's Build HAT is evidence for this split architecture: its
@@ -646,14 +779,15 @@ OMBR-POWER-BATTERY-1 is the expected first stable class, while
 OMBR-POWER-BENCH-P0 remains prototype-only and cannot satisfy the aggregate
 claim.
 
-PWR-001, PWR-005, PWR-006, PWR-008, PWR-010, PWR-011, and PWR-012 through
-PWR-015 apply to every hub power source. PWR-002 through PWR-004 and PWR-007
-apply when a battery or charger is present. PWR-009 applies to every intended
-commercial or child-facing product.
+PWR-001, PWR-005, PWR-006, PWR-008, PWR-010 through PWR-012, PWR-014, and
+PWR-015 apply to every hub power source. PWR-013 applies only to the bench
+source class. PWR-002 through PWR-004 and PWR-007 apply when a battery or
+charger is present. PWR-009 applies to every intended commercial or
+child-facing product.
 
 | ID | Requirement |
 | --- | --- |
-| PWR-001 | Compute, logic, and motor power domains MUST be separately regulated or switched so motor transients cannot violate Pi input limits. |
+| PWR-001 | Compute, logic, and motor power domains MUST be separately regulated or switched so motor transients cannot violate the selected compute module's input limits. |
 | PWR-002 | A battery assembly MUST provide per-cell supervision, chemistry-appropriate balancing where required, pack fuse, temperature and current measurement, low-voltage behavior, keyed chemistry/voltage identification, reverse-polarity protection, and defined wrong-pack behavior. |
 | PWR-003 | A rechargeable battery profile MUST use a power-path design that defines behavior while operating, charging, shut down, and deeply discharged. |
 | PWR-004 | A portable battery MUST be removable and replaceable using documented tools and without destructive disassembly. |
@@ -771,7 +905,7 @@ signals that violate the USB-C specification.
 | LINK-001 | The physical interface MUST be keyed, touch-safe, polarized, and resistant to accidental shorting. |
 | LINK-002 | No externally touchable contact MAY remain energized at motor power before presence and policy checks complete. |
 | LINK-003 | The connector MUST define first-mate/last-break behavior or an electrical strategy that removes high power before data/presence disconnect. |
-| LINK-004 | The production connector MUST be qualified for the project's expected frequent reconfiguration lifecycle. |
+| LINK-004 | The production connector MUST be qualified for the HOMBRE project's expected frequent reconfiguration lifecycle. |
 | LINK-005 | The cable and connector MUST survive published insertion, withdrawal, pull, bend, drop, mis-mating, and contamination tests. |
 | LINK-006 | The interface SHOULD have at least two qualified manufacturing sources, or openly licensable tooling and a migration plan. |
 | LINK-007 | The physical layer MUST use differential signaling for external cables. |
@@ -985,8 +1119,8 @@ sources form useful but narrower evidence layers:
 The reviewed official public sources do not expose an engineering solid,
 dimensioned functional interfaces and tolerances, connection-force
 distributions, gear tooth definition, or load and wear-life qualification.
-OMBR therefore does not label Pick a Brick, instructions, Builder, Studio, or
-LDraw data as “official engineering CAD.” The core specification deliberately
+HOMBRE therefore does not label Pick a Brick, instructions, Builder, Studio,
+or LDraw data as “official engineering CAD.” The core specification deliberately
 stops at the functional engineering data needed to identify, procure, model,
 mate, test, replace, and simulate a part. Production-mould design and tooling
 are out of scope. If a manufacturer later publishes or licenses a more
@@ -1053,11 +1187,11 @@ backlash/compliance, efficiency, limits, and validation evidence.
 | MECH-006 | A compatibility release MUST include loose, nominal, and tight fit coupons for each supported manufacturing process. |
 | MECH-007 | Dimensions and tolerances MUST be based on a documented measurement study across multiple genuine reference parts, types, ages, cavities, and lots. |
 | MECH-008 | A claim of brick or beam compatibility MUST identify the tested elements, sample count, process, material, environmental conditions, and pass criteria. |
-| MECH-009 | The project MUST publish go/no-go gauges and insertion/retention test procedures. |
+| MECH-009 | The HOMBRE project MUST publish go/no-go gauges and insertion/retention test procedures. |
 | MECH-010 | Released OMBR-native CAD and replacement-fabrication source MUST avoid logos, source-indicating marks, or copied ornamental housings belonging to another manufacturer. |
 | MECH-011 | Hub, battery, motor or actuator, light, sensor, adapter, and cable-retention models MUST declare their outer envelope in SI units and brick-grid modules, accessible mounting frames, assembly clearance, and collision geometry. |
 | MECH-012 | The reference starter family MUST provide measured attachment strategies for selected studless-beam holes and pins, cross axles, and top or bottom stud connections; each strategy is a separate tested compatibility claim. |
-| MECH-013 | The project MUST publish a machine-readable reference-part and attachment-frame library with source, revision, license, provenance, geometry fidelity, and measured-versus-nominal status for every entry. |
+| MECH-013 | The HOMBRE project MUST publish a machine-readable reference-part and attachment-frame library with source, revision, license, provenance, geometry fidelity, and measured-versus-nominal status for every entry. |
 | MECH-014 | Cable models and assemblies MUST include connector sweep, minimum bend, strain-relief, removal-tool, and moving-joint keep-outs so CAD and simulation can detect unroutable or unsafe placements. |
 | MECH-015 | A mechanical component release MUST include assembly orientation, fasteners, torque where applicable, disassembly sequence, wear interfaces, and replacement limits; glue or destructive joining requires a documented reason and replaceable subassembly boundary. |
 | MECH-016 | Each mechanical reference catalog MUST declare publisher, stable catalog ID and revision, source URI, review date, immutable snapshot digest where redistribution is permitted, license or access terms, authority class, covered evidence levels, identifier semantics, and limitations. Dynamic retail or API results MUST additionally record query, locale, and retrieval time. |
@@ -1099,19 +1233,19 @@ normative numbers.
 
 ### 9.5 Trademark and compatibility wording
 
-The project name, domain, logo, and certification mark MUST NOT contain LEGO,
-MINDSTORMS, or another third party's mark. The LEGO logo MUST NOT appear on
-project hardware or sites. Descriptive compatibility text SHOULD be limited
-to factual wording such as “compatible with selected LEGO® Technic elements”
-and accompanied by a clear non-affiliation statement after appropriate legal
-review.
+The HOMBRE name, domain, logo, and product presentation, and any OMBR
+conformance or certification mark, MUST NOT contain LEGO, MINDSTORMS, or
+another third party's mark. The LEGO logo MUST NOT appear on HOMBRE hardware
+or sites. Descriptive compatibility text SHOULD be limited to factual wording
+such as “compatible with selected LEGO® Technic elements” and accompanied by a
+clear non-affiliation statement after appropriate legal review.
 
 The [LEGO Fair Play policy](https://www.lego.com/en-it/legal/notices-and-policies/fair-play)
 is a useful trademark warning but is not commercial product clearance. Open
 licensing does not grant third-party trademark, design, or patent rights.
 
 LEGO® is a trademark of the LEGO Group of companies, which does not sponsor,
-authorize, or endorse this specification.
+authorize, or endorse HOMBRE or this specification.
 
 ## 10. Peripheral requirements
 
@@ -1176,7 +1310,7 @@ STOP always preempts lower-priority commands.
 | MOTOR-005 | Characterization MUST identify supply voltage, temperature, sample count, measurement method, uncertainty, and whether each value is measured or manufacturer-declared. |
 | MOTOR-006 | Continuous current and torque ratings MUST be based on a published thermal test, not the connector or driver's peak rating. |
 | MOTOR-007 | The smart motor or adapter MUST always enforce configured current and electrical limits locally. It MUST enforce temperature, velocity, and position limits only when the corresponding sensors and capabilities are present, and MUST never imply an unmeasured limit. |
-| MOTOR-008 | Motion commands MUST expire and enter the configured safe state without network, Pi, or broker availability. |
+| MOTOR-008 | Motion commands MUST expire and enter the configured safe state without network, application-compute, or broker availability. |
 | MOTOR-009 | Every module SHOULD report current, voltage, applied output, limit state, and fault state; it SHOULD report temperature, position, and velocity only when measured or explicitly marked as an estimate with uncertainty. |
 | MOTOR-010 | Output shaft, axle adapter, mounting points, cable exit, and collision volume MUST have editable source CAD and gauges. |
 | MOTOR-011 | A feedback motor MUST declare position topology as relative, bounded single-turn, modulo single-turn, or multi-turn and MUST define encoder rollover and retained-state behavior. |
@@ -1228,6 +1362,12 @@ The initial standard sensor classes are:
 | SENSOR-004 | Multi-axis values MUST declare axis order, handedness, frame, and covariance or per-axis uncertainty where available. |
 | SENSOR-005 | Calibration MUST identify procedure, reference equipment, timestamp, software revision, operator or process, and resulting parameters. |
 | SENSOR-006 | A simulator MUST be able to reproduce the sensor's range, latency, rate, clipping, and a declared noise model. |
+| SENSOR-007 | An image, depth, event, or other vision stream MUST declare resolution, pixel/depth format, color space and transfer function, frame rate modes, exposure/gain/focus/illumination controls, shutter/readout behavior, compression, transport, buffering, drop policy, and worst-case resource envelope. |
+| SENSOR-008 | Every vision frame MUST carry stream and sequence identity, capture timestamp, delivery timestamp or measured latency, calibration revision, validity/quality, and the exact camera frame. A receive timestamp MUST NOT be substituted silently for capture time. |
+| SENSOR-009 | Camera calibration MUST publish intrinsics, distortion model and coefficients, valid resolution/crop/binning modes, uncertainty and residuals; a multi-camera or camera-to-mechanism setup MUST additionally publish time synchronization and extrinsic transforms with provenance. |
+| SENSOR-010 | A depth or point-cloud capability MUST declare range, scale/units, invalid-value encoding, confidence/quality semantics, registration frame, minimum/maximum reliable distance, field of view, environmental interference, and simulation model. |
+| SENSOR-011 | A vision source used for a safety, inspection, grasp, or AI claim MUST publish measured end-to-end latency/jitter, frame-loss behavior, calibration drift checks, lighting/environment envelope, occlusion/failure cases, and the downstream stale-data deadline. |
+| SENSOR-012 | Camera activation, storage, live viewing, and model input MUST be independently authorized and visibly observable where people may be recorded. Public releases contain no personal images or credentials; datasets and recordings follow explicit consent, minimization, retention, redaction, and deletion policy. |
 
 ### 10.5 Adapter profile
 
@@ -1310,7 +1450,7 @@ HID profile provides the substitutable path.
 | INPUT-009 | Output capabilities such as rumble, light, display, sound, or force feedback MUST be separately declared, bounded, cancellable, permission-controlled, and safe on disconnect. |
 | INPUT-010 | A software stop button or handheld stop command MUST preempt ordinary mappings but MUST NOT be labeled as a safety-rated emergency stop unless independently assessed; the physical hub stop remains available. |
 | INPUT-011 | Reference keyboard, touch, and gamepad mappings MUST be remappable, keyboard-accessible where applicable, non-color-dependent, and serializable in the portable control profile. |
-| INPUT-012 | The project MUST publish either open source handheld-controller hardware and firmware or a complete generic-HID gamepad profile, mapping wizard, fixtures, and test vectors sufficient to operate the starter system without a proprietary remote. |
+| INPUT-012 | The HOMBRE project MUST publish either open source handheld-controller hardware and firmware or a complete generic-HID gamepad profile, mapping wizard, fixtures, and test vectors sufficient to operate the starter system without a proprietary remote. |
 | INPUT-013 | Input benchmarks MUST record hardware/firmware revision, OS and driver, connection, report descriptor, sample and event rates, end-to-end latency, jitter, range, neutral drift, disconnect behavior, battery behavior, and mapping provenance. |
 
 ### 11.2 Creation graph
@@ -1423,8 +1563,9 @@ OMBR does not define a mandatory new programming language. Ordinary Python,
 .NET/C#, C/C++, Rust, JavaScript/TypeScript, ROS, visual tools, and future
 languages can target the same asynchronous capability SDK. The first
 reference toolchain provides Python and .NET/C# golden programs because both
-run on the Pi and on developer machines; support for another language is a
-runtime profile rather than an editor fork.
+run on the Midi/Maxi Linux profiles and developer machines; Mini uses a
+declared constrained artifact or split-execution path. Support for another
+language is a runtime profile rather than an editor fork.
 
 Programs run on an explicit hub, workstation, simulator, or supported
 peripheral target. They do not run inside the Visual Studio Code extension
@@ -1436,13 +1577,118 @@ The program lifecycle is absent, staged, validated, installed, inactive,
 starting, running, stopping, failed, or rolling-back. Every transition has a
 request ID, actor, timestamp, result, prior revision, and resulting digest.
 
+#### Management plane, OMBR App API, and target providers
+
+Program build and lifecycle operations are a **management plane**. A running
+program uses the separate **OMBR App API** data plane. Run-local programs do
+not call the public network API and do not open drivers directly; both
+sandboxed programs and authorized network clients enter one capability and
+control broker through differently scoped front doors.
+
+~~~mermaid
+flowchart TB
+    SOURCE["program.json, source, dependency locks"] --> BUILD["Reproducible build"]
+    BUILD --> RELEASE["Immutable Program Release<br/>descriptor and platform artifacts by digest"]
+
+    CREATION["Immutable Creation release<br/>or typed development snapshot"] --> RESOLVER["Deployment and run resolver"]
+    RELEASE --> RESOLVER
+    TARGET["Physical, simulation, or replay binding"] --> RESOLVER
+    RESOLVER --> CONTEXT["Immutable Run Context<br/>bindings, grants, configuration, target, digests"]
+
+    subgraph Management["Program management plane"]
+        TOOLS["Workbench, third-party tools, CI"] <--> MGMT["ombr CLI, ombrd, public lifecycle APIs"]
+        MGMT --> BUILD
+        MGMT --> RESOLVER
+    end
+
+    subgraph Program["Run-local sandboxed program data plane"]
+        CONTEXT --> SUPERVISOR["Program supervisor and sandbox"]
+        SUPERVISOR --> APP["Selected program artifact"]
+        APP <--> CLIENT["libombr-app SDK or ombr-appctl"]
+        CLIENT <--> APPAPI["Scoped OMBR App API<br/>private local IPC"]
+        APPAPI <--> BROKER["Capability and control broker"]
+    end
+
+    NETWORK["HTTPS, WebSocket, MQTT gateway"] <--> BROKER
+    CONTEXT --> SELECT{"Exactly one target provider<br/>selected by Run Context"}
+    BROKER <--> SELECT
+    SELECT <-.-> PHYSICAL["Physical provider<br/>drivers, safety MCU, ports, peripherals"]
+    SELECT <-.-> VIRTUAL["Simulation provider<br/>pinned physics, virtual sensors and actuators"]
+    SELECT <-.-> REPLAY["Replay provider<br/>recorded inputs, captured outputs, no physical actuation"]
+    BROKER -->|state, events, traces| TWIN["Twin observation and history<br/>not a command path"]
+~~~
+
+The normative authority is the App API protocol, schemas, operation behavior,
+errors, lifecycle, and golden vectors—not one shared-library ABI. The first
+reference bindings are a Python library, a .NET library, and an unprivileged
+`ombr-appctl` command adapter. They connect through a private, program-scoped
+local endpoint provisioned by the supervisor. A binding MAY use a Unix-domain
+socket or an equivalent access-controlled local transport, but it MUST NOT
+pass an owner credential or unrestricted hub token through the program
+environment. Exactly one target provider is active for a Run Context. Provider
+selection is immutable for that run; changing from physical to simulation or
+replay creates a new Run Context and process. Replay injects recorded inputs
+and captures program outputs but cannot energize physical outputs. Twin data
+is observational unless an authorized command is separately submitted through
+the broker.
+
+The App API has these service families:
+
+| Family | Required operations and semantics |
+| --- | --- |
+| Context | Read program release, Creation release or development snapshot, target, run, runtime, bindings, grants, configuration, safety policy, and API identities. |
+| Capabilities | List, describe, and resolve a logical program alias to the exact target capability. |
+| State | Read and subscribe with state layer, unit, quality, sequence, timestamp, uncertainty, gaps, and cancellation. |
+| Control | Acquire, renew, and release a lease; invoke, batch, and cancel bounded commands with deadlines. |
+| Timelines | Start, inspect, and cancel a declared timeline or profile. |
+| Twin | Read permitted snapshots and layers and subscribe to events without mutating design authority. |
+| Clock and random | Read target monotonic time, wait on target timers, and obtain declared deterministic random streams. |
+| Lifecycle | Signal ready, health, heartbeat, cancellation, and stop acknowledgement; readiness never arms motion. |
+| Observability | Emit bounded structured logs, metrics, trace annotations, and domain events tied to program and run IDs. |
+| Configuration | Read validated non-secret configuration and opaque handles for explicitly granted secrets. |
+
+`ombr-appctl` maps those families to stable JSON or NDJSON commands such as
+`context`, `capability list`, `capability resolve`, `state read`, `state watch`,
+`control acquire`, `control invoke`, `control cancel`, `control release`,
+`timeline start`, `twin snapshot`, `ready`, `health`, `log`, and `metric`. It
+has no broader authority than its program session. Continuous control uses a
+persistent stream whose loss stops renewal; repeated one-shot shell commands
+are not a real-time control interface. The normal `ombr` CLI owns management
+operations such as build, simulate, deploy, start, stop, status, logs, debug,
+export, and promotion.
+
+#### Promotion between operation and simulation
+
+A running process is not silently live-migrated. HOMBRE restarts a recorded,
+immutable program release in simulation and reproduces its declared context:
+
+1. export or resolve the installed program release, selected artifact,
+   Creation release or development snapshot, deployment binding, permission grant, configuration,
+   runtime base, and safety-policy digests;
+2. select a simulation target whose virtual capabilities satisfy the same
+   logical program requirements and create a new immutable Run Context;
+3. run the selected bundle through the same OMBR App API and capability/control
+   broker semantics, with virtual providers replacing physical drivers;
+4. inject the recorded initial state, external observations, target clock,
+   deterministic random seeds, and declared external-service recordings;
+5. record commands, events, lifecycle, logs, metrics, and simulated state; and
+6. compare the simulation trace with the physical Run record through the twin.
+
+Artifact and context comparability are reported honestly:
+
+| Comparison class | Meaning |
+| --- | --- |
+| `artifact-identical` | The executable and runtime-base bytes are identical, using a portable artifact, matching architecture, or declared emulation. |
+| `release-equivalent` | The release, source, dependency locks, build graph, configuration, App API, and bindings are the same, but the target selects a different platform artifact. This is not exact-binary parity. |
+| `modified-context` | The program may share a release or source lineage, but a capability contract, binding, grant, non-secret configuration, secret-dependent behavior, external input, or required artifact differs. Results may be compared, but this is not a hardware/simulation parity claim. |
+
 | ID | Requirement |
 | --- | --- |
 | PROG-001 | Every deployable program MUST have a versioned descriptor declaring program ID and revision, language, runtime and ABI, entry point, execution target, source and deployable artifact digests, required capabilities and authorization scopes, resource ceilings, lifecycle policy, and source/build provenance. |
 | PROG-002 | Program source, dependency locks, build settings, generated outputs, released debug symbols, and SBOMs MUST be content-addressed project artifacts; editor state or a client database MUST NOT substitute for them. |
 | PROG-003 | Ordinary programs MUST access hardware through published OMBR capability and control contracts and MUST NOT directly access output-enable signals, native peripheral buses, safety-controller registers, or unrestricted GPIO used by safety functions. |
-| PROG-004 | A program targeting simulation and physical hardware MUST observe the same capability IDs, units, state layers, errors, time semantics, and authorization model. Target selection MUST be explicit and visible. |
-| PROG-005 | Install, validate, activate, start, stop, restart, status, log, and removal operations MUST be available through public versioned service and CLI contracts rather than private UI commands. |
+| PROG-004 | A program targeting simulation and physical hardware MUST observe the same logical alias IDs, capability semantic IDs, units, state layers, errors, time semantics, and authorization model; provider-specific physical instance or port IDs MUST NOT leak into that contract. Target selection MUST be explicit and visible. A replacement that changes the required capability contract is `modified-context` and cannot support a parity claim. |
+| PROG-005 | Install, validate, activate, start, stop, restart, status, log, export, and removal operations MUST be available through public versioned service and CLI contracts rather than private UI commands. |
 | PROG-006 | A runtime MUST enforce declared CPU, memory, storage, process, device, network, and log limits. Program failure or exhaustion MUST NOT prevent physical stop, watchdog service, hub recovery, or another program's safety handling. |
 | PROG-007 | Arbitrary code upload, interactive debug, and shell-like access MUST be disabled by default and require an owner-authorized, auditable, time-bounded developer session. |
 | PROG-008 | Program installation and activation MUST be transactional, health-checked, auditable, and rollback-capable; a failed revision MUST NOT replace the last known-good active revision. |
@@ -1458,6 +1704,44 @@ request ID, actor, timestamp, result, prior revision, and resulting digest.
 | PROG-018 | Autostart or restart-always policy MUST require explicit owner activation and a locally enforceable safety policy; reinstall, workspace opening, editor connection, or source checkout MUST NOT arm or start motion. |
 | PROG-019 | Debugging MUST preserve command expiry, arbitration, resource ceilings, local limits, watchdogs, and physical stop; a breakpoint MUST NOT leave an unbounded motion command active. |
 | PROG-020 | The same program bundle MUST be deployable without semantic rewriting by the VS Code Workbench, headless CLI, or an independent client; target-specific build artifacts are selected by declared platform metadata. |
+| PROG-021 | A controller-resident program MUST receive a versioned, application-scoped OMBR App API session, and every command MUST traverse the common validation, arbitration, lifetime, safety, state, and event path. |
+| PROG-022 | A portable program MUST declare logical capability aliases with semantic type, kind, schema, unit, access, cardinality, modes, and applicable timing or quality constraints; it MUST NOT depend on a physical port or vendor identifier. |
+| PROG-023 | Activation MUST resolve every required alias against the exact Creation release or explicitly typed development snapshot and target, reject missing or ambiguous matches, and create a content-addressed binding manifest. |
+| PROG-024 | Effective permissions MUST be the intersection of package requests, owner grants, deployment policy, target availability, and immutable safety ceilings. Installation alone MUST NOT grant access. |
+| PROG-025 | The supervisor MUST issue an immutable Run Context containing program release and artifact, Creation, deployment, target session, binding, safety policy, configuration, runtime, App API, and grant identities and digests. |
+| PROG-026 | A program MUST complete App API negotiation and readiness before becoming running. Stop, failure, health timeout, or forced termination MUST revoke commands and leases before process cleanup. Readiness or health MUST NOT arm motion. |
+| PROG-027 | Artifact selection MUST produce exactly one compatible artifact or fail. Every run and export MUST record the selected artifact and runtime-base digests. |
+| PROG-028 | A hardware/simulation parity claim MUST state `artifact-identical` or `release-equivalent`; clients and reports MUST show every differing artifact or runtime digest. Any differing required binding, capability contract, grant, configuration, unresolved secret-dependent behavior, or external input MUST instead be labeled `modified-context` and MUST NOT be presented as parity. |
+| PROG-029 | An owner-authorized export of an installed or recorded run MUST resolve and verify the exact Program Release, selected artifact, runtime base, dependency locks, Creation release or development snapshot, Run Context, binding, grants, non-secret configuration, safety policy, initial state, and permitted external-input records. Missing or unverifiable artifacts MUST fail with an explicit dependency report; secret values and private credentials MUST be replaced by typed unresolved handles and a redaction report. |
+| PROG-030 | A complete physical-run export MUST be importable into an eligible simulation or replay provider without semantic rewriting. Starting it creates a new Run Context, preserves all resolvable digests and logical bindings, and emits `artifact-identical`, `release-equivalent`, or `modified-context`. Any replacement for an unavailable capability, secret-dependent behavior, configuration, or required input forces `modified-context` until exact equivalence is re-established and proven. |
+
+### 11.7 AI and vision execution
+
+HOMBRE treats learned perception and control as replaceable, versioned program
+dependencies. “Runs on Maxi” is not an AI interface: the model package, sensor
+contract, accelerator adapter, resource envelope, measured quality, and
+fallback are the interface. The same package may contain different verified
+artifacts for Jetson, another accelerator, CPU reference inference, and
+simulation/replay.
+
+| ID | Requirement |
+| --- | --- |
+| AI-001 | Every deployed learned model or policy MUST resolve one immutable AI Model Package containing model ID/version and digest, architecture and task, weights or external content digest, executable format/opset, precision/quantization, licenses, source/training provenance, runtime and accelerator compatibility, preprocessing/postprocessing, configuration, and SBOM. |
+| AI-002 | Model inputs and outputs MUST bind to typed OMBR capabilities with exact shape, data type, units, frame, calibration, normalization, label/action vocabulary, valid range, temporal window, rate, age limit, quality, and uncertainty semantics. Tensor position or a display label alone is insufficient. |
+| AI-003 | A vision pipeline MUST bind every input frame to exact SENSOR-007 through SENSOR-012 stream and calibration revisions. Resize, crop, color conversion, rectification, depth registration, augmentation, batching, and frame selection MUST be versioned operations whose parameters and order are reproducible. |
+| AI-004 | Each selectable model artifact MUST declare minimum and measured CPU/GPU/NPU, memory, storage, camera bandwidth, initialization, sustained power, and thermal resources plus latency, jitter, throughput, dropped-input, and throttling results under an exact compute profile and workload. Peak TOPS is not workload evidence. |
+| AI-005 | Accuracy or task-performance claims MUST identify dataset/task revision and rights, split and leakage controls, metric definitions, thresholds, sample counts, environment/population coverage, uncertainty, failure taxonomy, and independently repeatable evaluation code. A demonstration video is not a benchmark. |
+| AI-006 | Every inference result used for observation, planning, inspection, or control MUST carry model/package and run identity, source input sequence/time span, production time, age, confidence or declared absence of calibrated confidence, validity/quality, applicable frame, and trace correlation. |
+| AI-007 | An AI policy may emit only authorized bounded intents or trajectory segments through the common broker. Hardware/safety ceilings, collision/workspace limits, command lifetime, arbitration, interlocks, and stop behavior remain independently enforced after model output. |
+| AI-008 | Missing, stale, late, malformed, low-quality, out-of-contract, resource-exhausted, thermally throttled, or crashed inference MUST follow a declared degradation and fallback state machine. The default for a motion-critical unavailable result is no new motion authority, not reuse of the last output. |
+| AI-009 | A Run Context using AI MUST pin model, runtime, accelerator/driver, preprocessing, configuration, random seeds where applicable, calibration, compute power mode, and relevant nondeterminism declaration. Replay MUST preserve inputs and compare outputs within a declared determinism/tolerance class rather than claim bit identity unconditionally. |
+| AI-010 | Training, fine-tuning, calibration, and evaluation datasets MUST record source, consent/collection basis, licenses and use restrictions, subject/privacy class, capture hardware/calibration, schema, transformations, filters, annotations, splits, known bias/coverage gaps, retention, deletion, and content digest. Public release MUST exclude data not authorized for that scope. |
+| AI-011 | Model installation and activation MUST be transactional, signature/digest verified, resource preflighted, health checked, auditable, and rollback-capable. A model update MUST NOT silently change a Program or Creation release's behavior; activation creates a new Run Context. |
+| AI-012 | Remote inference MUST be explicit in the Run Context and declare endpoint identity, authentication, encryption, data minimization, residency/retention, availability, cost, rate/latency bounds, partition behavior, local fallback, and owner disable control. A core offline claim cannot depend on it. |
+| AI-013 | Simulation and replay providers MUST expose the same model input/output capability contracts and permit recorded physical inputs to drive the exact package. Synthetic-data or simulator-only quality MUST be labeled and MUST NOT substitute for physical benchmark evidence. |
+| AI-014 | A language-conditioned, vision-language, or tool-using policy MUST version prompts/system instructions, tokenizer, tool/capability schema, decoding and sampling settings, conversation/state retention, content filters, and allowed action grammar. Free-form text MUST NOT directly bypass typed capability validation. |
+| AI-015 | AI traces MUST be sufficient to reconstruct selected input references, model/configuration, output, validation/clamping, accepted action, and fallback without requiring secret model credentials or retaining disallowed personal raw data. Redaction MUST preserve explicit gaps and provenance. |
+| AI-016 | A package MUST distinguish open model/source/weights/runtime components from documented-COTS or restricted ones. Export to an open exchange format does not by itself prove semantic equivalence, hardware portability, redistributable weights, or a fully open AI implementation. |
 
 ## 12. Wireless and local network interfaces
 
@@ -1513,6 +1797,11 @@ API contract:
 - credential, pairing, and owner-key management; and
 - update staging, validation, activation, and rollback.
 
+The run-local OMBR App API reuses the same capability, state, command,
+event, error, and lifecycle schemas where applicable, but it is independently
+versioned and is not a network-exposed `/ombr/v1` route. Its program-scoped
+transport and authorization are defined by the Run Context.
+
 | ID | Requirement |
 | --- | --- |
 | API-001 | Every state-changing request MUST be authenticated, authorized, bounded, and assigned a request or command ID. |
@@ -1525,8 +1814,13 @@ API contract:
 | API-008 | A project, profile, deployment, calibration, or twin mutation MUST carry an expected revision or equivalent optimistic-concurrency token; a conflict MUST be returned explicitly and MUST NOT be silently resolved by last writer wins. |
 | API-009 | The reference Workbench MUST NOT depend on undocumented or privileged endpoints unavailable to an independently implemented authorized client, except a separately specified physical factory or recovery interface. |
 | API-010 | Long-running validation, build, deployment, simulation, calibration, update, and replay operations MUST return a stable operation ID, progress, cancellation semantics, bounded logs, and a final machine-readable result. |
-| API-011 | Developer and debug sessions MUST expose scope, actor, target, creation revision, start, absolute maximum lifetime, inactivity expiry, and revocation; closing a client MUST NOT leave an immortal session. |
+| API-011 | Developer and debug sessions MUST expose scope, actor, target, Creation release or development-snapshot identity, start, absolute maximum lifetime, inactivity expiry, and revocation; closing a client MUST NOT leave an immortal session. |
 | API-012 | Checked-in OpenAPI and event schemas MUST generate at least TypeScript, .NET, and Python client contract tests whose serialized requests and observable results match the same golden vectors. |
+| API-013 | The OMBR App API MUST be independently versioned and published with complete schemas, operation semantics, errors, lifecycle rules, and golden vectors. |
+| API-014 | A run-local App API endpoint MUST be private to the run and process-bound through a preconnected or access-controlled local channel; owner credentials MUST NOT be exported through environment variables. On a hub this endpoint is controller-local; on a workstation or simulator it remains isolated to the target process. |
+| API-015 | SDK, library, command-adapter, and alternative-language bindings MUST produce the same observable operations and errors and MUST NOT expose binding-specific privileged behavior. |
+| API-016 | Streams MUST define ordering, sequence scope, buffering, backpressure, overflow and gap notification, resumability, cancellation, and resource bounds. |
+| API-017 | Command calls MUST carry request and command IDs, target session, lifetime or deadline, actor and run identity, and explicit batch semantics; expired motion commands MUST NOT be automatically retried. |
 
 ### 12.4 MQTT digital-twin profile
 
@@ -1563,11 +1857,76 @@ duplicate, unauthorized, wrong-boot, or stale-sequence commands. Desired and
 reported state use explicit revisions and acknowledgement; silent
 last-writer-wins is forbidden for safety-relevant configuration.
 
+Retained twin traffic is governed by TWIN-013 and TWIN-018 through TWIN-020.
+A retained payload with an incompatible envelope or without sufficient age,
+release, deployment, and session context is stale input, not current truth.
+
 MQTT is a bounded runtime-state, desired-configuration, event, and telemetry
 transport. It is not a source-CAD editor, arbitrary file synchronization
 channel, program uploader, or substitute for revisioned project transactions.
 Source and package changes use content-addressed files or the authenticated
 HTTPS transaction API.
+
+### 12.5 Multi-Creation coordination over MQTT
+
+`OMBR-COORD-1` composes independently safe Creations without turning their
+inner control loops into network services. MQTT carries availability, job and
+task state, expiring assignments, results, resource observations, and trace
+events. A member converts an accepted high-level task into local plans and
+bounded capability commands; joint servo updates, watchdogs, limits, and
+physical stop remain local.
+
+Collective topic root:
+
+    ombr/v1/{owner-namespace}/collectives/{collective-id}/
+
+`collective-id` is the lowercase UUID of the bound collective instance. The
+owner-namespace and topic-character rules from section 12.4 apply. The
+reference profile defines these suffix families:
+
+| Topic | Retain | QoS | Purpose |
+| --- | --- | ---: | --- |
+| presence/{creation-id} | Yes | 1 | Member availability, boot/session ID, role and last will |
+| reported/{creation-id} | Yes | 1 | Bounded member state and current collective-release binding |
+| jobs/{job-id}/state | Yes | 1 | Latest revisioned job lifecycle snapshot |
+| tasks/{task-id}/state | Yes | 1 | Latest revisioned task lifecycle snapshot |
+| assignments/{creation-id}/{task-id} | Never | 1 | Directed, expiring task offer, assignment, cancel or compensation request |
+| results/{task-id} | No | 1 | Correlated acceptance, progress checkpoint, completion, failure or rejection |
+| resources/{resource-id}/state | Yes | 1 | Observed availability and current fenced lease generation |
+| events/{class} | No | 1 | Auditable coordination, safety-observation, inventory and quality events |
+| telemetry/{stream} | No | 0 by default | High-rate expiring cell measurements and visualization data |
+
+Retained messages are restart hints and latest snapshots, never the audit log,
+lease authority, or design source. A retained safety event may improve
+visibility but cannot be the stop signal.
+
+| ID | Requirement |
+| --- | --- |
+| COORD-001 | A Creation Collective release MUST identify the collective ID/version, exact member Creation releases and permitted quantities/roles, workcells and coordinate frames, shared resources, network and time profiles, orchestration policy, job/task/lease schemas, assembly or other recipes, workcell safety boundary, simulation world, observability policy, and dependency digests. Runtime bindings select physical instances without rewriting that release. |
+| COORD-002 | Every member MUST retain its own Creation/instance/release/boot identities, local controller, permissions, command leases, safe state, and recovery path. Removing it from a collective or losing the orchestrator MUST NOT leave an anonymous device or remove its local safety enforcement. |
+| COORD-003 | `OMBR-COORD-1` MUST use MQTT 5 for the reference event/state transport and publish complete topic, payload, property, authorization, QoS, retain, expiry, session, error, and version-negotiation schemas plus golden packets. HTTPS or content-addressed artifacts remain the transaction path for releases and large files. |
+| COORD-004 | Every coordination payload MUST carry schema/profile version, collective release and runtime binding, sender and sender boot/session, globally unique message ID, source sequence, issued and expiry times, trace/correlation/causation IDs, expected prior revision where mutable, and typed body. Content Type and Payload Format Indicator MUST match the selected canonical encoding. |
+| COORD-005 | Every non-loopback MQTT client MUST authenticate with an owner-controlled per-service or per-Creation identity over `mqtts` or `wss`. Broker ACLs MUST restrict publish and subscribe topic families separately; one compromised member MUST NOT publish as another, allocate itself arbitrary resources, rewrite completed evidence, or issue workcell-wide commands. |
+| COORD-006 | Presence MUST use a retained online birth plus a bounded MQTT session and Last Will carrying offline state, client/session and boot IDs, last known release binding, reason class where configured, and will-preparation timestamp/quality. Session Expiry Interval and any Will Delay Interval MUST be declared and bounded. A will cannot know the future disconnect time: broker receipt is an observation, not a device timestamp, and consumers MUST age presence independently because broker or network failure can prevent timely publication. |
+| COORD-007 | Jobs and tasks MUST use versioned state machines. The baseline task states are `proposed`, `ready`, `offered`, `assigned`, `accepted`, `running`, `blocked`, `completed`, `failed`, `cancelled`, `expired`, and `compensated`; every transition declares actor, expected revision, preconditions, result/evidence and allowed successors. |
+| COORD-008 | A task assignment MUST name exact job/task/recipe step, required capability and resource constraints, intended member and boot/session where bound, inputs by digest or immutable reference, earliest start, deadline, command lifetime, priority, cancellation and compensation policy, and response topic/correlation data. It MUST NOT contain an unbounded stream of raw joint commands. |
+| COORD-009 | Because MQTT QoS 1 can redeliver, every state change and side effect MUST be idempotent by message and operation ID or rejected as already applied. Implementations MUST persist a bounded deduplication window at least as long as the maximum message/session lifetime and expose an explicit result for duplicates. |
+| COORD-010 | MQTT Response Topic and Correlation Data SHOULD carry request/result correlation where supported, but payload-level stable operation, trace and causation IDs remain mandatory across bridges, stores and non-MQTT adapters. A response topic MUST be authorized and MUST NOT grant broader subscription rights. |
+| COORD-011 | A shared physical or logical resource MUST be acquired through an expiring lease with resource ID, holder identity and boot, monotonically increasing fencing token or leader epoch, issue/expiry, renewal bound, capacity/quantity, and release result. A stale holder or retained message with an older token MUST be unable to commit a new protected operation. |
+| COORD-012 | The resource graph MUST describe fixtures, tools, zones, material locations, cameras, chargers, compute/accelerators, network capacity, human approvals, and other exclusive or counted resources with capabilities, capacities, compatibility, spatial constraints, acquisition order and deadlock policy. |
+| COORD-013 | Cross-Creation coordination MUST use synchronized wall/TAI-or-UTC time only for correlation and scheduled starts with declared uncertainty. Each local deadline and command lifetime is enforced against a monotonic clock; a scheduled action MUST be rejected when clock uncertainty exceeds its declared tolerance. |
+| COORD-014 | Broker loss, DNS failure, duplicate/delayed/reordered messages, member reboot, orchestrator crash, network partition, storage exhaustion, and time step MUST have tested outcomes. Existing members may finish only a locally authorized bounded step; no new hazardous task or resource lease begins without fresh authority. |
+| COORD-015 | An active orchestrator MUST publish a unique instance, leadership epoch, collective-release binding, health and lease. Multiple orchestrator replicas MAY provide availability, but only the current fenced leader may assign work; split brain MUST be detected and prevented from committing conflicting protected operations. |
+| COORD-016 | MQTT shared subscriptions MAY distribute stateless observation or planning work, but broker delivery selection MUST NOT itself allocate a physical resource or establish task ownership. A directed accept/assignment and fenced resource transaction remains required. |
+| COORD-017 | Desired state, task state, imperative assignments, telemetry, and evidence MUST remain distinct. Imperative assignments and cancels MUST NOT be retained; every such message uses Message Expiry Interval and an application deadline. Silent last-writer-wins is forbidden. |
+| COORD-018 | The orchestrator MUST define priority, fairness, starvation, capacity reservation, retry, maximum attempts, backoff, deadlock detection, cancellation, compensation, manual takeover, and terminal-failure policy. An automatic retry MUST prove that the prior physical side effect did not occur or is safely idempotent. |
+| COORD-019 | After reconnect or failover, a member and orchestrator MUST reconcile collective release, boot/session, job/task revisions, leases/fencing tokens, accepted side effects, material/work-product state, and evidence before resuming. Ambiguous physical state becomes `blocked` pending inspection or a declared recovery operation. |
+| COORD-020 | Every job run MUST produce a content-addressed coordination record containing collective and member releases, runtime bindings, orchestrator identity/epoch, task transitions, assignments/results, resource leases, commands by reference, member Run records, safety/quality events, clock uncertainty, gaps, human actions, and final disposition. |
+| COORD-021 | Simulation MUST run the same collective, job/task/resource schemas and MQTT-visible behavior against virtual members while additionally modeling spatial interference, shared resources, material flow, failures and scheduling. A simulation-only throughput or success claim MUST be labeled and tied to exact seeds and fidelity. |
+| COORD-022 | Broker bridges, federation and remote observers MUST declare namespace mapping, loop prevention, ordering/duplication effects, retained/session behavior, trust boundary and allowed direction. Command and assignment topics MUST NOT cross a bridge by default; an explicit policy and end-to-end identity/expiry preservation are required. |
+| COORD-023 | Workcell access control, protective stop, emergency stop, guard/door/light-curtain interlock, safe energy isolation, restart inhibit and hazardous-zone enforcement MUST use an independently assessed local mechanism appropriate to the risk. MQTT may report their state but MUST NOT be the only protective channel. |
+| COORD-024 | Operator clients MUST show collective/member release bindings, online/stale/partitioned state, current jobs/tasks/leases, safety state, degraded compute or sensor quality, evidence gaps, and the exact scope of pause/cancel/stop controls. A global dashboard green state MUST NOT hide an unknown member. |
+| COORD-025 | At least two independent MQTT clients and two simultaneously operating physical Creations MUST complete the golden coordination suite, including duplicate delivery, task handoff, fenced shared resource, member replacement, broker restart, partition, orchestrator failover, recovery and replay, before `OMBR-COORD-1` is claimable. |
 
 ## 13. Digital twin, CAD, and simulation
 
@@ -1590,7 +1949,7 @@ procedure.
 
 ### 13.2 Semantic authority
 
-The OMBR project manifest is authoritative for identity, relationships,
+The OMBR Creation manifest is authoritative for identity, relationships,
 interfaces, capabilities, and asset hashes. Native CAD is authoritative for
 editable geometry. SDF is authoritative for the version 1 simulation
 interchange profile.
@@ -1603,15 +1962,32 @@ authority for a Creation, program, deployment, credential, or twin layer.
 No external format is forced to represent manufacturing, assembly, runtime
 state, and simulation by itself.
 
-### 13.3 Project package
+### 13.3 Creation source and release folder
 
-An OMBR project is a directory or ZIP-compatible archive with this logical
-layout:
+One OMBR project root represents one Creation. In the 0.1 syntax,
+`projectId` is the stable Creation ID; later schemas will rename or alias the
+field without changing its identity. The editable source is a directory, while
+a release is a deterministic ZIP-compatible archive assembled from an exact
+source revision and locked generated artifacts. The logical workspace layout
+is:
 
     project.ombr/
+      .gitattributes
+      .gitignore
       manifest.json
+      ombr.lock.json
       README.md
       LICENSES/
+      instructions/
+        assembly.md
+        wiring.md
+        software.md
+        calibration.md
+        operation.md
+        recovery.md
+        safety.md
+      bom/
+        bill-of-materials.json
       parts/
         {model-id}/component.json
       assembly/
@@ -1637,7 +2013,7 @@ layout:
         world.sdf
         run-manifest.json
       ros/
-        robot.urdf
+        creation.urdf
       control/
         profiles.json
         timelines.json
@@ -1649,32 +2025,136 @@ layout:
           locks/
           build/
           symbols/
-      deployments/
-      recordings/
       twin/
         thing-description.json
       calibration/
       tests/
       sbom/
+      evidence/
+      release/
+        recipe.json
+        creation-release.json
+      .ombr-local/
+        deployments/
+        recordings/
+        runtime/
+        device-calibration/
+        secrets/
+
+A collective is a separate Git-versioned source and release rather than one
+oversized Creation. Its reference layout reuses the same path, lock, recipe,
+release-manifest, private-state, and deterministic-packing rules:
+
+    collective.ombr/
+      .gitattributes
+      .gitignore
+      collective.json
+      ombr.lock.json
+      README.md
+      LICENSES/
+      members/
+        roles.json
+      workcells/
+        frames.json
+        resources.json
+        safety-boundaries.json
+      recipes/
+        {recipe-id}/
+          recipe.json
+          instructions.md
+          fixtures/
+          tests/
+      orchestration/
+        policies.json
+        task-schemas/
+      programs/
+      simulation/
+      tests/
+      evidence/
+      release/
+        recipe.json
+        collective-release.json
+      .ombr-local/
+        bindings/
+        jobs/
+        inventory/
+        work-products/
+        recordings/
+        secrets/
+
+`ombr.lock.json` pins each member Creation release, program and model package,
+part/resource catalog, simulator, and schema. Runtime jobs, inventories,
+physical-member bindings, credentials, and unfinished work products are
+owner-local operational state; a redacted completed job/quality record enters
+`evidence/` only through explicit review and release selection.
+
+The ordinary directory MUST be usable in Git without a required opaque
+database, editor workspace, portal checkout format, or generated cache.
+`.gitattributes` fixes text/binary treatment and line-ending policy.
+`.gitignore` excludes `.ombr-local/`, caches, transient build products, and
+secret values; ignore rules are a safety aid, not the release inclusion
+authority. `ombr.lock.json` records exact external Creation, component, tool,
+runtime, simulator, and package dependencies plus their digests and permitted
+retrieval locations. Git remotes, portal URLs, tags, branches, OCI tags, and
+download URLs are locations or discovery labels, never dependency identity.
+
+Files have one of four explicit dispositions:
+
+| Disposition | Git and release behavior |
+| --- | --- |
+| `tracked-source` | Authored, reviewed files in the exact Git tree, including `release/recipe.json`; included when required by the selected profile. |
+| `locked-generated` | Reproducible outputs such as program bundles, exchange CAD, rendered instructions, SBOMs, or evidence; included only by digest and generator/build provenance even when stored outside the Git object database. |
+| `local-private` | `.ombr-local/` deployments, recordings, runtime state, device calibration, credentials, and caches; ignored and excluded from every release unless an owner explicitly copies a redacted artifact into `evidence/` or another declared release path. |
+| `external-listing` | Portal search, moderation, popularity, availability, comments, signatures, and mirror-location envelopes; stored outside the canonical release and reconstructable from it plus portal records. |
+
+The tracked `release/recipe.json` fixes the intended release version, selected
+profiles, exact required and optional path rules, locked-generated artifact
+references, packer/tool versions and configuration, and transport profile.
+The same clean source revision and recipe therefore select the same inputs in
+every conforming client.
+
+`release/creation-release.json` has the `locked-generated` disposition. It is
+generated during packing and records the
+Creation ID and release version, source VCS/object format, commit and root-tree
+IDs, manifest and lock digests, selected path dispositions, every included
+file/artifact digest, dependency closure, build/provenance references, and
+parent-release provenance. Its `files` table excludes
+`release/creation-release.json` itself and every transport archive; the digest
+of the complete manifest file is the canonical release-manifest digest.
+The ZIP, OCI manifest, or other exact transport digest is recorded by a
+detached signature or portal/listing envelope, avoiding self-reference.
 
 The archive contains relative paths only, rejects path traversal and
 case-collision, and records SHA-256 for every normative or deployable asset.
+The `instructions` tree is human-readable and printable; machine-readable BOM,
+interface, program, and test data remain authoritative for automation. A
+portal listing MUST NOT override `manifest.json`, `ombr.lock.json`, or
+`release/creation-release.json`.
 The companion
 [JSON Schema](schema/ombr-project.schema.json) and
 [syntax-rover example](examples/syntax-rover.ombr.json) define the
 minimum manifest structure for this draft.
 
 The 0.1 schema is a syntax seed for design models and placements, not a
-complete OMBR-TWIN-1 conformance schema. Before 0.2 it will split immutable
+complete OMBR-TWIN-1 conformance schema. It does not yet define
+`ombr.lock.json`, `release/recipe.json`, `creation-release.json`, an external portal-listing envelope,
+Run Context and run-record documents, the OMBR App API, or portable program
+capability aliases and activation bindings. It also does not yet define the
+collective, job/task/lease, assembly-recipe/work-product, compute-profile, AI
+Model Package, or vision-stream schemas introduced by this challenge. Before
+0.2 it will split immutable
 design placements from as-built deployment bindings, replacement history, and
 runtime boot/state envelopes. A design placement's componentId is not a
 physical instanceId, and MQTT is enabled only after a hub placement is bound
 to an owner-resettable physical instance.
 
 Its `programs` array is likewise a syntax seed for PROG-001 descriptors, not a
-claimable OMBR-RUNTIME-1 contract. Runtime registries, signed deployment
-records, secret bindings, debug sessions, and lifecycle event envelopes remain
-separate versioned artifacts to define before 0.2.
+claimable OMBR-RUNTIME-1 contract. The syntax-rover example's program is bound
+directly to component UUIDs and therefore does not satisfy PROG-022/PROG-023
+portability despite demonstrating physical and simulator target labels.
+Runtime registries, signed deployment records, secret bindings, debug
+sessions, and lifecycle event envelopes remain separate versioned artifacts
+to define before 0.2.
 
 The schema's `safetyPolicies` array gives profiles, timelines, and programs a
 resolvable project authority for target safe values, command age, stop
@@ -1722,6 +2202,28 @@ additionally enforces:
 | PKG-014 | Dynamic validation MUST resolve body mass/inertia expression frames, material/contact assumptions, loads, supports, safety factors, stored energy, environmental/conditioned state and limiting-member evidence; explicit unknowns block fidelity/load claims that require them. |
 | PKG-015 | Every transmission and network MUST validate member/profile revisions, geometry and centre/routing/tension constraints, ratio/sign/phase, efficiency/loss, backlash/compliance, speed/load limits, reflected properties, limiting member, actuator/sensor mapping, and derived summary against the graph. |
 | PKG-016 | Every imported or derived mechanical asset MUST validate declared format edition/extensions, units/axes/handedness, scale/transform, semantic node mappings, authority/fidelity, source digest/generator, rights, and loss report; round-trip tests MUST prove that required IDs and semantics survive. |
+| PKG-017 | Semantic validation MUST require unique program capability aliases and exact, type-compatible activation bindings for every required alias. |
+| PKG-018 | Zero or multiple matching deployable artifacts for a selected target MUST fail validation; list order, filename coincidence, or client preference MUST NOT resolve ambiguity. |
+| PKG-019 | Deployment, Run Context, simulation-evidence, promotion, and run records MUST resolve immutable package artifacts and remain separate from mutable runtime state. |
+| PKG-020 | A Creation's editable source MUST be an ordinary documented directory tree suitable for Git and MUST NOT require an opaque application database, editor-private state, portal checkout format, or generated cache to interpret, diff, validate, build, or fork it. |
+| PKG-021 | A released Creation MUST identify one stable Creation ID, unique release version, exact source revision, Creation-manifest digest, release-manifest digest, parent-release provenance, and clean-source status. A stable release MUST record clean selected inputs; reusing a version for different bytes or rewriting a published release is forbidden. |
+| PKG-022 | The reference packer MUST operate from an exact committed Git root tree plus verified locked-generated artifacts and MUST produce deterministic release archives from identical inputs. A stable release MUST reject every dirty, staged-but-uncommitted, untracked selected, missing, or digest-mismatched input. A separately typed development snapshot MAY record the base commit and a content-addressed patch but MUST NOT carry a stable release version or portal-stable label. |
+| PKG-023 | `ombr.lock.json` MUST resolve every external Creation, component, package, runtime, tool, simulator, model, and generated dependency to an exact version and digest. A mutable branch, tag, portal listing, registry channel, or download URL alone is insufficient. |
+| PKG-024 | Portable tracked text MUST be UTF-8 with declared normalization, use repository-defined line-ending policy, and avoid case-only path distinctions, platform-reserved names, ambiguous Unicode paths, executable-bit ambiguity, or nondeterministic timestamps and ordering in release archives. |
+| PKG-025 | Owner secrets, private keys, program-scoped secret values, personal telemetry, and unredacted device identifiers MUST NOT enter the tracked Creation source or public release. Deployment and recording artifacts require an explicit publication policy and redaction result. |
+| PKG-026 | Large or generated artifacts MAY be stored outside the Git object database only through content-addressed pointers with size, media type, license, provenance, and mirror information. A complete public offline release or mirror MUST include every non-secret artifact required to build, simulate, deploy, provision fresh owner-local state, operate after that provisioning, repair, and verify the declared profile; it MUST NOT include credentials or pretend that private deployment, device-calibration, or runtime state is public release content. |
+| PKG-027 | A shareable Creation release MUST include printable assembly, wiring, software-installation, calibration, operation, recovery, and safety instructions as applicable, plus machine-readable physical BOM, software SBOM, required tools, substitutions, and known limitations. |
+| PKG-028 | A Creation release manifest MUST record the stable Creation ID, unique release version, source VCS and object format, commit and root-tree IDs, manifest and lock digests, parent-release provenance, every selected path disposition, file and artifact digests, dependency closure, and build/provenance references. It MUST NOT contain its own digest or a transport/archive digest. |
+| PKG-029 | A Git-backed release MUST identify SHA-1 or SHA-256 object format explicitly and pin every submodule to an exact commit and locked release closure. Git LFS or another pointer file alone is not release content; the referenced object MUST satisfy PKG-026 and be present in the declared offline closure. |
+| PKG-030 | Every path MUST be classified as `tracked-source`, `locked-generated`, `local-private`, or `external-listing`. The packer MUST exclude `.ombr-local/`, credentials, caches, mutable deployment/runtime records, and unselected recordings or device calibration regardless of ignore-file errors; publication requires an explicit copy, redaction result, license, provenance, and release selection. |
+| PKG-031 | Portal listings, signatures that cover an archive digest, mirror locations, moderation state, and availability records MUST remain outside canonical Creation release bytes. Clients MUST detect and reject any listing whose Creation ID, version, release-manifest digest, or transport digest does not match the fetched release. |
+| PKG-032 | The exact committed source revision MUST contain a tracked release recipe declaring release version, selected profiles, deterministic required/optional path selection, locked-generated inputs, packer/tool versions and settings, and transport profile. A packer MUST reject ambiguity, undeclared included paths, missing selected inputs, or a recipe whose version was previously published with different release-manifest bytes. |
+| PKG-033 | An owner-private operational backup MAY separately contain encrypted credentials, deployment bindings, device calibration, runtime state, and private recordings needed to restore an existing installation. It MUST be visibly distinct from a public Creation release, owner-controlled, access-protected, redaction/export-policy governed, and safely restorable or report each unresolved device- or secret-bound item. |
+| PKG-034 | A Collective release MUST use the same source-revision, deterministic recipe/packing, release-manifest, content-addressing, signature/listing separation, path disposition, offline closure, license, SBOM and provenance rules as a Creation release. Its canonical manifest resolves exact member Creation and dependency releases without embedding mutable runtime bindings. |
+| PKG-035 | Collective validation MUST prove unique member roles and resource IDs, exact dependency closure, compatible capability/schema/profile versions, acyclic bounded collective inclusion, resolvable workcell frames, coherent resource capacities/acquisition order, complete orchestration/safety policies, and absence of credentials or live job/inventory state in public source. |
+| PKG-036 | AI Model Package validation MUST resolve every model/weight/runtime/preprocess/postprocess/license/dataset-provenance artifact by digest, select exactly one compatible artifact for a Run Context or fail, type-check all capability tensors and transforms, enforce declared resources, and reject an unavailable required calibration, accelerator, or fallback. |
+| PKG-037 | Assembly recipe, job, task, material/inventory, and work-product identities MUST remain distinct. A recipe is immutable process source; a job instantiates it; tasks are runtime operations; inventory and work-product records are mutable as-built evidence. A tool MUST NOT rewrite the recipe or target design to reflect an unreviewed runtime deviation. |
+| PKG-038 | An exported collective/job record MUST resolve exact collective/member/Creation/Program/Model releases, runtime bindings, task and lease revisions, member Run records, clock basis, permitted sensor/AI inputs, material and work-product evidence, redaction, and trace gaps. Unresolved or contradictory physical side effects MUST remain explicit rather than be normalized away. |
 
 URI format, SemVer, SPDX expressions, content digests, archive limits, and
 cross-document references are semantic assertions. Validators MUST configure
@@ -1776,11 +2278,14 @@ Relevant primary specifications include
 | TWIN-010 | Authoring changes MUST identify their base revision and serialize as deterministic project edits; undo, redo, merge conflict, external-file change, and failed-save behavior MUST NOT create hidden viewer-only state. |
 | TWIN-011 | Telemetry, discovery, simulation, and live overlays MUST NOT silently rewrite design source. Promoting an observation or calibration into an authoritative layer requires an explicit revisioned action and provenance. |
 | TWIN-012 | A client cache, database, generated scene graph, thumbnail, or search index MUST be disposable and reconstructable from authoritative source, deployment records, and permitted runtime history. |
-| TWIN-013 | Every live or simulated view and command surface MUST identify the selected Creation revision and exact physical or simulation target; combining values from targets without an explicit comparison mode is forbidden. |
+| TWIN-013 | Every live or simulated view and command surface MUST identify the selected Creation release or development snapshot and exact physical or simulation target; combining values from targets without an explicit comparison mode is forbidden. |
 | TWIN-014 | External assets MUST be content-addressed and license-identified before use. Offline mode MUST fail with a specific missing-artifact result rather than silently substituting a network or stale cache version. |
 | TWIN-015 | The manifest's body, interface, mate, joint, transmission, assembly, and capability-binding graphs are semantic authority. CAD, LDraw, glTF, STEP, SDF, URDF, scene, and solver files are source or derivative artifacts with declared coverage; a tool MUST NOT infer missing normative mechanics from an opaque scene. |
 | TWIN-016 | Design configuration, as-built measurements/calibration, initial simulation state, requested/accepted/applied control state, and observed runtime mechanical state MUST remain separate, revisioned layers with explicit promotion/reconciliation. |
 | TWIN-017 | Mechanical asset generation and import/export MUST publish coordinate/semantic mappings and loss reports and pass identity, pose, joint, transmission, material/mass, collision, and capability-binding round-trip tests for every fidelity tier claimed. |
+| TWIN-018 | Every retained MQTT `presence`, `reported`, or `desired` payload MUST carry its schema/profile version, target instance, exact Creation release or development snapshot, deployment/binding revision, state revision, issue time and quality, and boot/session applicability where runtime state is involved. A subscriber MUST reject an incompatible or regressed envelope rather than merge it into the selected twin. |
+| TWIN-019 | MQTT twin presence MUST use a retained online birth plus a bounded session and Last Will with instance, boot/session, release/binding, reason where configured, and will-preparation timestamp/quality. Session Expiry Interval and any Will Delay Interval MUST be bounded; clients MUST age presence independently and treat broker receipt as an observation because a will cannot know the future disconnect time. Deployment/release activation, owner reset, or identity rotation MUST tombstone or supersede old retained state before it can regain authority. |
+| TWIN-020 | Retained desired configuration MUST identify its intended release/deployment, expected prior revision, activation deadline or declared persistence, proposer and authorization, and acknowledgement state. The target MUST publish accepted, rejected, applied, or superseded result and MUST NOT carry desired state across an incompatible release, binding, or owner reset. Imperative motion remains non-retained and command-expiring. |
 
 ### 13.6 Reproducible simulation
 
@@ -1812,7 +2317,7 @@ Required reference scenarios include:
 - distance sensor against reference surfaces;
 - light intensity and color command replay;
 - communication loss and heartbeat timeout;
-- brownout isolation and Pi reboot;
+- brownout isolation and application-compute reboot;
 - timeline playback and cancellation; and
 - recorded hardware trace replay against the simulation model.
 
@@ -1822,6 +2327,11 @@ Required reference scenarios include:
 | SIM-002 | A stable simulation profile MUST define named fidelity tiers with mandatory scenarios, metrics, sample windows, initial conditions, and maximum allowed error ceilings. |
 | SIM-003 | Claimant-selected tolerances MAY accompany a report but MUST NOT replace or loosen the selected fidelity tier's ceilings. |
 | SIM-004 | Conformance reference traces and acceptance calculations MUST be public, versioned, independently reproducible, and tied to exact hardware characterization data. |
+| SIM-005 | A simulation provider MUST expose the same OMBR App API, capability IDs, descriptors, units, state layers, errors, authorization, and command-lifetime behavior as the physical provider. |
+| SIM-006 | A simulation run manifest MUST reference exact Creation, program release, selected artifact, runtime base, App API, configuration, binding, safety-policy, model, simulator, plugin, initial-state, and seed digests. |
+| SIM-007 | A deterministic simulation claim MUST use declared virtual monotonic time, timer, random-stream, step, scheduling, and external-input policies; undeclared wall time, entropy, networking, or other nondeterministic inputs invalidate the claim. |
+| SIM-008 | Record/replay MUST capture all externally visible App API inputs and results in deterministic order and compare the replayed program's commands, events, lifecycle, logs, metrics, and trace annotations. |
+| SIM-009 | A comparison report MUST identify `artifact-identical`, `release-equivalent`, or `modified-context`, input and output traces, missing capabilities, target-specific behavior, differing digests, bindings, grants, configuration, external inputs, metrics, tolerances, and limitations. Only the first two classes may support a parity claim. |
 
 ### 13.7 Round-trip acceptance
 
@@ -1840,13 +2350,136 @@ The future golden ecosystem rover is complete only when:
 10. live state updates the runtime twin without mutating design source; and
 11. hardware and simulation traces compare within the selected stable fidelity
     tier's mandatory limits; during version 0.1 the comparison is reported as
-    characterization only.
+    characterization only;
+12. a clean Git commit and tracked recipe pack reproducibly into the same
+    release-manifest digest and deterministic transport/archive digest through
+    the Workbench and headless CLI;
+13. a portal and an independent client publish, fetch, verify, and mirror that
+    release without changing its bytes or requiring portal access for the local
+    workflow;
+14. a derivative fork receives a new Creation ID, release-manifest digest, and
+    transport/archive digest while preserving its exact parent-release
+    provenance; and
+15. the installed physical Program Release and Run Context export by digest,
+    restart against the simulation provider, and produce an explicit
+    `artifact-identical` or `release-equivalent` parity report.
+
+### 13.8 Git releases and the HOMBRE Creation Portal
+
+The Creation source tree is the collaboration unit. Git supplies line-level
+history, branches, review, provenance, tags, and distributed forks; OMBR adds
+domain validation, deterministic packaging, dependency locks, release
+identity, and conformance evidence. A release moves through four explicit
+states:
+
+1. a mutable Git working tree;
+2. an immutable source commit;
+3. a versioned Creation release with Creation-manifest and release-manifest
+   digests plus one or more detached transport/archive digests; and
+4. zero or more portal listings and mirrors that reference the same bytes.
+
+A portal may integrate a Git forge, artifact registry, object store, search
+index, renderer, and discussion system, but none becomes semantic authority.
+Comments, ratings, popularity, rendered previews, search facets, and portal
+moderation state are presentation or community records. The Creation manifest,
+locked dependencies, source commit, released artifacts, signatures, and linked
+test evidence determine the engineering object.
+
+A **mirror** preserves the exact release bytes, identities, publisher
+provenance, and signatures while adding only external retrieval locations. A
+Git hosting **repository fork** is initially another location for the same
+source revision; before publishing changed tracked source it becomes a
+derivative Creation fork. A **derivative Creation fork** always receives a new Creation ID under its new
+publisher, starts a new release sequence, and records the parent Creation ID,
+release version, release-manifest digest, source commit, and license lineage.
+It is not byte-identical to its parent and MUST NOT inherit the parent's
+conformance claim.
+
+| ID | Requirement |
+| --- | --- |
+| SHARE-001 | A portal listing MUST identify the Creation ID, release version, Creation-manifest, release-manifest, and transport/archive digests, source repository and revision when public, parent-release provenance, publisher identity, publication time, licenses, support state, and superseding or withdrawn releases. |
+| SHARE-002 | A release advertised as complete MUST make available the declared source, editable CAD, software, deployable program artifacts, dependency lock, physical BOM, software SBOM, build and assembly instructions, schemas, tests, evidence, known limitations, and licenses required by its profile. Missing or restricted artifacts MUST be explicit and MUST block a complete-open claim. |
+| SHARE-003 | A portal MUST verify all declared content digests and any declared signatures without rewriting, normalizing, recompressing, or silently substituting a published Creation release. Portal-generated previews and indexes MUST be separately identified derivatives. |
+| SHARE-004 | While a release is publicly offered, it MUST be exportable and mirrorable through documented, automation-friendly protocols without a proprietary client. Before publication, the operator MUST declare retention/support policy and at least one full offline-bundle and verification procedure usable without an account. Withdrawal MUST NOT silently substitute different bytes or erase the release identity. |
+| SHARE-005 | Portal discovery, authentication, availability, analytics, recommendations, comments, or ratings MUST NOT be required to build, simulate, deploy, operate, stop, repair, recover, export, or fork a checked-out Creation. |
+| SHARE-006 | Search and comparison metadata MUST distinguish authored claims, measured evidence, inferred fields, portal observations, conformance claims, and community opinion. Popularity or a portal badge MUST NOT imply safety, compatibility, openness, or conformance. |
+| SHARE-007 | Every downloaded Creation, program, CAD generator, plugin, and instruction set MUST be treated as untrusted. A client MUST verify digests, show publisher/signature status, licenses, requested permissions, executable content, scripts, external links, and known scan results before execution or deployment; previewing MUST NOT execute project code. |
+| SHARE-008 | Publication MUST validate artifact-level licenses, attribution, redistribution rights, third-party marks, privacy declarations, and any restricted or unavailable dependency. A transparent notice, dispute, takedown, appeal, and restoration history MUST preserve release identity and reason without falsely declaring infringement or clearance. |
+| SHARE-009 | Credentials, private keys, owner identities, precise location, private deployment bindings, and runtime telemetry or recordings MUST be private by default and MUST NOT be inferred as public merely because the design Creation is public. Publication requires explicit artifact selection and redaction. |
+| SHARE-010 | A conformance claim displayed by a portal MUST name the exact OMBR profile and specification version, claimant, implementation digest, Creation-manifest, release-manifest and transport/archive digests, test-suite version, evidence bundle, result, limitations, issuer, and mark authorization status. The portal MUST NOT create its own confusing certification shortcut. |
+| SHARE-011 | Portal dependency resolution MUST use exact locked versions and digests, expose the complete dependency graph and licenses before download, detect cycles and unavailable artifacts, and support owner-controlled mirrors. Mutable channels MAY aid discovery but MUST NOT change a resolved build. |
+| SHARE-012 | OMBR-PORTAL-1 MUST be independently implementable. Its listing, publish, fetch, verification, mirror, fork-provenance, withdrawal, and search contracts MUST be public, and at least two independent clients MUST pass the golden workflows before the profile is stable. |
+| SHARE-013 | A mirror MUST preserve release bytes, Creation-manifest, release-manifest and transport/archive digests, publisher provenance, and signatures. A derivative Creation fork MUST mint a new Creation ID, release-manifest digest and transport/archive digest, record exact parent-release and license provenance, and re-evaluate dependencies, safety, rights, evidence, and conformance; it MUST NOT present the parent's claim as its own. |
+| SHARE-014 | Withdrawal MUST retain a tombstone containing the immutable release identity, affected listing and mirror scope, dated reason category, authority, review/appeal state, and superseding release where applicable. When law, privacy, security, or safety requires hosted bytes to become unavailable, the tombstone MUST distinguish operator unavailability from global deletion and MUST NOT expose prohibited content or make an unqualified infringement determination. |
+
+### 13.9 Automated assembly and Creation farms
+
+An assembly farm is a Creation Collective whose members present parts, move
+material, manipulate and join components, inspect results, calibrate the
+product, and handle recovery. It does not imply that every loose brick is easy
+to grasp or that the farm fabricates motors, electronics, batteries, or raw
+materials. A credible first target assembles qualified modules and
+brick-compatible structural parts supplied in known presentation states.
+
+| ID | Requirement |
+| --- | --- |
+| ASSEMBLY-001 | An Assembly Recipe MUST identify its exact target Creation release, accepted BOM alternatives, final assembly and interface graph, starting material states, required member capabilities/resources, ordered and conditional process graph, quality plan, recovery policy, expected outputs, and recipe release digest. |
+| ASSEMBLY-002 | Every automatically handled part or subassembly MUST declare identity-detection method, presentation states, stable resting poses, grasp regions and forbidden regions, mass/center-of-mass uncertainty, fragility/ESD/cleanliness/orientation limits, fiducials where used, storage/feeder constraints, and ambiguity/failure cases. |
+| ASSEMBLY-003 | A presentation operation MUST declare container/feeder/fixture geometry, admissible part count and pose distribution, singulation/orientation method, jam/empty/wrong-part detection, refill/recovery, and evidence. “Available in a bin” is not a machine-ready precondition. |
+| ASSEMBLY-004 | A grasp operation MUST bind tool and part revisions, approach/retreat frames, grasp pose family, opening/force/compliance/slip limits, collision/keep-outs, expected sensor signatures, lift verification, maximum attempts, and safe release/recovery. |
+| ASSEMBLY-005 | A mate or insertion operation MUST resolve exact mating profiles and declare approach/assembly path, alignment features, compliance, speed, force/torque/displacement windows, seating signature, retained DOF, partial/wrong-mate detection, tool access, damage limits, retry/reversal, and postcondition inspection. |
+| ASSEMBLY-006 | Screw, clip, pin, axle, gear-mesh, cable, connector, adhesive, tie, lubrication, or other joining/routing operations MUST use a typed process profile with exact tooling, consumables, torque/tension/insertion and verification limits, traceability, rework/disassembly method, and hazards. Flexible cable routing and connector mating MUST NOT be approximated as rigid placement. |
+| ASSEMBLY-007 | An operation may become `completed` only from positive measured evidence that its postconditions hold. Command acceptance, expected pose, elapsed time, motor current alone, or an AI confidence score alone MUST NOT silently establish assembly success. |
+| ASSEMBLY-008 | The work-product state MUST track installed part instances/lots, current mates/joints/connections, measured poses and properties, operation/evidence references, open deviations, missing/extra/unknown material, and confidence. Ambiguous state becomes `blocked` until inspected or recovered. |
+| ASSEMBLY-009 | Human loading, setup, approval, inspection, repair, tool change, untangling, or other intervention MUST be a first-class task with role, instructions, safety state, authorization, input/output evidence and measured duration. A claim MUST count every intervention rather than label supervised work fully autonomous. |
+| ASSEMBLY-010 | Inventory transactions MUST identify part/catalog/revision or acceptable substitution, quantity and unit, lot/serial where applicable, location/container, reservation, consumption/scrap/rework, quality status, actor/task and evidence. Negative or double-consumed inventory MUST be rejected or explicitly reconciled. |
+| ASSEMBLY-011 | Each work product MUST receive owner-resettable identity before calibration and retain target release, recipe/job, material/part provenance, firmware/program/model versions, deviations, test/calibration evidence, acceptance status, and parent products/subassemblies without modifying target design source. |
+| ASSEMBLY-012 | Final acceptance MUST validate mechanical graph and fasteners, wiring/connector identity and electrical safety, firmware and identities, actuator/sensor capability tests, calibration, safe stop/recovery, required task benchmark, documentation and complete as-built twin. A product that fails remains quarantined or explicitly nonconforming. |
+| ASSEMBLY-013 | A runtime deviation, substituted part, repaired joint, manual step, or changed process parameter MUST be authorized against a versioned deviation rule, recorded in the work product, and evaluated for downstream fit, load, safety, calibration, test and release consequences. It MUST NOT silently rewrite the target BOM or recipe. |
+| ASSEMBLY-014 | Every failure branch MUST define bounded retries, inspection, reversal/compensation, quarantine, safe manual recovery, preservation of already valid work, and criteria for scrap or restart. Recovery MUST account for potentially completed but unobserved physical side effects. |
+| ASSEMBLY-015 | Robot tools, grippers, fixtures, gauges, feeders, calibration targets and inspection stations are versioned components with editable CAD where project-controlled, interfaces, wear/life, calibration, uncertainty, maintenance, safe change procedure, spare path and conformance evidence. |
+| ASSEMBLY-016 | Motion and task planning MUST use exact workcell/member/tool/work-product frames, dynamic keep-outs, human-access state, cable/material sweeps, payload and stability limits, shared-zone leases, and a declared collision/constraint model. Local controllers revalidate applicable limits before motion. |
+| ASSEMBLY-017 | Process simulation MUST combine kinematics/dynamics where needed with contact/insertion uncertainty, sensor and AI error, part-presentation distributions, discrete-event resources, failures, retries, maintenance and human tasks. Predicted throughput or yield MUST state distributions, seeds, fidelity and physical validation status. |
+| ASSEMBLY-018 | Assembly evidence MUST report attempted/completed/scrapped products, first-pass and final yield, defect and recovery taxonomy, interventions per unit, task and end-to-end cycle-time distributions, resource utilization, energy/material use, tool wear, calibration drift and confidence intervals over a declared sample. |
+| ASSEMBLY-019 | An autonomous-assembly claim MUST bound exact product/release, starting parts and presentation, fixtures/tools, environment, software/models, operator setup, allowed interventions, sample size, yield, cycle time, defects, rework, safety scope and excluded fabrication. A successful single build is a demonstration, not a production capability. |
+| ASSEMBLY-020 | A farm MUST support safe stop and restart, unfinished-work inventory, member/tool replacement, calibration expiry, preventive maintenance, broker/orchestrator restore, power recovery, job migration and backup/restore drills without losing work-product traceability. |
+| ASSEMBLY-021 | “Self-assembly” or “self-replication” MUST NOT be used for a farm that consumes externally manufactured electronics, actuators, fasteners, tools or prepared parts without a prominent bounded definition. The preferred claim is “automated assembly of the named Creation from the declared supplied parts.” |
+| ASSEMBLY-022 | `OMBR-ASSEMBLY-1` requires a released recipe, physical multi-Creation cell, at least ten consecutive attempted products, published raw event/quality evidence, independent reconstruction of one accepted work product, and a side-by-side result against the target Creation acceptance suite. Stable thresholds remain a pre-1.0 decision. |
+
+### 13.10 Five-axis arm plus gripper challenge profile
+
+`OMBR-ARM-5R-GRIPPER-1` is a reusable Creation profile motivated by a
+brick-based rendition of the SO-101 follower reference whose repository and
+software are published under open-source licenses. It specifies five
+revolute axes plus an independently commanded gripper; it does not assume the
+same servos, printed shell, dimensions, or control board. A separate dated
+benchmark determines whether a specific HOMBRE build matches or exceeds a
+physical reference arm.
+
+| ID | Requirement |
+| --- | --- |
+| ARM-001 | The arm MUST expose six stable position action/state channels named `shoulder_pan`, `shoulder_lift`, `elbow_flex`, `wrist_flex`, `wrist_roll`, and `gripper`; each declares SI-unit canonical representation, permitted display/adapter units, sign, zero, range, resolution, rate, age, quality, safe state and calibration revision. |
+| ARM-002 | The first five channels MUST bind to exact revolute joints and the gripper to its jaw/transmission coordinate. Actual per-build limits, hard stops, soft margins, singularities, self-collision, cable limits, homing/position-valid state and uncertainty MUST be measured and represented in mechanics, control and simulation. |
+| ARM-003 | The release MUST publish base, every joint/body, flange/tool-center-point, gripper/contact and camera frames; forward/inverse kinematic conventions; reachable-workspace evidence; collision geometry; mass/inertia; joint/transmission compliance/backlash/friction; and semantic mappings into each derivative format. |
+| ARM-004 | Payload MUST be a measured pose-, reach-, orientation-, acceleration-, duty- and gripper-dependent envelope with deflection, stability, actuator/structure/gear/thermal/current limiting member and safety factor. Stall torque or successful lifting at one pose is not an arm payload rating. |
+| ARM-005 | Each axis MUST use measured position feedback and report requested, accepted, applied and observed position plus available velocity/current/temperature/limit/fault observations. Open-loop timed motion cannot satisfy this profile. |
+| ARM-006 | The complete arm power profile MUST cover simultaneous-axis idle/hold/move/stall/inrush/regeneration, supply and cable drop, brownout separation, current limits, thermal steady state, duty cycle and safe energy removal for the exact actuator variants and gearing. |
+| ARM-007 | The controller MUST publish sustainable command/observation rate, end-to-end latency and jitter distributions, interpolation/trajectory behavior, missed-cycle policy and trace gaps. A comparative benchmark uses identical commands, load, cameras and measurement clock on candidate and reference. |
+| ARM-008 | Calibration MUST define centering/homing, range discovery, sign/offset, joint-to-link and tool/camera extrinsics, fixture/reference equipment, uncertainty, persistence, replacement invalidation, disassembly/reassembly procedure and acceptance thresholds. |
+| ARM-009 | The gripper MUST declare aperture/coordinate mapping, fingertip/contact geometry and materials, speed, force/current relationship, compliance, object-size/shape envelope, slip/object detection, overload, release behavior and cycle-life evidence. A normalized `0..100` adapter MUST identify exact closed/open calibration. |
+| ARM-010 | Optional wrist, overhead, depth or tactile sensors MUST use ordinary OMBR sensor/capability contracts. A benchmark claim that uses vision MUST pin camera placement, calibration, resolution/rate, lighting, preprocessing, model and dataset/task conditions. |
+| ARM-011 | Teleoperation, dataset recording/replay and learned-policy rollout MUST be implementable through public OMBR APIs plus a separately versioned LeRobot adapter. The adapter maps the six channels without patching upstream LeRobot and records any rate, unit, limit, calibration or observation mismatch. |
+| ARM-012 | The arm MUST have local command expiry, physical stop, independent output inhibition, restart inhibit, software workspace/joint/speed/current/temperature limits, gravity/stored-energy recovery, measured stop time/distance and a declared behavior for compute, camera, broker and network loss. It MUST NOT imply a safety-rated collaborative arm without applicable assessment. |
+| ARM-013 | The simulation package MUST correct and validate gripper mapping, include complete collision geometry, identify source and uncertainty for dynamics, reproduce calibration/limit semantics, and compare workspace, joint trajectory, payload deflection, gripper and sensor traces to physical results at a named fidelity tier. |
+| ARM-014 | Comparative arm evidence MUST publish fixture CAD, reference and candidate serial/configuration, exact releases, raw measurements, analysis code, environment, sample counts, uncertainty, failures and limitations for joint range, workspace, repeatability, payload, trajectory tracking, gripper, thermal/duty, power and stop behavior. |
+| ARM-015 | Rebuildability MUST be tested across at least five disassembly/reassembly or independently built samples, recording build time, substitutions, calibration effort, joint/frame variation, repeatability, defects, wear and acceptance outcome. One tuned prototype cannot establish a modular brick-system claim. |
+| ARM-016 | A public claim that a specific HOMBRE build is “SO-101-equivalent”, “SO-101-class”, or similar MUST identify a dated physical reference and test release. Because published SO-101 material does not define arm-level reach, payload, Cartesian accuracy/repeatability, speed, duty cycle, gripper performance, latency or stopping performance, those values MUST be measured side by side rather than inferred from CAD or servo data. |
 
 ## 14. Security, privacy, and owner control
 
 ### 14.1 Threat model baseline
 
-The project MUST consider:
+The HOMBRE project MUST consider:
 
 - an unauthenticated nearby BLE client;
 - a hostile device on the local Wi-Fi network;
@@ -1860,6 +2493,9 @@ The project MUST consider:
   local, remote, container, browser, simulator, or physical execution target;
 - unauthorized program upload, debug, shell, firmware, or recovery access;
 - replayed, duplicated, delayed, retained, or reordered commands;
+- a compromised MQTT broker, bridge, orchestrator, member or stale leader;
+- a malicious job, assembly recipe, AI model, dataset, camera stream or
+  work-product record;
 - physical access to ports, storage, debug pads, and battery;
 - a stolen hub or leaked backup;
 - denial of service and resource exhaustion; and
@@ -1891,6 +2527,12 @@ The project MUST consider:
 | SEC-020 | Optional tooling telemetry MUST default off, respect the host editor or OS telemetry preference, publish its event schema, and exclude project content, source, secrets, stable device IDs, network identifiers, precise location, and raw sensor recordings. |
 | SEC-021 | Extensions, plugins, simulators, generators, runtime bases, and SDK dependencies MUST be version-pinned, SBOM-listed, integrity-checked, and covered by the same vulnerability, provenance, update, and rollback policy as other executable artifacts. |
 | SEC-022 | A project, program descriptor, or twin record MUST NOT place credentials in URI userinfo or any network endpoint field. It MAY name a logical credential slot, but the secret value and owner-store binding remain external; semantic validation MUST reject userinfo in every declared endpoint URI. |
+| SEC-023 | Broker, orchestrator, member, operator, observer, bridge and CI identities MUST be separately issued, rotated, revoked and least-privileged. Topic ACL, API authorization and payload actor identity MUST agree; possession of broker connectivity alone is not authority to assign work or control motion. |
+| SEC-024 | Coordination endpoints MUST enforce bounded packet/topic/payload size, publish/subscribe rate, inflight and queued messages, session lifetime, retained-message count, wildcard scope, task attempts and per-actor resource usage without allowing exhaustion to disable local stop or safety processing. |
+| SEC-025 | Collective, recipe, program and AI/model releases are untrusted active content. Validation or preview MUST NOT start an orchestrator, connect cameras, allocate resources, execute preprocessors/plugins, contact remote inference, load accelerator code or move a member before explicit trust and authorization. |
+| SEC-026 | A job/task assignment MUST be authorized against exact collective release, member role, capability, workcell, safety state, recipe step, operator policy, time and resource lease. A valid signature on an otherwise unauthorized assignment MUST NOT make it executable. |
+| SEC-027 | Mutable coordination, inventory and work-product stores MUST provide authenticated append/change history, revision conflict detection, backup, restore testing and tamper/gap indication. Broker retained messages and dashboard caches are not the authoritative audit record. |
+| SEC-028 | A remote camera, dataset, AI inference or farm-observation path MUST expose when capture/transfer is active, who can access it, what is retained, where processing occurs, and how the owner disables, exports and deletes it without disabling physical stop. |
 
 The Zero 2 W secure-boot gap is a declared residual risk. OMBR-HUB-1 on that
 compute profile can provide signed artifacts, measured hashes, least
@@ -1936,9 +2578,10 @@ projects. That implementation choice is not an OMBR wire requirement. An
 independent implementation passes on observable schemas, API/CLI behavior,
 and conformance evidence rather than internal language or framework.
 
-The baseline CLI command families are `init`, `validate`, `migrate`, `pack`,
-`doctor`, `discover`, `pair`, `build`, `simulate`, `deploy`, `run`, `debug`,
-`logs`, `record`, `replay`, `twin`, `control`, `update`, `recover`, and
+The baseline CLI command families are `init`, `validate`, `migrate`, `lock`,
+`pack`, `doctor`, `discover`, `pair`, `build`, `simulate`, `deploy`, `run`,
+`promote`, `debug`, `logs`, `record`, `replay`, `twin`, `control`, `publish`,
+`search`, `fetch`, `fork`, `mirror`, `export`, `update`, `recover`, and
 `evidence`. Exact options and JSON results remain a pre-0.2 contract.
 
 | ID | Requirement |
@@ -1981,7 +2624,7 @@ behavior; a webview cannot save private authoritative state.
 | DEV-018 | Webviews MUST enforce SEC-017, remain themeable and keyboard accessible, and send versioned schema-validated messages to the extension; they MUST NOT connect directly to a hub or broker with owner credentials. |
 | DEV-019 | Desktop, remote, container, virtual, and web extension modes MUST publish a capability matrix. Browser or virtual mode MAY edit, validate, and render bounded assets but MUST disable native build, device, simulation, deployment, and control unless an explicitly authenticated developer service is reachable. |
 | DEV-020 | The extension MUST show whether its service runs on the local UI machine, remote workspace, container, or another host and MUST show the separate physical or simulation target before every state-changing operation. |
-| DEV-021 | An interactive control view MUST display connection, target, Creation revision, boot ID, armed state, controlling lease, desired and applied output, faults, limits, staleness, and a stop action. Window blur, view disposal, input loss, source disconnect, or lease expiry MUST neutralize continuous commands. |
+| DEV-021 | An interactive control view MUST display connection, target, Creation release or development-snapshot identity, boot ID, armed state, controlling lease, desired and applied output, faults, limits, staleness, and a stop action. Window blur, view disposal, input loss, source disconnect, or lease expiry MUST neutralize continuous commands. |
 | DEV-022 | Keyboard, gamepad, touch, and on-screen continuous controls MUST use explicit dead-man or sustained-input semantics and the TIME command lifetime; a stuck key, lost key-up event, backgrounded client, or closed laptop MUST NOT hold motion. |
 | DEV-023 | Editor tasks and debug configurations generated from a project MUST use structured argument arrays or equivalently safe process invocation and MUST NOT concatenate untrusted workspace values into a shell command. |
 | DEV-024 | The extension MAY integrate third-party Python, C#, C/C++, Rust, ROS, CAD, and simulator extensions, but core OMBR validation, packaging, device recovery, and export MUST remain usable without a proprietary extension. |
@@ -2008,6 +2651,8 @@ accessibility, packaging, licensing, and long-term-maintenance evaluation.
 | DEV-028 | Mobile backgrounding, suspension, screen lock, process termination, network change, and Bluetooth loss MUST revoke interactive control leases and neutralize client-originated continuous motion. |
 | DEV-029 | A client-specific database MAY cache discovery and presentation state, but canonical projects, deployment records, recordings, credentials, and twin authority MUST remain exportable through standard OMBR contracts. |
 | DEV-030 | The VS Code extension, standalone .NET client, and CLI MUST each be removable without making owner hardware, projects, credentials, programs, recordings, or recovery images inaccessible to another conforming tool. |
+| DEV-031 | The in-program `ombr-appctl` adapter MUST map to the OMBR App API, provide stable JSON or NDJSON and exit categories, and have no broader authority than its program session. |
+| DEV-032 | Simulation, deployment, export, promotion, and status commands MUST display and optionally enforce the exact Program Release, artifact, runtime, Creation, binding, configuration, safety-policy, and grant digests. |
 
 ### 15.4 Common software and update requirements
 
@@ -2050,7 +2695,7 @@ version, and source-release location.
 
 ### 16.2 Extensions
 
-The project maintains a public registry for:
+The HOMBRE project maintains a public registry for:
 
 - capability semantic types;
 - units and value schemas;
@@ -2089,43 +2734,51 @@ electrical or behavioral compatibility.
 | Wire protocol | Golden frames, version negotiation, fragmentation, duplicate, reorder, timeout, and malformed-message tests |
 | Capability | Units, bounds, neutral, precision, access, stale data, quality, and typed-command tests |
 | Control source | Descriptor, calibration, range/neutral, event order, rate, latency, mapping, authentication, focus/sleep/disconnect neutralization, feedback, battery, and accessibility tests |
+| Compute profiles | Exact module/carrier/radio/runtime, role and resource declaration, artifact selection, memory/storage pressure, boot/recovery, power/thermal/throttle, crash/update, independent safety, migration, cross-tier App API and golden-Creation tests |
 | Safety | Boot inhibit, watchdog, stop latency, current limit, thermal limit, disconnect, brownout, and fault-latch tests |
-| Network | Pairing, credential rotation, authorization, replay, rate limit, MQTT expiry, non-retained motion, and offline tests |
-| Security and privacy | Malicious peripheral/project/package inputs, least privilege, local IPC, secret-store and no-userinfo checks, developer-session expiry, update integrity/rollback, dependency provenance, privacy export/delete, ownership transfer, physical recovery, and denial-of-service tests |
+| Network | Pairing, credential rotation, authorization, replay, rate limit, MQTT 5 properties/QoS/retain/expiry/session/last-will, duplicate/reorder/partition/broker restart, non-retained motion, and offline tests |
+| Security and privacy | Malicious peripheral/project/package/job/recipe/model inputs, broker/orchestrator/member impersonation and split brain, least privilege/topic ACL, local IPC, secret-store and no-userinfo checks, developer-session expiry, update integrity/rollback, dependency provenance, camera/dataset privacy export/delete, ownership transfer, physical recovery, and denial-of-service tests |
 | Power source | Source identity, voltage/current/transient, isolation, fuse/protection, budget, connect/disconnect, foldback, brownout, reverse, charging/battery when present, thermal, service, and recovery tests |
 | Cable and link assembly | Cable identity, pinout, continuity, voltage drop, current/thermal derating, bend, pull, strain, misconfiguration, topology, and fault tests |
 | Mechanical | Catalog/rights resolution, body/mass/material/load records, datum and fit gauges, insertion/retention/removal, mates, joints/closed loops, multi-member transmissions, capability-state binding, collision/tool access, drop, cable pull, thermal/antenna, accessible replacement-fabrication, asset coordinate/semantic mapping and round-trip tests |
 | Electronic interface | Resolved contract/profile closure; exact connector/contact/pinout; source-cable-sink intersection; operating, absolute, ripple, transient, sleep/idle/nominal/continuous/peak/inrush/limit/fault/leakage/backfeed envelopes; sequencing, grounding/isolation, hot plug, cable/signal margin, thermal derating, telemetry, COTS/alternate records, fault matrix, ESD/EMC evidence, and recovery tests |
 | Motor | Torque-speed-current, control modes, encoder, backlash, thermal, stall, stop, lifetime, and sample variation |
 | Light | Current, color/intensity, update rate, flicker, thermal, effects, and lifetime assumptions |
-| Sensor | Range, accuracy, uncertainty, rate, latency, calibration, saturation, drift, frame, and simulator model |
+| Sensor | Range, accuracy, uncertainty, rate, latency, calibration, saturation, drift, frame, and simulator model; for vision, capture-time sequence, intrinsics/extrinsics, distortion, exposure/readout, frame loss, pixel/depth semantics, resource envelope and privacy controls |
 | Adapter | Exact endpoint/revision matrix, power and signal translation, identity/capability mapping, unsupported features, wrong-device, fault, hot-plug, recovery, and failed-combination evidence |
 | Twin | Hashes, frame graph, asset generation, deployment binding, state sync, replacement history, and round trip |
 | Simulation | Pinned run manifest, reference scenarios, seeded noise, tolerance comparison, and hardware trace parity |
-| Program runtime | Reproducible build, lock integrity, permission denial, resource exhaustion, lifecycle, rollback, crash, lease cleanup, logs, and debug-safety tests |
+| AI and vision | Model/weight/data/runtime provenance and licenses, typed tensor/capability and camera-calibration bindings, accuracy/task benchmark, latency/resource/power/thermal evidence, stale/OOD/degradation/fallback, privacy, update/rollback, remote-offline behavior and physical-input replay |
+| Creation source and release | Clean/dirty Git provenance, portable path and text rules, exact dependency closure, deterministic pack digests, large-artifact/offline closure, migration, unpack/repack, complete instructions/BOM/SBOM, and two-independent-packer tests |
+| Creation collective and coordination | Deterministic Collective release, member/resource/workcell closure, MQTT golden packets, job/task state and expiry, idempotency, fenced leases, member replacement, duplicate/reorder/partition, broker restart, orchestrator failover, reconcile/recovery, simulation and two-independent-client tests |
+| Automated assembly | Exact recipe and target release, part presentation/grasp/mate/fasten/inspect evidence, fixtures/tools/calibration, inventory/work-product trace, deviations/recovery/human interventions, final acceptance, yield/cycle/defect dataset, backup/restore and independently reconstructed product |
+| Five-axis arm plus gripper | Joint/channel/kinematic and calibration closure, workspace, payload/deflection, repeatability, trajectory/rate/latency, simultaneous power/thermal/duty, gripper, teleoperation/LeRobot adapter, safe stop, rebuild variation and simulation/physical comparison |
+| Creation Portal | Publish, fetch, digest/signature verification, search metadata, fork provenance, mirror/export/import, withdrawal/appeal, rights, privacy/redaction, malicious preview/package, account-free offline use, primary-host loss, and two-independent-client tests |
+| Program runtime and App API | Reproducible build, artifact resolution, Run Context, App API negotiation and golden vectors, logical binding, permission denial, owner-credential isolation, clock/random substitution, resource exhaustion, lifecycle, rollback, crash, lease cleanup, logs, debug safety, physical/simulation/replay provider parity, and export/restart tests |
 | Developer tooling | Headless CLI, VS Code, independent client, offline install, workspace trust, secret handling, target locality, conflict, round trip, and remote-control expiry tests |
-| Whole ecosystem | Released hub/IMU, power source, two cables, input control, open-loop and feedback actuation, light, distance, color/reflectance, touch/force, mechanics, program, Workbench, twin, simulator, replacement/repair, recovery, and independent-build integration run |
+| Whole ecosystem | Released hub/IMU, power source, two cables, input control, open-loop and feedback actuation, light, distance, color/reflectance, touch/force, mechanics, program, Workbench, twin, simulator, Creation Portal, replacement/repair, recovery, and independent-build integration run |
 | Legal/IP and market access | Exact revision/act/territory/date scope, mark/design/patent/copyright/database/license and protocol-research registers, counsel/competent-review evidence IDs, mitigations/residual risks, product classification, conformity route, technical file, declarations, traceability, and post-market owner |
 | Open release and service | Editable-source audit, license/SPDX, prior-art ledger, reproducible builds, SBOM/provenance, mirrors, fixtures, repair/disassembly, spares, end-of-life, and primary-host-loss drill |
 | Governance and documentation | Contribution/patent terms, public decision/appeal, registry allocation, conflicts, archives, security response, accessible/offline documentation, translation, and classroom-material review |
+| Education | Outcome-to-module and outcome-to-evidence maps, authentic OMBR source/App-API/simulation/release workflow, multidisciplinary portfolio, readiness scaffolding, accessibility, privacy/safeguarding, safety gates, instructor package, offline delivery, classroom pilot and continuous-improvement evidence |
 | Implementation catalog | Scoped family-coverage matrix, exact design/variant/offer identities, requirement matches, openness/license grades, current lifecycle/availability, critical alternates, BOM closure, change history, and unresolved-slot report |
-| Cost and affordability | Dated quantity-tier BOM and quotes, landed COGS, yield/test pilot, NRE/compliance/support/warranty/channel/tax model, optimistic/base/stress cases, exact included/excluded SKU, actual advertised offer, and price-claim expiry |
+| Cost and affordability | Dated quantity-tier BOM and quotes, landed COGS, yield/test pilot, NRE/compliance/support/warranty/channel/tax model, optimistic/base/stress cases, exact included/excluded SKU, actual advertised offer and price-claim expiry; separately, Portal/storage/mirror/moderation/security/backup/support usage assumptions, service TCO, operator/funding owner and sustainability test |
 | Market benchmark | Exact purchased revisions, provenance, raw measurements, fixtures, uncertainty, compatibility dimensions, lifecycle, and side-by-side reference report |
 
 At least two independent interoperable implementations of the native link and
-manifest MUST pass the public suite before the project declares version 1.0.
+manifest MUST pass the public suite before the HOMBRE project declares version 1.0.
 The reference VS Code Workbench and an independently implemented CLI or .NET
 client MUST also complete the same golden project without private endpoints or
 client-specific semantic state.
 
 ### 16.5 Governance minimum
 
-Before 0.2, the project establishes:
+Before 0.2, the HOMBRE project establishes:
 
 | ID | Requirement |
 | --- | --- |
 | GOV-001 | Specifications, registries, reference source, issues, roadmap, decision records, conformance results, and release automation MUST be publicly readable without an account and available through documented mirrors. |
-| GOV-002 | The project MUST publish a code of conduct, contribution guide, contributor license and patent terms, security policy, private reporting channel, trademark policy, and release/deprecation/support policy before accepting any normative interface or specification contribution. |
+| GOV-002 | The HOMBRE project MUST publish a code of conduct, contribution guide, contributor license and patent terms, security policy, private reporting channel, trademark policy, and release/deprecation/support policy before accepting any normative interface or specification contribution. |
 | GOV-003 | Contribution terms MUST preserve contributor copyright and downstream open-source rights and MUST NOT require exclusive assignment or enable a private edition to close community contributions. |
 | GOV-004 | Specification contributions MUST carry an explicit royalty-free patent commitment appropriate to the adopted specification license, with disclosure, recusal, and conflict procedures reviewed by qualified counsel. |
 | GOV-005 | Material technical decisions MUST have a public proposal, alternatives, evidence, review period, recorded rationale, named decision makers, conflict disclosures, and appeal path. |
@@ -2142,12 +2795,14 @@ Before 0.2, the project establishes:
 
 ### 17.1 Implementation catalog and candidate openness
 
-The implementation catalog records what OMBR can reuse, adapt, purchase, or
+The implementation catalog records what HOMBRE can reuse, adapt, purchase, or
 must design to build the open reference system. The initial, deliberately
 provisional match is published in
 [IMPLEMENTATION-CATALOG.md](IMPLEMENTATION-CATALOG.md). It covers the
 controller, power, native link, cables, motors and other actuators, lights,
-sensors, mechanics, firmware, developer tooling, CAD, twin, and simulation.
+sensors, mechanics, firmware, Git/source-release tooling, Creation Portal and
+artifact distribution, program supervision and App API, trace/replay,
+developer tooling, education/classroom delivery, CAD, twin, and simulation.
 Section 21 separately evaluates obtainable systems and components as
 benchmarks; benchmark similarity is never implementation qualification.
 
@@ -2159,7 +2814,7 @@ External catalog source, design identity, color/material element or SKU,
 engineering model, and seller offer are separate records. A discontinued part
 may still have stock; a current design may have no current offer.
 
-OMBR uses this openness ladder for implementation candidates:
+HOMBRE uses this openness ladder for implementation candidates:
 
 | Grade | Meaning |
 | --- | --- |
@@ -2181,22 +2836,23 @@ OMBR uses this openness ladder for implementation candidates:
 | CAT-007 | Availability, lead time, lifecycle, and price are dated, regional observations with condition, quantity, MOQ, seller or quote, currency, tax, shipping, and evidence. They MUST NOT be immutable properties of the design. |
 | CAT-008 | Project-controlled schematics, PCB, firmware, CAD, fixtures, protocols, and tests MUST expose and isolate every documented-COTS boundary sufficiently to replace it without changing unrelated public semantics. |
 | CAT-009 | Third-party metadata, geometry, images, documentation, and measured data MUST each carry their own provenance, rights, redistribution/cache status, attribution, revision, digest where obtainable, and limitations. “No restriction found” MUST NOT be treated as permission. |
-| CAT-010 | The catalog family matrix MUST cover at least compute, safety control, storage, power input and conversion, port protection and physical layer, connectors and cables, motor drive, motors and position actuators, lights, distance/proximity, color/reflectance, touch/force, orientation/motion, environmental sensors, user input, structural parts, pins/axles/joints, gears and other transmissions, wheels/tracks/rails, flexible/stored-energy parts, firmware, SDK/runtime, developer clients, CAD, twin, simulation, fixtures, repair, and compliance evidence. |
+| CAT-010 | The catalog family matrix MUST cover at least Mini/Midi/Maxi compute modules and carriers, Wi-Fi/BLE, accelerators/cameras/storage/cooling, safety control, power input and conversion, port protection and physical layer, connectors and cables, motor drive, motors and position actuators, lights, distance/proximity, color/reflectance, touch/force, orientation/motion, environmental sensors, user input, structural parts, pins/axles/joints, gears and other transmissions, wheels/tracks/rails, flexible/stored-energy parts, firmware, Git/source release and deterministic packing, portal and artifact distribution, MQTT broker/client and orchestrator/store, program supervisor/sandbox and App API, AI model/runtime adapters, SDK/runtime, trace/replay/observability, developer clients, assembly feeders/tools/fixtures/inspection, curriculum and classroom-offline infrastructure, CAD, twin, collective/process simulation, repair, and compliance evidence. |
 | CAT-011 | A stable reference release MUST resolve a currently obtainable, qualified candidate for every mandatory slot and publish complete BOM closure including passives, contacts, fasteners, consumables, programming/test fixtures, and licensed software. An acquisition class or generic marketplace description is not a resolved candidate. |
 | CAT-012 | Catalog snapshots and changes MUST be content-addressed, diffable, archivable under their actual permissions, and refreshed at every specification/reference-hardware release. Restricted sources MAY be represented by factual metadata and links without mirroring restricted content. |
+| CAT-013 | A tier, arm, collective, or farm reference claim MUST resolve each architecture slot to an exact candidate revision and openness grade, including every documented-COTS boundary and alternate. A micro:bit, Raspberry Pi, Jetson, servo, camera, broker, model or third-party robot being “open source friendly” MUST NOT substitute for project-controlled carrier/process source or complete candidate qualification. |
 
 ### 17.2 Affordability target and cost requirements
 
 The cost target is a design gate, not a claim that prototype quantities already
-meet it. `OMBR-AFFORDABLE-HUB-1` means an assembled, tested base controller is
+meet it. `OMBR-AFFORDABLE-HUB-MIDI-1` means an assembled, tested Midi base controller is
 offered at an advertised price of no more than **EUR 49.99 including the
 applicable German VAT**, excluding delivery, for a named date and sales
 channel. At 19% VAT, EUR 49.99 leaves approximately EUR 42.01 net revenue
 before payment, channel, warranty, compliance, and development costs.
 
-The target SKU contains the enclosure and brick/beam mounting features,
+The target Midi SKU contains the enclosure and brick/beam mounting features,
 Raspberry Pi Zero 2 W, required storage, safety MCU and hardware output gate,
-Wi-Fi and Bluetooth, IMU, protected logic and motor power paths, at least four
+Wi-Fi and BLE, IMU, protected logic and motor power paths, at least four
 qualified native/controller ports, recovery path, indicators, buttons, and all
 internal contacts and fasteners needed to operate as a controller. It excludes
 delivery, external power supply or battery, charger, external cables, motors,
@@ -2209,7 +2865,7 @@ scoped product MUST use a different cost-profile name.
 | COST-002 | Landed COGS MUST include compute and storage, PCB and PCBA, components, connectors and contacts, enclosure and fasteners, assembly, programming, calibration, functional test, fixtures amortization, expected yield/scrap/rework, inbound freight, duty and brokerage, licenses/royalties, packaging, and required accessories in the advertised SKU. |
 | COST-003 | The commercial model MUST separately show landed COGS, non-recurring engineering, tooling/fixture and certification amortization, security/update support, warranty/returns reserve, payment/platform fees, distributor and retailer margins, outbound fulfilment, VAT and other taxes, net revenue, contribution margin, and cash requirement. A BOM subtotal MUST NOT be called a retail cost. |
 | COST-004 | Every public price comparison MUST use the same included contents, tax and delivery basis, region, date, channel, warranty, and volume or state the differences prominently. Foreign-currency inputs MUST use a dated published rate plus a declared reserve. |
-| COST-005 | `OMBR-AFFORDABLE-HUB-1` MUST satisfy the exact EUR 49.99 VAT-inclusive base-SKU scope above through an actual generally available offer; a coupon, subsidy, loss-leading batch, bare PCB, self-build BOM, mandatory add-on, or price excluding tax MUST NOT establish the claim. |
+| COST-005 | `OMBR-AFFORDABLE-HUB-MIDI-1` MUST satisfy the exact EUR 49.99 VAT-inclusive base-SKU scope above through an actual generally available offer; a coupon, subsidy, loss-leading batch, bare PCB, self-build BOM, mandatory add-on, or price excluding tax MUST NOT establish the claim. |
 | COST-006 | Before the target is called feasible, a design-to-cost budget MUST demonstrate positive contribution margin in the stated direct or channel model after all COST-002 and COST-003 items. For direct sale in Germany, the draft planning ceiling is EUR 27 landed COGS at 1000 units; this planning value MUST be replaced by quotes and is not a conformance limit. |
 | COST-007 | Community self-build, direct retail, distributor/retailer, education bundle, and complete starter-kit scenarios MUST be modeled separately. Success in one channel MUST NOT be generalized to another. |
 | COST-008 | A complete starter kit containing power, cables, actuator, light, sensors, and construction elements has its own contents and price target; it MUST NOT be implied by the EUR 49.99 controller-only target. |
@@ -2217,6 +2873,8 @@ scoped product MUST use a different cost-profile name.
 | COST-010 | Cost gates MUST run at concept, architecture freeze, EVT, DVT, PVT, launch, and at least quarterly while sold, using optimistic, base, and stress cases for price, FX, yield, freight, warranty, and volume. Breach requires an explicit rescope, redesign, price/profile change, or stop decision. |
 | COST-011 | Certification, legal/IP review, security maintenance, vulnerability handling, documentation, spares, warranty, and end-of-life obligations MUST be budgeted; volunteer labor or grants MAY be reported separately but MUST NOT be silently valued at zero in a sustainable retail model. |
 | COST-012 | The affordability claim requires dated production quotes, a pilot build with measured yield/test time, an applicable compliance plan, and a documented sales-channel agreement or direct-fulfilment model. Until then its status is `target-unproven`. |
+| COST-013 | Creation Portal, artifact storage, mirrors, signing/key operations, moderation, security response, backup, migration, bandwidth, and support MUST have a separate quantity/usage-based total-cost-of-ownership model and named operator/funding owner. These service costs MUST NOT be silently included in or excluded from the EUR 49.99 controller claim, and no sustainability plan may make a mandatory account, cloud, or telemetry dependency. |
+| COST-014 | Mini, Midi and Maxi hubs plus collective/farm infrastructure MUST have separate exact SKU, quantity, energy, support and lifecycle cost models. The EUR 49.99 ceiling applies only to the defined Midi base SKU; a Jetson-class Maxi, cameras, accelerator storage/cooling, farm broker/orchestrator, fixtures, tools, actuators and construction parts are excluded and MUST NOT be hidden as required add-ons to that claim. |
 
 ## 18. Reference implementation plan
 
@@ -2226,22 +2884,38 @@ Deliver:
 
 - this specification plus component, project, interface-contract,
   endpoint-electrical-profile, fault-matrix, safety-policy, control-binding,
-  timeline, and program syntax schemas and golden vectors;
+  timeline, program, Run Context, Creation lock, release, and portal-listing
+  syntax schemas and golden vectors;
+- draft compute-profile, AI Model Package, vision-stream, Collective release,
+  member binding, job/task/lease, Assembly Recipe, inventory and work-product
+  schemas plus MQTT 5 golden packets;
 - draft ecosystem-release, compatibility-matrix, conformance-evidence,
   implementation-catalog, cost-model, and benchmark-record/report schemas;
 - governance package covering the specification license, contribution and
   patent terms, code of conduct, decisions/appeals, security, trademark,
   registry, archival, release, and support processes;
-- tooling-core skeleton, headless validator/packager CLI, and read-only VS Code
-  project/twin explorer;
+- tooling-core skeleton, headless validator/resolver/deterministic-packager CLI,
+  private scoped OMBR App API broker with one simulation provider, and read-only
+  VS Code project/twin explorer;
+- clean-Git-to-release and release-to-portal golden workflows, including exact
+  digest verification, offline export, mirror reconstruction, and fork
+  provenance;
+- portal-stack prototype and separate storage, bandwidth, backup, moderation,
+  security, migration, support, and long-term archive TCO model;
+- pilot-ready HOMBRE education package for M00/M01/M03/M05 and the safe
+  sensor-to-light Project 0, including instructor, learner, accessibility,
+  privacy, equipment, assessment, and safety-gate material;
 - machine-readable implementation-catalog and price-observation schemas,
   family-coverage matrix, first complete controller/peripheral/mechanical/
   software candidate match, and retained failed-candidate records;
 - quote-ready four-port hub BOM and cost model at quantities 1, 10, 100, 1000,
   and intended production volume, with direct/channel scenarios and an
-  explicit `OMBR-AFFORDABLE-HUB-1` gap report;
+  explicit `OMBR-AFFORDABLE-HUB-MIDI-1` gap report;
 - benchmark record schema/template, fixture metadata contract, initial
   purchase/sample plan, and open-prior-art reuse ledger;
+- a pinned physical SO-101 reference sample/configuration and characterization
+  plan for the unpublished arm-level workspace, payload, repeatability,
+  trajectory, gripper, duty/thermal/power, latency and stop metrics;
 - Pi-to-safety-MCU protocol prototype;
 - protected single-port power and communication bench board;
 - connector candidate matrix and fixture plus complete P0 native-port,
@@ -2249,7 +2923,7 @@ Deliver:
 - semantic source-cable-sink compatibility validator with min/nom/max,
   continuous/peak/inrush/current-limit/fault/backfeed and protocol checks;
 - simulated motor, light, and distance-sensor components;
-- threat model and safety-state table; and
+- threat model and safety-state table;
 - initial territorial IP register and clean-room/benchmark evidence plan for
   connector, attachment, adapter, dataset, naming, controller architecture,
   mechanical library, and twin/tooling work; and
@@ -2261,12 +2935,18 @@ Exit criteria:
 
 - command-to-safe-state works without Linux cooperation;
 - schema and protocol golden vectors run in CI;
+- two independent pack/fetch paths reproduce the same clean-commit
+  release-manifest and transport/archive digests, and the checked-out result still works with the portal
+  unavailable;
+- educators and safety/accessibility reviewers approve the initial module
+  package for a named pilot context, without implying curriculum alignment or
+  learning effectiveness before evidence exists;
 - every electronic interface in the bench Creation resolves a complete
   contract/profile closure and the validator rejects deliberately incompatible
   source, cable, connector, pinout, voltage/current, ground, and protocol cases;
 - a simulated and bench component share one capability descriptor;
 - CLI and extension report the same golden-project diagnostics;
-- connector P0 limitations are documented by measurement; and
+- connector P0 limitations are documented by measurement;
 - contribution/patent terms are effective before normative contributions, with
   the public decision, registry, security, trademark, and archival processes
   operational; and
@@ -2287,6 +2967,8 @@ Deliver:
   API schemas, and MQTT broker/client;
 - first developer-service build, generated TypeScript/.NET/Python SDK
   contracts, VS Code device view, and lease-bounded remote control;
+- first Python and .NET native programs using the private scoped OMBR App API
+  through the physical provider, with exported Program Release and Run Context;
 - open KiCad source, BOM, firmware, enclosure source, and fixtures;
 - quote-backed P0 price book, measured assembly/test time and yield, and an
   updated direct-retail affordability gap without claiming EUR 49.99 unless
@@ -2305,6 +2987,8 @@ Exit criteria:
   component identities and capability values;
 - the owner can reimage and recover without vendor infrastructure;
 - source-to-artifact build is reproducible;
+- one installed physical Program Release exports by digest and starts against
+  the simulation provider with an explicit parity report;
 - exact selected candidates, alternates, rights status, and market-access
   change triggers resolve in the release catalog;
 - hub, source, cable, compute, and port electrical envelopes reproduce within
@@ -2349,6 +3033,11 @@ Deliver:
   debug, remote control, twin, simulation, recording, and recovery;
 - independently installable developer service and CLI plus an independent
   .NET client completing the same golden workflow;
+- an openly deployable HOMBRE Creation Portal plus an independent publish,
+  fetch, verify, mirror, and fork client using Git-backed immutable releases;
+- the first openly licensed HOMBRE curriculum modules, instructor guide,
+  classroom-local Git/Portal workflow, exemplar Creations, and engineering
+  portfolio/rubric aligned with PRIN-025 and ECO-014;
 - Python and .NET/C# reference programs and openly specified visual-program
   interchange example;
 - CAD-to-simulation-to-deployment workflow; and
@@ -2357,17 +3046,63 @@ Deliver:
 Exit criteria:
 
 - the golden ecosystem rover passes the round-trip acceptance in section 13.7;
-- the integration prototype publishes an ECO-001 through ECO-012 gap checklist
+- the integration prototype publishes an ECO-001 through ECO-014 gap checklist
   with evidence for every delivered row and no unsupported ecosystem claim;
 - multiple fabrication processes pass declared fit classes;
 - all derived assets reproduce from released source; and
 - mechanical benchmark records reproduce from published fixtures and analysis.
 
-### Phase 4: specification 1.0
+### Phase 4: tiered compute, arm, and assembly-farm challenge
+
+Deliver:
+
+- a Mini developer carrier using a current BBC micro:bit V2-class board,
+  internal Wi-Fi companion, separate protected power/ports and independent
+  safety path;
+- the Midi Pi Zero 2 W Hub R0 and a Maxi developer platform using a Jetson
+  Orin Nano 8 GB-class module with qualified radio, storage, cooling and the
+  same safety/port contracts;
+- one shared golden Creation/program across all three compute profiles plus
+  pinned target-specific artifacts and honest degradation reports;
+- a brick-compatible five-revolute-axis arm and gripper release with full
+  mechanics, electronics, calibration, App API, simulation, build and test
+  evidence;
+- a versioned upstream-compatible LeRobot adapter and a dated side-by-side
+  physical SO-101 characterization/benchmark dataset;
+- a local MQTT 5 broker, independently implemented clients, Collective
+  release, orchestrator, task/resource/lease store and multi-Creation
+  simulator;
+- a staged assembly cell that first builds and verifies one arm subassembly,
+  then assembles the named arm from declared prepared parts/modules using
+  feeders, fixtures, tools, inspection and explicit human-intervention tasks;
+  and
+- complete farm cost, energy, maintenance, privacy, safety-boundary, yield,
+  defect, recovery and work-product provenance records.
+
+Exit criteria:
+
+- Mini, Midi and Maxi pass COMPUTE-015 without changing public capability
+  meanings or local safety behavior;
+- the HOMBRE arm completes `OMBR-ARM-5R-GRIPPER-1` characterization and every
+  SO-101-class comparison names the exact physical reference and uncertainty;
+- at least two physical Creations pass COORD-025 including duplicate,
+  partition, broker restart, fenced resource and orchestrator-failover cases;
+- the cell completes the ASSEMBLY-022 campaign of at least ten consecutive
+  attempted named-arm products, records
+  every intervention and defect, independently reconstructs one accepted
+  work product, and never infers success from commands alone; and
+- all design, Collective, recipe, program/model, raw evidence, analysis and
+  work-product artifacts resolve from Git/content digests and remain usable
+  with the Portal and internet unavailable.
+
+### Phase 5: specification 1.0
 
 Deliver:
 
 - production connector selected and qualified;
+- stable Git-backed Creation source/release contracts, deterministic packer,
+  and openly deployable Creation Portal with independent client, export,
+  mirror, fork, withdrawal/tombstone, and primary-host-loss evidence;
 - complete hub, battery/power, cable, actuator, light, sensor, mechanical,
   firmware, program, Workbench, twin, simulation, repair, and education
   release manifest;
@@ -2381,7 +3116,7 @@ Deliver:
   support, incident/recall owner, and post-market budget for every intended
   territory and configuration;
 - an actual generally available EUR 49.99 offer if and only if
-  `OMBR-AFFORDABLE-HUB-1` passes, otherwise a published target-gap report and
+  `OMBR-AFFORDABLE-HUB-MIDI-1` passes, otherwise a published target-gap report and
   separately named/priced hub profile rather than a misleading affordability
   claim;
 - two independent implementations;
@@ -2394,7 +3129,7 @@ Deliver:
 Exit criteria:
 
 - a complete ecosystem starter release passes OMBR-ECOSYSTEM-1, including
-  ECO-001 through ECO-012 and every required constituent, benchmark, and
+  ECO-001 through ECO-014 and every required constituent, benchmark, and
   governance requirement under the published requirement/evidence matrices;
   and
 - every version-1 profile claim is backed by the required public conformance
@@ -2412,12 +3147,20 @@ Exit criteria:
 | Fail-safe stop architecture | Independent watchdog and de-energize gate circuit options | Stuck MCU/GPIO, broken stop loop, power/reset, stop latency, restart inhibit, and regenerative-energy tests |
 | Hub port count | Four native plus expander, or six native | PCB/enclosure fit, thermals, battery, simultaneous current, cost |
 | Battery profile | Protected removable 2S Li-ion, LiFePO4, certified external pack | Safety, supply chain, charging, replaceability, motor performance, transport, age group |
-| Compute production profile | Replaceable Zero 2 W, soldered wireless CM0, both | Availability, openness boundary, storage reliability, RF, repairability, assembly cost |
+| Compute profile floors and production modules | Mini MCU plus internal Wi-Fi companion; Midi replaceable Zero 2 W or future module; Maxi lifecycle-supported accelerated module on HOMBRE carrier | Capability and resource floors, radio/antenna, storage, runtime/App API subset, reproducible image/BSP, power/thermal, openness boundary, lifecycle, repairability, migration and cost |
+| Multi-Creation coordination | Single local MQTT broker; redundant broker; one or replicated orchestrator; embedded or workstation placement | MQTT 5 golden packets, identities/topic ACL, task state/idempotency, fenced leases, duplicate/reorder/partition, broker restart, leader failover, recovery, two independent clients and local safety independence |
+| AI Model Package and accelerator adapters | ONNX/open interchange first; runtime-native artifacts; portable CPU reference plus target-specific optimized artifacts | Model/weight/data rights and provenance, tensor/capability semantics, preprocessing parity, exact artifact resolution, accuracy, latency/resource/power/thermal, replay, fallback and two accelerator implementations |
+| Automated-assembly scope | Prepared modules and fixtures first; loose brick/pin/cable handling later; supervised versus unattended cell | Released recipe/work-product schema, part-presentation/grasp/mate evidence, interventions, ten-build yield/quality dataset, recovery, safe cell and independent reconstruction |
+| Five-axis arm benchmark | Brick-compatible new design; adapters around the exact smart-servo variants used by the pinned SO-101 reference; fully OMBR-native actuator family | Dated physical reference characterization for workspace, payload, repeatability, trajectory, gripper, thermal/power/duty and stop; five rebuilds, twin parity and upstream LeRobot adapter |
 | OMBR-native replacement fabrication | FDM, resin, CNC, documented service bureau, hybrid | Fit distribution, strength, heat, RF, surface, lifecycle, accessible source/process, unit cost; production-mould engineering remains outside OMBR scope |
 | Affordable hub architecture | Four fully protected ports; two-port affordable hub plus expander; owner-supplied-Pi community carrier; higher-priced full hub | Quote-backed BOM/COGS at all quantities, port isolation/current/thermal evidence, exact SKU contents, EUR 42.01 net-revenue budget at German EUR 49.99 gross, direct and channel margin, pilot yield/test time, compliance/support/warranty cost, stress case |
 | Intended age and market | 14+ maker kit, education kit, child-directed toy | Formal product classification and applicable safety/compliance plan |
 | BLE and local API | Discovery-only BLE versus full commissioning/control GATT; OpenAPI endpoint and event model | Two-client interoperability, security, fragmentation, recovery, rate, and offline tests |
 | Simulation fidelity tiers | Kinematic, control, dynamic, and sensor tiers | Mandatory metrics, reference traces, sample windows, and maximum error ceilings |
+| Creation source, lock, and release contract | Git-friendly ordinary files plus deterministic ZIP; optional OCI artifact mapping; content-addressed large-asset extension | Cross-platform path/serialization vectors, clean/dirty source provenance, dependency closure, byte-reproducible pack, offline verification, migration, and two independent implementations |
+| Creation Portal stack and federation | Forgejo plus OCI/ORAS; signed static index plus object store; another fully open implementation | Publish/fetch/mirror byte preservation, derivative-fork identity, withdraw/tombstone workflows, untrusted-content isolation, rights/moderation process, full export, primary-host-loss drill, accessibility, privacy, and operating-cost evidence |
+| OMBR App API and local transport | Versioned schema over user-scoped socket, loopback, gRPC, or compatible private IPC with generated Python/.NET bindings and `ombr-appctl` fallback | Capability/error/permission/version vectors, least privilege, owner-credential isolation, lifecycle cancellation, clock/random substitution, physical/simulation/replay parity, and two-language golden programs |
+| Program release selection and parity | Target-specific artifacts under one Program Release; portable WebAssembly/WASI artifact; profile-specific source rebuild | Exact artifact resolver, signed digests, reproducible build, physical export, `artifact-identical` and `release-equivalent` rules, deterministic replay, target limits, and mismatch reports |
 | Developer-service protocol and locality | JSON-RPC over stdio or user-scoped socket, authenticated loopback HTTPS/WebSocket, gRPC, or compatible combination | Windows/macOS/Linux packaging, remote/container/browser locality, authentication, version negotiation, cancellation, streaming, recovery, and independent client |
 | Workbench composition | Thin TypeScript extension plus .NET service/core, TypeScript core plus native helpers, or another UI-neutral split | Offline VSIX, Code-OSS test, startup/memory, native driver maintenance, reproducible build, CLI parity, and no editor-only semantics |
 | Baseline program runtimes | Python and .NET/C# first; native, Rust, JavaScript, ROS, and visual profiles later | Pi resource use, deterministic cancellation, SDK parity, locks, SBOM, sandbox, debugging, and simulator/hardware golden programs |
@@ -2445,10 +3188,12 @@ The concept has succeeded when a third party can, without private information:
    and fault-matrix contracts for every electronic interface;
 4. add it to a brick assembly, route its cables, validate fit and power, and
    simulate its declared behavior;
-5. write and debug ordinary Python or .NET/C# code against the same typed SDK
-   for simulation and physical targets;
-6. build, package, deploy, run, stop, update, roll back, and export the
-   unchanged Creation and program through the headless CLI;
+5. write and debug ordinary Python or .NET/C# code against the same OMBR App
+   API, logical capability IDs, and typed SDK for simulation and physical
+   targets, with an explicit artifact-parity report;
+6. commit, lock, build, package, deploy, run, stop, update, roll back, and
+   export the unchanged Creation and Program Release through the headless CLI,
+   with every run tied to immutable digests and a Run Context;
 7. repeat the same workflow and bounded remote operation through the open VS
    Code Workbench and an independent .NET or other client;
 8. observe the same capability IDs, units, state layers, safety limits, and
@@ -2457,40 +3202,61 @@ The concept has succeeded when a third party can, without private information:
    without telemetry silently changing source;
 10. repair, recalibrate, reflash, replace, and recover every project-controlled
     part with documented tools and preserve prior history;
-11. mirror all required source, packages, CAD, firmware, documentation, and
-    recovery artifacts and operate after every primary host or external service
-    is unavailable; and
-12. fork the project, implement compatible products, and participate in
-    governance without private agreements or trademark dependence;
+11. publish, fetch, verify, and mirror complete Creation releases without
+    changing their bytes; create a derivative fork with a new Creation ID and
+    parent provenance; then build and operate from the exported source,
+    packages, CAD, firmware, documentation, and recovery artifacts after every
+    primary portal or external service is unavailable;
+12. fork the HOMBRE implementation project, implement compatible products, and
+    participate in governance without private agreements or trademark
+    dependence;
 13. select every mandatory hardware, mechanical, and software constituent from
     a complete scoped catalog that distinguishes genuinely open artifacts from
     documented COTS, publishes alternates and lifecycle/offer evidence, and
-    contains no opaque required dependency; and
+    contains no opaque required dependency;
 14. show an auditable exact-SKU cost and market-access record: either the
-    controller is actually offered under `OMBR-AFFORDABLE-HUB-1` with positive
-    sustainable unit economics and all required safety/open/legal/regulatory
-    evidence, or the release states the gap and uses a different price/profile
-    without hiding mandatory costs.
+    Midi controller is actually offered under `OMBR-AFFORDABLE-HUB-MIDI-1`
+    with positive sustainable unit economics and all required
+    safety/open/legal/regulatory evidence, or the release states the gap and
+    uses a different price/profile without hiding mandatory costs;
+15. deploy the same logical Creation and App API contract to capability-based
+    Mini, Midi and Maxi targets with exact artifact/resource selection and no
+    compute tier able to bypass local safety;
+16. compose at least two independently safe Creations into a Git-released
+    Collective, coordinate expiring tasks and fenced shared resources over
+    MQTT, and recover from duplicate delivery, broker loss, partition and
+    orchestrator failover without ambiguous hidden state;
+17. build a brick-compatible five-axis arm plus gripper and publish a dated,
+    side-by-side physical benchmark rather than inferring SO-101 equivalence
+    from CAD or servo specifications; and
+18. execute a released Assembly Recipe in a physical multi-Creation cell,
+    preserve every part/task/inspection/intervention in the work-product twin,
+    and reproduce an accepted arm from the declared prepared parts and public
+    evidence.
 
 ## 21. Benchmark program and market context
 
 This section is informative and deliberately evidence-bounded.
 Official-source evidence was reviewed on 13 July 2026.
 
-| System | Documented strength | Gap addressed by OMBR |
+| System | Documented strength | Gap addressed by HOMBRE |
 | --- | --- | --- |
 | BrickController2 | Broad receiver support, transport abstraction, gamepad and HTTP inputs, profiles, sequences, normalized output, local storage | No hub PCB, open peripheral electrical standard, source CAD, or digital-twin contract |
 | BuWizz 3.0 Pro | Six ports, high motor power, replaceable battery, current sensing, BLE, and brick-compatible mounting | Its official product page documents BLE, not Wi-Fi, and does not document an open PCB/CAD/BOM or digital-twin contract |
 | Raspberry Pi Build HAT | Pi integration, four LPF2 ports, and an RP2040 handling low-level control; firmware is now open | It is an accessory rather than a complete open hub ecosystem, and LPF2 is not a complete open native connector specification |
-| M5Stack | Standard module families, schematics, software libraries, Grove and M-Bus interfaces, and a coherent maker ecosystem | It is not a Pi/Linux-based brick-mechanical system |
+| M5Stack | Standard module families, schematics, software libraries, Grove and M-Bus interfaces, and a coherent maker ecosystem | It does not provide the complete Technic-grid mechanical, protected actuator, tier-portability, open native-link, and synchronized Creation/twin system sought here |
 | SPIKE/MINDSTORMS large hub | Six ports, BLE/USB, IMU, removable battery, and brick geometry | Official specifications do not document Wi-Fi or an open, reproducible hardware design |
+| BBC micro:bit V2 | Educational MCU board with BLE, open technical documentation, owner-reflashable runtimes, GPIO/sensors/display and a strong classroom ecosystem | It has no direct Wi-Fi, Linux, protected motor power/ports, independent HOMBRE safety controller, MQTT broker, or full App API/runtime role; a Mini hub requires an open carrier and internal companion radio |
+| NVIDIA Jetson Orin Nano | High-end edge AI/vision compute with accelerator, camera and Linux ecosystem | The module/developer kit is documented COTS rather than wholly open hardware; a Maxi needs a HOMBRE carrier, qualified Wi-Fi/BLE, storage/cooling/power and independent safety/port electronics |
+| SO-101 follower arm | Open BOM, build instructions, STEP/STL, URDF/MJCF and LeRobot software for five arm axes plus gripper, teleoperation, data capture and learned-policy experiments | Published sources do not specify complete-arm workspace/reach, payload, accuracy/repeatability, speed, duty, gripper performance, latency or safe stopping; a brick rendition needs a dated physical characterization benchmark and stronger safety/twin evidence |
 
 The defensible opportunity statement is:
 
 > None of the compared official product documentation demonstrates the full
-> combination of Raspberry Pi-class Linux compute, Wi-Fi and Bluetooth,
-> brick-compatible mounting, open carrier and peripheral hardware, an open
-> native wired peripheral contract, and synchronized CAD/simulation assets.
+> combination of capability-compatible MCU, Linux, and AI/vision controller
+> tiers; Wi-Fi and BLE; brick-compatible mounting; open carrier and
+> peripheral hardware; an open native wired peripheral contract; and
+> synchronized, versioned CAD, simulation, twin, and Collective assets.
 
 BuWizz facts are drawn from its
 [official product page](https://buwizz.com/shop/buwizz-3-0-pro/). M5Stack's
@@ -2503,7 +3269,7 @@ supports the corresponding comparison row.
 
 ### 21.1 BrickController2 concepts retained, not imposed
 
-OMBR retains these repository concepts while removing vendor-specific
+HOMBRE retains these repository concepts while removing vendor-specific
 assumptions:
 
 - A **Creation** remains the user-owned unit of a robot or model.
@@ -2577,7 +3343,7 @@ revisions, dates, and regions before they define any numeric target.
 | BENCH-003 | A reference class MUST specify which dimensions are envelope, attachment, electrical, protocol, capability, performance, usability, or lifecycle targets. Meeting one dimension MUST NOT imply another. |
 | BENCH-004 | Claims MUST use `benchmark-comparable`, `mechanically compatible`, `electrically adaptable`, `protocol adaptable`, `behaviorally compatible`, or `drop-in compatible` precisely. `Drop-in compatible` requires every relevant mechanical, electrical, protocol, behavioral, safety, and performance test. |
 | BENCH-005 | A proprietary purchased product MAY be a measurement reference or supported adapter endpoint, but MUST remain an identified COTS boundary and MUST NOT become required closed source for the open starter workflow. |
-| BENCH-006 | Benchmark geometry and behavior MUST be independently measured or taken from redistribution-permitted sources. The project MUST NOT copy logos, firmware, PCB artwork, ornamental housing surfaces, or restricted CAD. Independent measurement alone does not grant patent, design, trademark, copyright, database, or other rights. |
+| BENCH-006 | Benchmark geometry and behavior MUST be independently measured or taken from redistribution-permitted sources. The HOMBRE project MUST NOT copy logos, firmware, PCB artwork, ornamental housing surfaces, or restricted CAD. Independent measurement alone does not grant patent, design, trademark, copyright, database, or other rights. |
 | BENCH-007 | A numeric stable class target MUST be supported by at least three physical samples across two lots or documented revisions. If that evidence cannot be obtained, the target remains provisional and cannot support a stable benchmark or compatibility profile. The report MUST separately state sample count, lots/revisions, and number of independent products and manufacturers. |
 | BENCH-008 | A component class MUST publish minimum, target, and stretch ranges where appropriate rather than selecting one competitor's accidental value as a universal requirement. Safety ceilings remain absolute and are not benchmark averages. |
 | BENCH-009 | Adapters MUST identify exactly which mechanical, electrical, identity, feedback, command, calibration, and update features they translate, pass through, emulate, or do not support. |
@@ -2591,14 +3357,16 @@ revisions, dates, and regions before they define any numeric target.
 
 - [BrickController2 README](../../../README.md)
 - [Controllers and powered equipment](../../../docs/controllers-and-equipment.md)
-- [OMBR implementation catalog](IMPLEMENTATION-CATALOG.md)
-- [OMBR legal, IP, and market-access register](LEGAL-IP-REGISTER.md)
+- [HOMBRE implementation catalog for OMBR 0.1](IMPLEMENTATION-CATALOG.md)
+- [HOMBRE legal, IP, and market-access register for OMBR 0.1](LEGAL-IP-REGISTER.md)
+- [HOMBRE brick arm and assembly-farm engineering challenge](../../../docs/use-cases/HOMBRE-BRICK-ARM-AND-ASSEMBLY-FARM-CHALLENGE.md)
 - [Linux headless API](../../../docs/linux-headless-api.md)
 - [Unofficial BuWizz protocol notes](../../../BuWizz_protocol.md)
 
 ### Compute and hardware
 
 - [Raspberry Pi Zero 2 W product brief](https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf)
+- [Raspberry Pi Zero 2 W product page](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/)
 - [Raspberry Pi Zero 2 W product information portal](https://pip.raspberrypi.com/categories/584-raspberry-pi-zero-2-w)
 - [Raspberry Pi RP2040 specifications](https://www.raspberrypi.com/products/rp2040/specifications/)
 - [Raspberry Pi Pico SDK](https://github.com/raspberrypi/pico-sdk)
@@ -2608,6 +3376,11 @@ revisions, dates, and regions before they define any numeric target.
 - [Raspberry Pi HAT+ specification](https://datasheets.raspberrypi.com/hat/hat-plus-specification.pdf)
 - [Raspberry Pi Compute Module Zero](https://www.raspberrypi.com/products/compute-module-zero/)
 - [Raspberry Pi boot security guide](https://pip.raspberrypi.com/categories/685-whitepapers-app-notes-compliance-guides/documents/RP-003466-WP/Boot-Security-Howto.pdf)
+- [BBC micro:bit V2 hardware description](https://tech.microbit.org/hardware/2-0-revision/)
+- [Current BBC micro:bit hardware and interfaces](https://tech.microbit.org/hardware/)
+- [BBC micro:bit reference-design status](https://tech.microbit.org/hardware/reference-design/)
+- [NVIDIA Jetson Orin Nano developer-kit guide](https://docs.nvidia.com/jetson/orin-nano-devkit/user-guide/index.html)
+- [NVIDIA Jetson product lifecycle](https://developer.nvidia.com/embedded/lifecycle)
 - [M5Stack ecosystem overview](https://docs.m5stack.com/en/learn/intro)
 - [BuWizz 3.0 Pro](https://buwizz.com/shop/buwizz-3-0-pro/)
 - [SPIKE Prime Large Hub technical specification](https://assets.education.lego.com/v3/assets/blt293eea581807678a/bltf512a371e82f6420/5f8801baf4f4cf0fa39d2feb/techspecs_techniclargehub.pdf)
@@ -2646,11 +3419,16 @@ revisions, dates, and regions before they define any numeric target.
 - [LeoCAD](https://www.leocad.org/)
 - [ROS 2 documentation](https://docs.ros.org/en/rolling/)
 - [Gazebo documentation](https://gazebosim.org/docs/latest/getstarted/)
+- [The Robot Studio SO-ARM100/SO-101 hardware repository at inspected commit `fda892c`](https://github.com/TheRobotStudio/SO-ARM100/tree/fda892cba81032c46c40976a48c9ceadbf40a9ca)
+- [Hugging Face LeRobot v0.6.0 SO-101 guide](https://huggingface.co/docs/lerobot/v0.6.0/en/so101)
+- [LeRobot 0.6.0 SO follower implementation](https://github.com/huggingface/lerobot/blob/v0.6.0/src/lerobot/robots/so_follower/so_follower.py)
 
 ### Protocols and schemas
 
 - [W3C Web of Things Thing Description 1.1](https://www.w3.org/TR/wot-thing-description11/)
 - [MQTT 5.0](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html)
+- [Eclipse Sparkplug specification](https://sparkplug.eclipse.org/specification/)
+- [Eclipse Mosquitto MQTT broker and clients](https://mosquitto.org/)
 - [CBOR, RFC 8949](https://www.rfc-editor.org/rfc/rfc8949.html)
 - [UUIDs, RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.html)
 - [JSON Schema 2020-12](https://json-schema.org/draft/2020-12)
@@ -2731,6 +3509,7 @@ their logical document order:
 | IP | Patents/FTO, designs, trademarks, copyright/database rights, licensing, and clean-room evidence |
 | REG | Product classification, conformity, market access, and post-market obligations |
 | HUB | Hub functions and serviceability |
+| COMPUTE | Capability-based Mini, Midi, and Maxi compute profiles, resources, artifacts, and migration |
 | SAFE | Real-time safety controller |
 | PWR | Battery and power |
 | ELEC | Complete electronic component and interface contracts |
@@ -2745,17 +3524,22 @@ their logical document order:
 | INPUT | Handheld, gamepad, UI, and other control sources |
 | CTRL | Creation bindings and control |
 | PROG | Portable programs, runtimes, lifecycle, and debugging |
+| AI | Reproducible AI/vision model packages, inference, evidence, privacy, and fallback |
 | NET | Discovery and network |
-| API | HTTP and event API |
+| API | Owner/network APIs and the run-local OMBR App API |
+| COORD | MQTT-based multi-Creation collectives, orchestration, jobs, tasks, resources, and recovery |
 | PKG | Project archive and semantic validation |
 | TWIN | CAD, identity, assets, and digital twin |
 | SIM | Simulation fidelity and parity |
+| SHARE | Git-backed Creation releases, portal publication, discovery, trust, mirroring, and forking |
+| ASSEMBLY | Automated assembly recipes, parts, processes, evidence, work products, and farms |
+| ARM | Five-axis arm plus gripper mechanics, control, safety, twin, and benchmark behavior |
 | SEC | Security, privacy, and ownership |
 | DEV | Developer service, CLI, VS Code, .NET, and operator clients |
 | SW | Common software, firmware, storage, and updates |
 | GOV | Open governance, contribution, registries, and release stewardship |
 | CAT | Implementation candidates, openness grades, lifecycle, availability, offers, and BOM closure |
-| COST | Quantity-tier costing, landed COGS, channels, sustainability, and affordability claims |
+| COST | Hardware quantity-tier costing, landed COGS, channels and affordability plus Portal/service TCO, funding, and sustainability |
 | BENCH | Purchasable-component benchmarks and compatibility claims |
 
 ## Appendix B. Draft maturity labels
@@ -2770,11 +3554,18 @@ Current status:
 | Area | Maturity |
 | --- | --- |
 | Object, capability, creation, and twin model | Prototype syntax schema; full body/mate/joint/multi-member-transmission/assembly model plus design/as-built/simulation/runtime state split still required |
-| Pi/safety-MCU architecture | Prototype pending independent watchdog, output-gate, and stop-loop circuit evidence |
+| Git-backed Creation source and release | Folder, lock, provenance, deterministic-packaging, and release requirements specified; schemas, migration rules, large-artifact transport, packer, and golden digests pending |
+| HOMBRE Creation Portal | Architecture and OMBR-PORTAL-1 requirements specified; publish/search/fetch/fork/mirror APIs, trust/moderation model, service TCO/operator/funding plan, implementation, independent client, and federation evidence pending |
+| Tiered compute and hub/safety architecture | Mini/Midi/Maxi requirements specified; Midi Pi Zero 2 W candidate retained, micro:bit-plus-Wi-Fi Mini and Jetson-class Maxi are screen candidates; carriers, runtime subsets, resource floors, radios, thermal/power evidence, cross-tier vectors and independent watchdog/output-gate/stop-loop hardware remain pending |
+| Multi-Creation coordination | OMBR-COORD-1 MQTT/job/task/lease and failure semantics specified; Collective schemas, golden packets, broker/orchestrator selection, workcell safety boundary, simulator, independent clients and physical failover evidence pending |
+| AI and vision | Model package, camera, resource, evidence, privacy and fallback requirements specified; schemas, accelerator-neutral adapters, pinned benchmark datasets, physical replay and reference Maxi pipeline pending |
+| Five-axis arm plus gripper | Challenge profile specified from published SO-101 semantics; exact brick design, physical reference characterization, open actuator selection, LeRobot adapter, five-build variation and side-by-side evidence pending |
+| Automated assembly farm | Recipe/work-product/process requirements specified; machine-readable schemas, DfRA parts, feeders/tools/fixtures, physical multi-Creation cell, ten-build dataset, independent reconstruction and workcell assessment pending |
 | Electronic interface contract and endpoint schema | Prototype syntax with resolved example contracts; stable field semantics, fault-matrix schema, semantic validator, COTS selection, fixtures, and measured evidence pending |
 | Open release contract | Specified |
 | Whole-ecosystem completeness contract | Specified requirements; integrated starter release not yet built |
-| Legal/IP register | Screening framework published; OMBR mark, feature-specific FTO, modular-design, CAD/catalog, contributor-patent, and commercial compatibility reviews remain open |
+| HOMBRE education curriculum | PRIN-025 and ECO-014 specified; separate multidisciplinary curriculum is an informative draft pending educator review, classroom pilots, jurisdiction mappings, accessible/localized materials, and measured learning outcomes |
+| Legal/IP register | Screening framework published; HOMBRE name/mark and OMBR technical/conformance identifiers, feature-specific FTO, modular-design, CAD/catalog, contributor-patent, and commercial compatibility reviews remain open |
 | Product classification and EU market access | Requirements specified; exact intended age/use/SKU, RED/EMC/environmental/cyber/toy applicability, conformity path, test evidence, and economic operator remain open |
 | Motor, light, and sensor behavioral profiles | Research requirements; fixtures and limits not frozen |
 | Cable models and reference cable family | Research; P0 cable is illustrative only |
@@ -2789,6 +3580,7 @@ Current status:
 | BLE commissioning/control and OpenAPI | Research; radio/discovery only in 0.1 |
 | Simulation fidelity tiers | Research; 0.1 results are characterization only |
 | Program descriptor and runtime profiles | Prototype syntax pending golden Python/.NET bundles and sandbox contract |
+| OMBR App API, Run Context, and physical/simulation/replay providers | Architecture and requirements specified; wire schema, private IPC, generated bindings, supervisor/broker, deterministic services, artifact resolver, and parity vectors pending |
 | Developer service and headless CLI | Architecture specified; protocol and implementation planned |
 | VS Code Workbench | Architecture specified; reference extension planned |
 | Independent .NET Workbench | BrickController2 is an interim partial client; stable framework and parity suite undecided |
@@ -2796,5 +3588,5 @@ Current status:
 | Commercial trademark and product classification | Blocked on qualified legal/compliance review |
 | Full hardware BOM and KiCad design | Planned reference implementation |
 | Implementation component catalog | Broad family coverage and P0 candidate match published; machine-readable records, exact alternates, purchases, build evidence, and qualification pending |
-| EUR 49.99 controller target | Target-unproven; current pre-quote four-port model estimates EUR 39–57 COGS at 1000 units and indicates roughly EUR 65–95 initial direct retail, so small-batch or distributor EUR 49.99 is not presently credible |
+| EUR 49.99 Midi base-controller target | Target-unproven; current pre-quote four-port model estimates EUR 39–57 COGS at 1000 units and indicates roughly EUR 65–95 initial direct retail, so small-batch or distributor EUR 49.99 is not presently credible |
 | Purchasable-component benchmark catalog | Seeded by repository market survey; controlled measurements and class ranges not yet published |

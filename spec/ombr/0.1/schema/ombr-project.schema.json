@@ -36,10 +36,12 @@
     },
     "projectId": {
       "type": "string",
-      "format": "uri"
+      "format": "uri",
+      "description": "Stable Creation ID. projectId is the version 0.1 field name; it does not identify a portal listing or one deployment."
     },
     "revision": {
-      "$ref": "#/$defs/revision"
+      "$ref": "#/$defs/revision",
+      "description": "Authored manifest-model revision used for document evolution and optimistic concurrency in the 0.1 syntax. It is neither the Git Creation source revision nor a packaged Creation release version."
     },
     "name": {
       "type": "string",
