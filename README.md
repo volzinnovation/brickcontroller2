@@ -49,50 +49,8 @@ or Visual Studio for Mac. Desktop installer scripts are documented in [docs/desk
 
 For a researched overview of supported controllers, receiver hubs, motors, lights, product availability, and servo-control options, see [Controllers and powered equipment](docs/controllers-and-equipment.md).
 
-For the proposed open-hardware successor ecosystem—capability-based Mini,
-Raspberry Pi Zero-class Midi, and accelerated AI/vision Maxi compute, Wi-Fi
-and BLE, open motors/lights/sensors, brick-compatible source CAD, gears
-and mechanical reference parts, MQTT coordination, and a synchronized
-CAD/simulation digital twin for robots, vehicles, stationary machines, and general
-automation—see **HOMBRE — Holistic Open Modular Brick Robotics Ecosystem**.
-Its normative technical foundation is the
-[Open Modular Brick Robotics (OMBR) 0.1 draft specification](spec/ombr/0.1/OMBR-SPEC.md).
-The draft's [Creation-centered architecture](spec/ombr/0.1/OMBR-SPEC.md#51-creation-centered-lifecycle-and-integration-boundary)
-connects design, Git source, simulation, digital twins, controller programs,
-physical components, third-party tools, and an optional open sharing portal.
-For a decision-maker overview, use the two-page
-[HOMBRE executive summary](spec/ombr/0.1/HOMBRE-EXECUTIVE-SUMMARY.md)
-([A4 PDF](output/pdf/HOMBRE-Executive-Summary.pdf)).
-The separate [HOMBRE education curriculum draft](docs/education/HOMBRE-EDUCATION-CURRICULUM-DRAFT.md)
-proposes a project-led pathway for learning modern mechanical, electronic,
-software, and systems-engineering practice with the same Creation artifacts.
-The concrete
-[brick arm and assembly-farm engineering challenge](docs/use-cases/HOMBRE-BRICK-ARM-AND-ASSEMBLY-FARM-CHALLENGE.md)
-stress-tests the specification with tiered controllers, reproducible AI and
-vision and multi-Creation MQTT jobs, and proposes a farm intended to assemble
-and verify a five-axis brick arm from declared prepared parts.
-
-The companion
-[HOMBRE implementation catalog](spec/ombr/0.1/IMPLEMENTATION-CATALOG.md) maps
-the whole controller/peripheral/mechanical/software stack to open designs,
-open-source software, and documented COTS candidates, with explicit openness
-grades, alternates, gaps, and a quantity-tier cost model. The
-[legal, IP, and market-access register](spec/ombr/0.1/LEGAL-IP-REGISTER.md)
-tracks patent/FTO, design, trademark, CAD/catalog, protocol, licensing, product
-classification, and regulatory gates without claiming legal clearance.
-
-BrickController2 is an interim compatibility and remote-control client within
-HOMBRE. The OMBR Specification covers the complete technical system:
-hub and power hardware, cables, actuators, lights, sensors, brick-compatible
-mechanics, full per-component electronic interface contracts, firmware,
-programming runtimes, developer tools, CAD, digital twin, simulation, test
-fixtures, Git-versioned Creation packages and portal exchange, repair, and
-governance. Its primary planned
-Workbench is an open Visual Studio Code extension over a headless core; a
-cross-platform .NET application remains an interchangeable client option.
-
 LEGO® is a trademark of the LEGO Group of companies, which does not sponsor,
-authorize, or endorse HOMBRE, the OMBR Specification, or BrickController2.
+authorize, or endorse BrickController2.
 
 ![Client controls BrickController2 over HTTP; BrickController2 controls the brick creation over Bluetooth](docs/assets/http-control-flow.webp)
 

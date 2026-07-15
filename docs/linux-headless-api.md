@@ -5,7 +5,7 @@
 The current API is GATT-level: scan, connect, enumerate services, read, write, and subscribe to characteristic notifications. Higher-level device/profile commands can be layered on this host by routing HTTP command models into the existing BrickController device managers.
 
 This host is transitional infrastructure, not the OMBR hub API or developer
-service defined by the [OMBR draft](../spec/ombr/0.1/OMBR-SPEC.md). Its raw GATT
+service defined by the [OMBR draft](https://github.com/hombr-e/ombr-spec/blob/main/ombr/0.1/OMBR-SPEC.md). Its raw GATT
 operations do not define OMBR component, capability, program, safety, project,
 or digital-twin semantics.
 

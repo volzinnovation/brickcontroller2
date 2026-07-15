@@ -6,7 +6,7 @@ Availability was checked on **12 July 2026**, primarily in manufacturers' German
 
 This survey is also the seed inventory for HOMBRE's purchasable-component
 benchmark program, defined by the
-[OMBR draft](../spec/ombr/0.1/OMBR-SPEC.md). A listing here is not yet an OMBR
+[OMBR draft](https://github.com/hombr-e/ombr-spec/blob/main/ombr/0.1/OMBR-SPEC.md). A listing here is not yet an OMBR
 benchmark or compatibility result; that requires exact revision
 identity, controlled measurements, public fixtures, uncertainty, raw data, and
 the claim categories defined by BENCH-001 through BENCH-012.
