@@ -195,6 +195,18 @@
   <data name="BluetoothDevicesWillNOTBeAvailable" xml:space="preserve">
     <value>Bluetooth devices will NOT be available</value>
   </data>
+  <data name="BluetoothPermissionTitle" xml:space="preserve">
+    <value>Allow BrickController to use Bluetooth?</value>
+  </data>
+  <data name="BluetoothPermissionRequired" xml:space="preserve">
+    <value>BrickController requires Bluetooth to connect to and control your devices. The app does not work without Bluetooth.</value>
+  </data>
+  <data name="Allow" xml:space="preserve">
+    <value>Allow</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="BluetoothIsTurnedOff" xml:space="preserve">
     <value>Bluetooth is turned off.</value>
   </data>

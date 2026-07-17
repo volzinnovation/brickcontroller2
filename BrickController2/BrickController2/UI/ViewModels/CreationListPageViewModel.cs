@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
 using BrickController2.BusinessLogic;
 using BrickController2.CreationManagement;
 using BrickController2.DeviceManagement;
@@ -116,6 +117,19 @@ namespace BrickController2.UI.ViewModels
                 var bluetoothPermissionStatus = await _bluetoothPermission.CheckStatusAsync();
                 if (bluetoothPermissionStatus != PermissionStatus.Granted && !_isBluetoothPermissionRequested)
                 {
+                    var shouldRequestBluetooth = await _dialogService.ShowQuestionDialogAsync(
+                        Translate("BluetoothPermissionTitle"),
+                        Translate("BluetoothPermissionRequired"),
+                        Translate("Allow"),
+                        Translate("Exit"),
+                        DisappearingToken);
+
+                    if (!shouldRequestBluetooth)
+                    {
+                        Application.Current?.Quit();
+                        return;
+                    }
+
                     _isRequestingPermission = true;
                     bluetoothPermissionStatus = await _bluetoothPermission.RequestAsync();
                     _isBluetoothPermissionRequested = true;

@@ -102,14 +102,6 @@ public sealed class InputDeviceManagerService : IInputDeviceManagerService
         InputDeviceEventInternal?.Invoke(this, eventArgs);
     }
 
-    public IReadOnlyCollection<IInputDevice> GetInputDevices()
-    {
-        lock (_lockObject)
-        {
-            return _availableInputDevices.ToArray();
-        }
-    }
-
     /// <summary>
     /// Get a snapshot of currently available input devices.
     /// </summary>
