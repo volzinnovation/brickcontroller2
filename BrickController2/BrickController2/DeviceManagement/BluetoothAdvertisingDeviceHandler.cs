@@ -319,6 +319,7 @@ namespace BrickController2.DeviceManagement
                 catch (Exception ex)
                 {
                     startupCompletionSource.TrySetException(ex);
+                    throw;
                 }
             });
 
@@ -382,7 +383,7 @@ namespace BrickController2.DeviceManagement
 
                 // if all channels are zero and _reconnectTimeSpan has elapsed
                 // then the connect telegram should be sent
-                inConnectMode = _allChannelsSetState == 0 && 
+                inConnectMode = _allChannelsSetState == 0 &&
                     _allZeroStopwatch.Elapsed > _reconnectTimeSpan;
 
                 // if connectMode is requested and if previous was not a connect telegram

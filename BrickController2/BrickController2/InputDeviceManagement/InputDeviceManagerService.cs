@@ -93,6 +93,10 @@ public sealed class InputDeviceManagerService : IInputDeviceManagerService
         _registeredInputDeviceServices.Add(inputDeviceService);
     }
 
+    /// <summary>
+    /// raise inputdevice event
+    /// </summary>
+    /// <param name="eventArgs"></param>
     public void RaiseEvent(InputDeviceEventArgs eventArgs)
     {
         InputDeviceEventInternal?.Invoke(this, eventArgs);
@@ -107,11 +111,14 @@ public sealed class InputDeviceManagerService : IInputDeviceManagerService
     }
 
     /// <summary>
-    /// Initialize collection of available InputDeviceServices (including listening of connected/disconnected controller)
+    /// Get a snapshot of currently available input devices.
     /// </summary>
-    private void InitializeInputDeviceServices()
+    public IReadOnlyCollection<IInputDevice> GetInputDevices()
     {
-        _registeredInputDeviceServices.ForEach(service => service?.Initialize());
+        lock (_lockObject)
+        {
+            return _availableInputDevices.ToArray();
+        }
     }
 
     /// <summary>
@@ -186,6 +193,14 @@ public sealed class InputDeviceManagerService : IInputDeviceManagerService
             inputDevice = _availableInputDevices.OfType<TInputDevice>().FirstOrDefault(x => predicate(x));
             return inputDevice is not null;
         }
+    }
+
+    /// <summary>
+    /// Initialize collection of available InputDeviceServices (including listening of connected/disconnected controller)
+    /// </summary>
+    private void InitializeInputDeviceServices()
+    {
+        _registeredInputDeviceServices.ForEach(service => service?.Initialize());
     }
 
     /// <summary>

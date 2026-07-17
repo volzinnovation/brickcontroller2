@@ -73,7 +73,7 @@ namespace BrickController2.DeviceManagement
                     if (startOutputProcessing)
                     {
                         InitDevice();
-                        
+
                         if (!await _bluetoothAdvertisingDeviceHandler.StartOutputTaskAsync(this))
                         {
                             await DisconnectInternalAsync();
