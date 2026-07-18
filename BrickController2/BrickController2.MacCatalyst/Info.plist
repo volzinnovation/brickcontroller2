@@ -15,15 +15,15 @@
   <key>CFBundleShortVersionString</key>
   <string>3.5</string>
   <key>CFBundleVersion</key>
-  <string>52</string>
+  <string>53</string>
   <key>ITSAppUsesNonExemptEncryption</key>
   <false/>
   <key>LSApplicationCategoryType</key>
   <string>public.app-category.utilities</string>
   <key>NSBluetoothAlwaysUsageDescription</key>
-  <string>Bluetooth access is required to use SBrick, BuWizz or Powered-Up devices.</string>
+  <string>BrickController uses Bluetooth when you choose to find, connect to, and control compatible receivers and remotes.</string>
   <key>NSBluetoothPeripheralUsageDescription</key>
-  <string>Bluetooth access is required to use SBrick, BuWizz or Powered-Up devices.</string>
+  <string>BrickController uses Bluetooth when you choose to find, connect to, and control compatible receivers and remotes.</string>
   <key>NSCameraUsageDescription</key>
   <string>Camera is required in order to import a creation via QR code from another application.</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

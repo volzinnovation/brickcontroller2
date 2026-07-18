@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
 using BrickController2.BusinessLogic;
 using BrickController2.CreationManagement;
 using BrickController2.DeviceManagement;
@@ -24,15 +23,11 @@ namespace BrickController2.UI.ViewModels
         private readonly IDeviceManager _deviceManager;
         private readonly IPlayLogic _playLogic;
         private readonly IDialogService _dialogService;
-        private readonly IBluetoothPermission _bluetoothPermission;
         private readonly IReadWriteExternalStoragePermission _readWriteExternalStoragePermission;
 
         private bool _isLoaded;
 
-        // Permission request fires OnDisappearing somehow (WTF???)
         private bool _isRequestingPermission = false;
-        private bool _isBluetoothPermissionRequested = false;
-        //private bool _isLocationPermissionRequested = false;
         private bool _isStoragePermissionRequested = false;
 
         public CreationListPageViewModel(
@@ -44,7 +39,6 @@ namespace BrickController2.UI.ViewModels
             IDialogService dialogService,
             ISharedFileStorageService sharedFileStorageService,
             ICommandFactory<Creation> commandFactory,
-            IBluetoothPermission bluetoothPermission,
             IReadWriteExternalStoragePermission readWriteExternalStoragePermission)
             : base(navigationService, translationService)
         {
@@ -52,7 +46,6 @@ namespace BrickController2.UI.ViewModels
             _deviceManager = deviceManager;
             _playLogic = playLogic;
             _dialogService = dialogService;
-            _bluetoothPermission = bluetoothPermission;
             _readWriteExternalStoragePermission = readWriteExternalStoragePermission;
             SharedFileStorageService = sharedFileStorageService;
 
@@ -98,7 +91,7 @@ namespace BrickController2.UI.ViewModels
                 base.OnAppearing();
 
                 await LoadCreationsAndDevicesAsync();
-                await RequestPermissionsAsync();
+                await RequestStoragePermissionAsync();
             }
         }
 
@@ -110,45 +103,10 @@ namespace BrickController2.UI.ViewModels
             }
         }
 
-        private async Task RequestPermissionsAsync()
+        private async Task RequestStoragePermissionAsync()
         {
             try
             {
-                var bluetoothPermissionStatus = await _bluetoothPermission.CheckStatusAsync();
-                if (bluetoothPermissionStatus != PermissionStatus.Granted && !_isBluetoothPermissionRequested)
-                {
-                    var shouldRequestBluetooth = await _dialogService.ShowQuestionDialogAsync(
-                        Translate("BluetoothPermissionTitle"),
-                        Translate("BluetoothPermissionRequired"),
-                        Translate("Allow"),
-                        Translate("Exit"),
-                        DisappearingToken);
-
-                    if (!shouldRequestBluetooth)
-                    {
-                        Application.Current?.Quit();
-                        return;
-                    }
-
-                    _isRequestingPermission = true;
-                    bluetoothPermissionStatus = await _bluetoothPermission.RequestAsync();
-                    _isBluetoothPermissionRequested = true;
-                    _isRequestingPermission = false;
-
-                    DisappearingToken.ThrowIfCancellationRequested();
-                }
-
-                if (bluetoothPermissionStatus != PermissionStatus.Granted)
-                {
-                    await _dialogService.ShowMessageBoxAsync(
-                        Translate("Warning"),
-                        Translate("BluetoothDevicesWillNOTBeAvailable"),
-                        Translate("Ok"),
-                        DisappearingToken);
-
-                    DisappearingToken.ThrowIfCancellationRequested();
-                }
-
                 if (SharedFileStorageService.SharedStorageBaseDirectory != null)
                 {
                     var storagePermissionStatus = await _readWriteExternalStoragePermission.CheckStatusAsync();

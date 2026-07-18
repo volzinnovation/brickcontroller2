@@ -15,25 +15,25 @@ namespace BrickController2.iOS.PlatformServices.BluetoothLE
 {
     public class BluetoothLEService : CBCentralManagerDelegate, IBluetoothLEService
     {
-        private readonly CBCentralManager _centralManager;
+        private CBCentralManager? _centralManager;
+        private TaskCompletionSource<CBManagerState>? _initialStateCompletionSource;
         private readonly IDictionary<CBPeripheral, BluetoothLEDevice> _peripheralMap = new Dictionary<CBPeripheral, BluetoothLEDevice>();
         private readonly object _lock = new();
 
         private Action<ScanResult>? _scanCallback;
 
-        public BluetoothLEService()
-        {
-#pragma warning disable CA1422 // Validate platform compatibility
-            _centralManager = new CBCentralManager(this, DispatchQueue.CurrentQueue);
-#pragma warning restore CA1422 // Validate platform compatibility
-        }
-
         public Task<bool> IsBluetoothLESupportedAsync() => Task.FromResult(true);
         public Task<bool> IsBluetoothLEAdvertisingSupportedAsync() => Task.FromResult(true);
-        public Task<bool> IsBluetoothOnAsync() => Task.FromResult(_centralManager.State == CBManagerState.PoweredOn);
+        public async Task<bool> IsBluetoothOnAsync()
+        {
+            var centralManager = await GetCentralManagerAsync();
+            return centralManager.State == CBManagerState.PoweredOn;
+        }
+
         public async Task<bool> ScanDevicesAsync(Action<ScanResult> scanCallback, CancellationToken token)
         {
-            if (!await IsBluetoothLESupportedAsync() || !await IsBluetoothOnAsync() || _centralManager.IsScanning)
+            var centralManager = await GetCentralManagerAsync();
+            if (!await IsBluetoothLESupportedAsync() || centralManager.State != CBManagerState.PoweredOn || centralManager.IsScanning)
             {
                 return false;
             }
@@ -44,35 +44,42 @@ namespace BrickController2.iOS.PlatformServices.BluetoothLE
             {
                 lock (_lock)
                 {
-                    _centralManager.StopScan();
+                    centralManager.StopScan();
                     _scanCallback = null;
                     tcs.TrySetResult(true);
                 }
             }))
             {
                 _scanCallback = scanCallback;
-                _centralManager.ScanForPeripherals(Array.Empty<CBUUID>(), new PeripheralScanningOptions { AllowDuplicatesKey = true });
+                centralManager.ScanForPeripherals(Array.Empty<CBUUID>(), new PeripheralScanningOptions { AllowDuplicatesKey = true });
 
                 return await tcs.Task;
             }
         }
 
-        public Task<IBluetoothLEDevice?> GetKnownDeviceAsync(string address)
+        public async Task<IBluetoothLEDevice?> GetKnownDeviceAsync(string address)
         {
-            var peripheral = _centralManager?.RetrievePeripheralsWithIdentifiers(new NSUuid(address)).FirstOrDefault();
-            if (peripheral is null)
+            var centralManager = await GetCentralManagerAsync();
+            if (centralManager.State != CBManagerState.PoweredOn)
             {
-                return Task.FromResult<IBluetoothLEDevice?>(default);
+                return default;
             }
 
-            var device = new BluetoothLEDevice(_centralManager!, peripheral);
+            var peripheral = centralManager.RetrievePeripheralsWithIdentifiers(new NSUuid(address)).FirstOrDefault();
+            if (peripheral is null)
+            {
+                return default;
+            }
+
+            var device = new BluetoothLEDevice(centralManager, peripheral);
             _peripheralMap[peripheral] = device;
 
-            return Task.FromResult<IBluetoothLEDevice?>(device);
+            return device;
         }
 
         public override void UpdatedState(CBCentralManager central)
         {
+            _initialStateCompletionSource?.TrySetResult(central.State);
         }
 
         public override void DiscoveredPeripheral(CBCentralManager central, CBPeripheral peripheral, NSDictionary advertisementData, NSNumber RSSI)
@@ -180,6 +187,35 @@ namespace BrickController2.iOS.PlatformServices.BluetoothLE
         public IBluetoothLEAdvertiserDevice? CreateBluetoothLEAdvertiserDevice()
         {
             return new BluetoothLEAdvertiserDevice();
+        }
+
+        private async Task<CBCentralManager> GetCentralManagerAsync()
+        {
+            CBCentralManager centralManager;
+            Task<CBManagerState>? initialStateTask;
+
+            lock (_lock)
+            {
+                if (_centralManager is null)
+                {
+                    _initialStateCompletionSource = new TaskCompletionSource<CBManagerState>(TaskCreationOptions.RunContinuationsAsynchronously);
+#pragma warning disable CA1422 // Validate platform compatibility
+                    _centralManager = new CBCentralManager(this, DispatchQueue.MainQueue);
+#pragma warning restore CA1422 // Validate platform compatibility
+                }
+
+                centralManager = _centralManager;
+                initialStateTask = centralManager.State is CBManagerState.Unknown or CBManagerState.Resetting
+                    ? _initialStateCompletionSource?.Task
+                    : null;
+            }
+
+            if (initialStateTask is not null)
+            {
+                await initialStateTask;
+            }
+
+            return centralManager;
         }
     }
 }

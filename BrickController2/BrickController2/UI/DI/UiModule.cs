@@ -12,6 +12,7 @@ using BrickController2.UI.Services.Localization;
 using BrickController2.UI.Services.MainThread;
 using BrickController2.UI.Services.Navigation;
 using BrickController2.UI.Services.Preferences;
+using BrickController2.UI.Services.Permission;
 using BrickController2.UI.Services.Theme;
 using BrickController2.UI.Services.Translation;
 using BrickController2.UI.ViewModels;
@@ -30,6 +31,7 @@ namespace BrickController2.UI.DI
             builder.RegisterType<BackgroundService>().AsSelf().As<IBackgroundService>().SingleInstance();
             builder.RegisterType<TranslationService>().AsSelf().As<ITranslationService>().SingleInstance();
             builder.RegisterType<PreferencesService>().AsSelf().As<IPreferencesService>().SingleInstance();
+            builder.RegisterType<BluetoothPermissionGate>().As<IBluetoothPermissionGate>().SingleInstance();
             builder.RegisterType<ThemeService>().AsSelf().As<IThemeService>().SingleInstance();
             builder.RegisterType<LocalizationService>().AsSelf().As<ILocalizationService>().SingleInstance();
             builder.RegisterType<AppIdentifierService>().AsSelf().As<IAppIdentifierService>().SingleInstance();

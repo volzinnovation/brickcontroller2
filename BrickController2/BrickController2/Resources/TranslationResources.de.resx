@@ -195,14 +195,44 @@
   <data name="BluetoothDevicesWillNOTBeAvailable" xml:space="preserve">
     <value>Bluetooth-Geräte werden NICHT verfügbar sein</value>
   </data>
+  <data name="BluetoothAccess" xml:space="preserve">
+    <value>Bluetooth-Zugriff</value>
+  </data>
+  <data name="BluetoothAllowed" xml:space="preserve">
+    <value>Erlaubt</value>
+  </data>
+  <data name="BluetoothDenied" xml:space="preserve">
+    <value>In den Systemeinstellungen abgelehnt</value>
+  </data>
+  <data name="BluetoothNotAllowed" xml:space="preserve">
+    <value>Nicht erlaubt</value>
+  </data>
+  <data name="BluetoothNotRequested" xml:space="preserve">
+    <value>Noch nicht angefragt</value>
+  </data>
+  <data name="BluetoothRestricted" xml:space="preserve">
+    <value>Eingeschränkt</value>
+  </data>
   <data name="BluetoothPermissionTitle" xml:space="preserve">
     <value>BrickController möchte Bluetooth verwenden</value>
   </data>
   <data name="BluetoothPermissionRequired" xml:space="preserve">
-    <value>BrickController benötigt Bluetooth, um deine Geräte zu verbinden und zu steuern. Die App funktioniert ohne Bluetooth nicht.</value>
+    <value>Bluetooth wird nur verwendet, um kompatible Empfänger und Fernbedienungen zu finden, zu verbinden und zu steuern. Andere Teile der App funktionieren auch ohne Bluetooth.</value>
+  </data>
+  <data name="BluetoothPermissionDenied" xml:space="preserve">
+    <value>Der Bluetooth-Zugriff für BrickController ist ausgeschaltet. Du kannst ihn in den Systemeinstellungen aktivieren.</value>
+  </data>
+  <data name="BluetoothPermissionDeclined" xml:space="preserve">
+    <value>Bluetooth wurde nicht aktiviert. Du kannst dies in den BrickController-Einstellungen ändern.</value>
   </data>
   <data name="Allow" xml:space="preserve">
     <value>Erlauben</value>
+  </data>
+  <data name="NotNow" xml:space="preserve">
+    <value>Jetzt nicht</value>
+  </data>
+  <data name="OpenSettings" xml:space="preserve">
+    <value>Einstellungen öffnen</value>
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Beenden</value>
@@ -236,6 +266,9 @@
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Bestätigen</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Konfigurieren</value>
   </data>
   <data name="Connecting" xml:space="preserve">
     <value>Verbinde...</value>

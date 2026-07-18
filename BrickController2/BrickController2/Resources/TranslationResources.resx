@@ -195,14 +195,44 @@
   <data name="BluetoothDevicesWillNOTBeAvailable" xml:space="preserve">
     <value>Bluetooth devices will NOT be available</value>
   </data>
+  <data name="BluetoothAccess" xml:space="preserve">
+    <value>Bluetooth access</value>
+  </data>
+  <data name="BluetoothAllowed" xml:space="preserve">
+    <value>Allowed</value>
+  </data>
+  <data name="BluetoothDenied" xml:space="preserve">
+    <value>Denied in System Settings</value>
+  </data>
+  <data name="BluetoothNotAllowed" xml:space="preserve">
+    <value>Not allowed</value>
+  </data>
+  <data name="BluetoothNotRequested" xml:space="preserve">
+    <value>Not requested</value>
+  </data>
+  <data name="BluetoothRestricted" xml:space="preserve">
+    <value>Restricted</value>
+  </data>
   <data name="BluetoothPermissionTitle" xml:space="preserve">
     <value>Allow BrickController to use Bluetooth?</value>
   </data>
   <data name="BluetoothPermissionRequired" xml:space="preserve">
-    <value>BrickController requires Bluetooth to connect to and control your devices. The app does not work without Bluetooth.</value>
+    <value>Bluetooth is used only to find, connect to, and control compatible receivers and remotes. You can continue using other parts of the app without it.</value>
+  </data>
+  <data name="BluetoothPermissionDenied" xml:space="preserve">
+    <value>Bluetooth access is turned off for BrickController. You can enable it in System Settings.</value>
+  </data>
+  <data name="BluetoothPermissionDeclined" xml:space="preserve">
+    <value>Bluetooth access was not enabled. You can change this from BrickController Settings.</value>
   </data>
   <data name="Allow" xml:space="preserve">
     <value>Allow</value>
+  </data>
+  <data name="NotNow" xml:space="preserve">
+    <value>Not now</value>
+  </data>
+  <data name="OpenSettings" xml:space="preserve">
+    <value>Open Settings</value>
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
@@ -236,6 +266,9 @@
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Configure</value>
   </data>
   <data name="Connecting" xml:space="preserve">
     <value>Connecting</value>

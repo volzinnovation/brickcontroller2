@@ -42,6 +42,10 @@ Cross platform application for controlling your brick creations using a your com
 - LEGO® Powered Up Remote (part number 88010)
 - Built-in motion sensor — when supported by the device
 
+## Support
+
+For setup help, troubleshooting, direct contact details, and the public issue tracker, see the [BrickController support page](SUPPORT.md).
+
 ## Project details
 
 BrickController is a MAUI application and can be compiled using Visual Studio 2026 (Professional, Enterprise and Community Editions)

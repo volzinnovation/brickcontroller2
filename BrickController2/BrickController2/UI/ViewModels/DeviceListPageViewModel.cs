@@ -9,12 +9,14 @@ using BrickController2.UI.Commands;
 using System.Threading;
 using BrickController2.UI.Services.Translation;
 using BrickController2.PlatformServices.BluetoothLE;
+using BrickController2.UI.Services.Permission;
 
 namespace BrickController2.UI.ViewModels
 {
     public class DeviceListPageViewModel : PageViewModelBase
     {
         private readonly IBluetoothLEService _bluetoothLEService;
+        private readonly IBluetoothPermissionGate _bluetoothPermissionGate;
         private readonly IDialogService _dialogService;
 
         private bool _isDisappearing = false;
@@ -23,12 +25,14 @@ namespace BrickController2.UI.ViewModels
             INavigationService navigationService,
             ITranslationService translationService,
             IBluetoothLEService bluetoothLEService,
+            IBluetoothPermissionGate bluetoothPermissionGate,
             IDeviceManager deviceManager,
             IDialogService dialogService) 
             : base(navigationService, translationService)
         {
             DeviceManager = deviceManager;
             _bluetoothLEService = bluetoothLEService;
+            _bluetoothPermissionGate = bluetoothPermissionGate;
             _dialogService = dialogService;
 
             ScanCommand = new SafeCommand(async () => await ScanAsync(), () => !DeviceManager.IsScanning);
@@ -129,6 +133,11 @@ namespace BrickController2.UI.ViewModels
         {
             try
             {
+                if (!await _bluetoothPermissionGate.EnsureAccessAsync(false, DisappearingToken))
+                {
+                    return;
+                }
+
                 await NavigationService.NavigateToAsync<ManualDeviceListPageViewModel>(new());
             }
             catch (OperationCanceledException)
@@ -138,6 +147,11 @@ namespace BrickController2.UI.ViewModels
 
         private async Task ScanAsync()
         {
+            if (!await _bluetoothPermissionGate.EnsureAccessAsync(false, DisappearingToken))
+            {
+                return;
+            }
+
             if (!await DeviceManager.IsBluetoothOnAsync())
             {
                 await _dialogService.ShowMessageBoxAsync(
@@ -145,6 +159,7 @@ namespace BrickController2.UI.ViewModels
                     Translate("BluetoothIsTurnedOff"),
                     Translate("Ok"),
                     DisappearingToken);
+                return;
             }
 
             var percent = 0;

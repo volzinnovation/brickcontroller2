@@ -195,6 +195,45 @@
   <data name="BluetoothDevicesWillNOTBeAvailable" xml:space="preserve">
     <value>A bluetooth eszközök nem lesznek elérhetőek</value>
   </data>
+  <data name="BluetoothAccess" xml:space="preserve">
+    <value>Bluetooth-hozzáférés</value>
+  </data>
+  <data name="BluetoothAllowed" xml:space="preserve">
+    <value>Engedélyezve</value>
+  </data>
+  <data name="BluetoothDenied" xml:space="preserve">
+    <value>Letiltva a rendszerbeállításokban</value>
+  </data>
+  <data name="BluetoothNotAllowed" xml:space="preserve">
+    <value>Nincs engedélyezve</value>
+  </data>
+  <data name="BluetoothNotRequested" xml:space="preserve">
+    <value>Még nincs kérve</value>
+  </data>
+  <data name="BluetoothRestricted" xml:space="preserve">
+    <value>Korlátozva</value>
+  </data>
+  <data name="BluetoothPermissionTitle" xml:space="preserve">
+    <value>Engedélyezi a BrickController Bluetooth-hozzáférését?</value>
+  </data>
+  <data name="BluetoothPermissionRequired" xml:space="preserve">
+    <value>A Bluetooth csak kompatibilis vevők és távirányítók keresésére, csatlakoztatására és vezérlésére szolgál. Az alkalmazás más részei Bluetooth nélkül is használhatók.</value>
+  </data>
+  <data name="BluetoothPermissionDenied" xml:space="preserve">
+    <value>A BrickController Bluetooth-hozzáférése ki van kapcsolva. A rendszerbeállításokban engedélyezheti.</value>
+  </data>
+  <data name="BluetoothPermissionDeclined" xml:space="preserve">
+    <value>A Bluetooth-hozzáférés nincs engedélyezve. Ezt a BrickController beállításaiban módosíthatja.</value>
+  </data>
+  <data name="Allow" xml:space="preserve">
+    <value>Engedélyezés</value>
+  </data>
+  <data name="NotNow" xml:space="preserve">
+    <value>Most nem</value>
+  </data>
+  <data name="OpenSettings" xml:space="preserve">
+    <value>Beállítások megnyitása</value>
+  </data>
   <data name="BluetoothIsTurnedOff" xml:space="preserve">
     <value>A bluetooth ki van kapcsolva</value>
   </data>
@@ -224,6 +263,9 @@
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Jóváhagyás</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Beállítás</value>
   </data>
   <data name="Connecting" xml:space="preserve">
     <value>Kapcsolódás...</value>

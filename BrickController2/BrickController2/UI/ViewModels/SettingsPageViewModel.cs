@@ -5,6 +5,7 @@ using BrickController2.UI.Commands;
 using BrickController2.UI.Services.Dialog;
 using BrickController2.UI.Services.Localization;
 using BrickController2.UI.Services.Navigation;
+using BrickController2.UI.Services.Permission;
 using BrickController2.UI.Services.Theme;
 using BrickController2.UI.Services.Translation;
 using Microsoft.Maui.Controls;
@@ -24,8 +25,10 @@ namespace BrickController2.UI.ViewModels
         private readonly ILocalizationService _localizationService;
         private readonly IInputDeviceService<OrientationSensorController> _orientationSensorService;
         private readonly IHttpControlService _httpControlService;
+        private readonly IBluetoothPermissionGate _bluetoothPermissionGate;
         private readonly CreationListPageViewModel _parentViewModel;
         private readonly IDialogService _dialogService;
+        private string _bluetoothPermissionStatus = string.Empty;
 
         public SettingsPageViewModel(
             INavigationService navigationService,
@@ -35,6 +38,7 @@ namespace BrickController2.UI.ViewModels
             ILocalizationService localizationService,
             IInputDeviceService<OrientationSensorController> orientationSensorService,
             IHttpControlService httpControlService,
+            IBluetoothPermissionGate bluetoothPermissionGate,
             NavigationParameters parameters) : 
             base(navigationService, translationService)
         {
@@ -43,6 +47,7 @@ namespace BrickController2.UI.ViewModels
             _localizationService = localizationService;
             _orientationSensorService = orientationSensorService;
             _httpControlService = httpControlService;
+            _bluetoothPermissionGate = bluetoothPermissionGate;
             _parentViewModel = parameters.Get<CreationListPageViewModel>("parent");
             SelectThemeCommand = new SafeCommand(SelectThemeAsync);
             SelectLanguageCommand = new SafeCommand(SelectAppLanguageAsync);
@@ -51,13 +56,15 @@ namespace BrickController2.UI.ViewModels
             RegenerateHttpControlTokenCommand = new SafeCommand(RegenerateHttpControlToken);
             CopyHttpControlUrlCommand = new SafeCommand(CopyHttpControlUrlAsync);
             CopyHttpControlTokenCommand = new SafeCommand(CopyHttpControlTokenAsync);
+            ConfigureBluetoothCommand = new SafeCommand(ConfigureBluetoothAsync);
         }
 
-        public override void OnAppearing()
+        public override async void OnAppearing()
         {
             base.OnAppearing();
             _httpControlService.StatusChanged += HttpControlServiceStatusChanged;
             RaiseHttpControlPropertiesChanged();
+            await RefreshBluetoothPermissionStatusAsync();
         }
 
         public override void OnDisappearing()
@@ -99,6 +106,20 @@ namespace BrickController2.UI.ViewModels
         public ICommand RegenerateHttpControlTokenCommand { get; }
         public ICommand CopyHttpControlUrlCommand { get; }
         public ICommand CopyHttpControlTokenCommand { get; }
+        public ICommand ConfigureBluetoothCommand { get; }
+
+        public string BluetoothPermissionStatus
+        {
+            get => _bluetoothPermissionStatus;
+            private set
+            {
+                if (_bluetoothPermissionStatus != value)
+                {
+                    _bluetoothPermissionStatus = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
 
         public bool IsOrientationSensorSupported => _orientationSensorService.IsSupported;
 
@@ -254,6 +275,36 @@ namespace BrickController2.UI.ViewModels
         {
             var token = _httpControlService.Options.AccessToken;
             return string.IsNullOrWhiteSpace(token) ? Task.CompletedTask : Clipboard.Default.SetTextAsync(token);
+        }
+
+        private async Task ConfigureBluetoothAsync()
+        {
+            await _bluetoothPermissionGate.EnsureAccessAsync(true, DisappearingToken);
+            await RefreshBluetoothPermissionStatusAsync();
+        }
+
+        private async Task RefreshBluetoothPermissionStatusAsync()
+        {
+            if (_bluetoothPermissionGate.Decision == BluetoothPermissionDecision.NotRequested)
+            {
+                BluetoothPermissionStatus = Translate("BluetoothNotRequested");
+                return;
+            }
+
+            if (_bluetoothPermissionGate.Decision == BluetoothPermissionDecision.Declined)
+            {
+                BluetoothPermissionStatus = Translate("BluetoothNotAllowed");
+                return;
+            }
+
+            var status = await _bluetoothPermissionGate.CheckStatusAsync();
+            BluetoothPermissionStatus = status switch
+            {
+                Microsoft.Maui.ApplicationModel.PermissionStatus.Granted => Translate("BluetoothAllowed"),
+                Microsoft.Maui.ApplicationModel.PermissionStatus.Denied => Translate("BluetoothDenied"),
+                Microsoft.Maui.ApplicationModel.PermissionStatus.Restricted => Translate("BluetoothRestricted"),
+                _ => Translate("BluetoothNotRequested")
+            };
         }
 
         private void HttpControlServiceStatusChanged(object? sender, EventArgs e)
