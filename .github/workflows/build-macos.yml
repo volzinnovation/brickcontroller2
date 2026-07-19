@@ -7,7 +7,9 @@ on:
       - 'releases/**'
     paths:
       - '.github/**/*macos.yml'
+      - 'build/macos/**'
       - 'build/installers/build-macos-pkg.sh'
+      - 'test/test-macos-app-bundle-dependencies.sh'
       - 'Directory.*.props'
       - 'NuGet.config'
       - 'BrickController2.slnx'
@@ -20,7 +22,9 @@ on:
       - 'releases/**'
     paths:
       - '.github/**/*macos.yml'
+      - 'build/macos/**'
       - 'build/installers/build-macos-pkg.sh'
+      - 'test/test-macos-app-bundle-dependencies.sh'
       - 'Directory.*.props'
       - 'NuGet.config'
       - 'BrickController2.slnx'
@@ -71,6 +75,9 @@ jobs:
     - name: Set app version for release
       if: github.event_name == 'release' && github.event.action == 'published'
       run: echo "APP_DISPLAY_VERSION=${{ github.event.release.tag_name }}" >> "$GITHUB_ENV"
+
+    - name: Test macOS dependency verifier
+      run: bash test/test-macos-app-bundle-dependencies.sh
 
     - name: Build macOS installer
       run: bash build/installers/build-macos-pkg.sh ${{ matrix.runtime }}

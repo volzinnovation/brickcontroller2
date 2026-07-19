@@ -49,6 +49,9 @@ jobs:
           xcodebuild -version
         fi
 
+    - name: Test macOS dependency verifier
+      run: bash test/test-macos-app-bundle-dependencies.sh
+
     - name: Build macOS installer (unsigned)
       run: bash build/installers/build-macos-pkg.sh ${{ matrix.runtime }}
 

@@ -21,6 +21,6 @@
   <!--App information-->
   <PropertyGroup>
     <ApplicationDisplayVersion>3.5</ApplicationDisplayVersion>
-    <ApplicationVersion>53</ApplicationVersion>
+    <ApplicationVersion>54</ApplicationVersion>
   </PropertyGroup>
 </Project>

@@ -3,9 +3,12 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 PROJECT="$ROOT_DIR/BrickController2/BrickController2.MacCatalyst/BrickController2.MacCatalyst.csproj"
+APP_INFO_PLIST="$ROOT_DIR/BrickController2/BrickController2.MacCatalyst/Info.plist"
+VERIFY_PKG_SCRIPT="$ROOT_DIR/build/macos/verify-installer-package.sh"
 CONFIGURATION="${CONFIGURATION:-Release}"
 RID="${RID:-maccatalyst-arm64}"
 ARTIFACTS_PATH="${ARTIFACTS_PATH:-$ROOT_DIR/artifacts/appstore-publish}"
+APP_BUILD="${APP_BUILD:-$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_INFO_PLIST")}"
 
 usage() {
   cat <<USAGE
@@ -77,6 +80,7 @@ if [[ -z "$pkg" ]]; then
   echo "No PKG found below $ARTIFACTS_PATH" >&2
   exit 3
 fi
+"$VERIFY_PKG_SCRIPT" --expected-build "$APP_BUILD" "$pkg"
 echo "PKG: $pkg"
 
 if [[ "$upload" == "1" ]]; then

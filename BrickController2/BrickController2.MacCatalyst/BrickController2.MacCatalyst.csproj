@@ -41,4 +41,22 @@
     <MauiAsset Include="..\..\Help\**\*.*" Link="Help\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
+  <!--
+    The .NET Mac Catalyst SDK otherwise re-identifies packaged dylibs as
+    @executable_path/../../Contents/MonoBundle/<name>. macOS App Store security
+    rejects parent-directory expansion in that load path before the app starts.
+    The app already carries @executable_path/../MonoBundle as an LC_RPATH, so
+    give every bundled dylib an @rpath identity before the native executable is
+    linked and signed.
+  -->
+  <Target Name="UseSecureMacCatalystDynamicLibraryIds"
+          AfterTargets="_ComputeDynamicLibrariesToReidentify"
+          BeforeTargets="_InstallNameTool">
+    <ItemGroup>
+      <_DynamicLibraryToReidentify Update="@(_DynamicLibraryToReidentify)">
+        <DynamicLibraryId>@rpath/%(Filename)%(Extension)</DynamicLibraryId>
+      </_DynamicLibraryToReidentify>
+    </ItemGroup>
+  </Target>
+
 </Project>

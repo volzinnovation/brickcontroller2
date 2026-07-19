@@ -8,8 +8,12 @@ RID="${1:-maccatalyst-arm64}"
 CONFIGURATION="${CONFIGURATION:-Release}"
 VERSION="${APP_DISPLAY_VERSION:-0.0.0}"
 PROJECT="BrickController2/BrickController2.MacCatalyst/BrickController2.MacCatalyst.csproj"
+APP_INFO_PLIST="BrickController2/BrickController2.MacCatalyst/Info.plist"
+VERIFY_APP_SCRIPT="build/macos/verify-app-bundle-dependencies.sh"
+VERIFY_PKG_SCRIPT="build/macos/verify-installer-package.sh"
 OUTPUT_DIR="artifacts/installers"
 STAGING_DIR="artifacts/macos-pkgroot/${RID}"
+BUILD_NUMBER="${APP_BUILD:-$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "${APP_INFO_PLIST}")}"
 
 cd "${REPO_ROOT}"
 
@@ -30,6 +34,7 @@ mkdir -p "${OUTPUT_DIR}"
 
 PUBLISHED_PKG="$(find "${PUBLISH_DIR}" -maxdepth 1 -type f -name '*.pkg' | head -n 1)"
 if [[ -n "${PUBLISHED_PKG}" ]]; then
+  "${VERIFY_PKG_SCRIPT}" --expected-build "${BUILD_NUMBER}" "${PUBLISHED_PKG}"
   PKG_PATH="${OUTPUT_DIR}/BrickController_${VERSION}_${RID}.pkg"
   cp "${PUBLISHED_PKG}" "${PKG_PATH}"
   echo "${PKG_PATH}"
@@ -42,6 +47,8 @@ if [[ -z "${APP_PATH}" ]]; then
   exit 1
 fi
 
+"${VERIFY_APP_SCRIPT}" --require-signature --expected-build "${BUILD_NUMBER}" "${APP_PATH}"
+
 rm -rf "${STAGING_DIR}"
 mkdir -p "${STAGING_DIR}/Applications"
 cp -R "${APP_PATH}" "${STAGING_DIR}/Applications/BrickController2.app"
@@ -53,5 +60,7 @@ productbuild \
   --version "${VERSION}" \
   --install-location "/" \
   "${PKG_PATH}"
+
+"${VERIFY_PKG_SCRIPT}" --expected-build "${BUILD_NUMBER}" "${PKG_PATH}"
 
 echo "${PKG_PATH}"

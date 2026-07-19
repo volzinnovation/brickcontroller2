@@ -12,6 +12,8 @@ TEAM_ID="${TEAM_ID:-F4CT29PZS5}"
 APP_NAME="${APP_NAME:-BrickController}"
 BUNDLE_ID="${BUNDLE_ID:-de.raphaelvolz.brickcontroller}"
 EXECUTABLE_NAME="${EXECUTABLE_NAME:-BrickController2.MacCatalyst}"
+VERIFY_APP_SCRIPT="$ROOT_DIR/build/macos/verify-app-bundle-dependencies.sh"
+VERIFY_PKG_SCRIPT="$ROOT_DIR/build/macos/verify-installer-package.sh"
 APP_VERSION="${APP_VERSION:-$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP_INFO_PLIST")}"
 APP_BUILD="${APP_BUILD:-$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_INFO_PLIST")}"
 
@@ -88,6 +90,8 @@ xattr -cr "$archive_app" 2>/dev/null || true
 dot_clean -m "$archive_app" 2>/dev/null || true
 find "$archive_app" -name '._*' -delete
 
+"$VERIFY_APP_SCRIPT" --require-signature --expected-build "$APP_BUILD" "$archive_app"
+
 app_executable="$archive_app/Contents/MacOS/$EXECUTABLE_NAME"
 if command -v dsymutil >/dev/null 2>&1 && [[ -f "$app_executable" ]]; then
   dsymutil "$app_executable" -o "$archive_path/dSYMs/$APP_NAME.app.dSYM" || true
@@ -133,6 +137,7 @@ xcodebuild -exportArchive \
 if [[ "$destination" == "export" ]]; then
   pkg="$(find "$export_path" -maxdepth 1 -type f -name '*.pkg' -print | head -1)"
   if [[ -n "$pkg" ]]; then
+    "$VERIFY_PKG_SCRIPT" --expected-build "$APP_BUILD" "$pkg"
     echo "PKG: $pkg"
   fi
 fi
