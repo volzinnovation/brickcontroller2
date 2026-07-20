@@ -27,8 +27,9 @@ int fixture_answer(void) { return 42; }
 SOURCE
 
 cat > "$fixture_root/main.c" <<'SOURCE'
+#include <sqlite3.h>
 extern int fixture_answer(void);
-int main(void) { return fixture_answer() == 42 ? 0 : 1; }
+int main(void) { return fixture_answer() == 42 && sqlite3_libversion_number() > 0 ? 0 : 1; }
 SOURCE
 
 cat > "$contents/Info.plist" <<'PLIST'
@@ -52,10 +53,19 @@ clang -dynamiclib "$fixture_root/library.c" \
 clang "$fixture_root/main.c" \
   -L"$contents/MonoBundle" \
   -lfixture \
+  -lsqlite3 \
   -Wl,-rpath,@executable_path/../MonoBundle \
   -o "$executable"
 
-"$verifier" --expected-build 999 "$app_path" >/dev/null
+"$verifier" --require-system-sqlite --expected-build 999 "$app_path" >/dev/null
+
+cp "$dylib" "$contents/MonoBundle/libe_sqlite3.dylib"
+if "$verifier" --require-system-sqlite "$app_path" >"$fixture_root/bundled-sqlite.out" 2>&1; then
+  echo "Verifier accepted an app with a bundled libe_sqlite3.dylib." >&2
+  exit 1
+fi
+grep -q 'Bundled libe_sqlite3.dylib is forbidden' "$fixture_root/bundled-sqlite.out"
+rm "$contents/MonoBundle/libe_sqlite3.dylib"
 
 mv "$dylib" "$fixture_root/libfixture.missing"
 if "$verifier" "$app_path" >"$fixture_root/missing.out" 2>&1; then

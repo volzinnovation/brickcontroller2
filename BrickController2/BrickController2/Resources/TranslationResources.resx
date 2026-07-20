@@ -195,6 +195,12 @@
   <data name="BluetoothDevicesWillNOTBeAvailable" xml:space="preserve">
     <value>Bluetooth devices will NOT be available</value>
   </data>
+  <data name="StartupErrorTitle" xml:space="preserve">
+    <value>BrickController could not finish starting</value>
+  </data>
+  <data name="StartupErrorMessage" xml:space="preserve">
+    <value>BrickController could not load its saved data. The app will remain open. Please restart it, and contact support if the problem continues.</value>
+  </data>
   <data name="BluetoothAccess" xml:space="preserve">
     <value>Bluetooth access</value>
   </data>

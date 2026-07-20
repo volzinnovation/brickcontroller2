@@ -21,8 +21,25 @@
     <PackageReference Include="Microsoft.Maui.Controls" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
     <PackageReference Include="Microsoft.Maui.Essentials" />
-    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" />
+    <!--
+      sqlite-net-pcl does not currently ship a Mac Catalyst-specific managed
+      asset. Its generic asset selects the bundled e_sqlite3 provider, while
+      its iOS asset correctly selects Apple's system sqlite3 library. Use that
+      compatible asset for Catalyst and suppress the transitive bundled native
+      library so App Store processing cannot remove or invalidate it.
+    -->
+    <PackageReference Include="sqlite-net-pcl" ExcludeAssets="compile;runtime" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" ExcludeAssets="all" />
+    <PackageReference Include="SQLitePCLRaw.provider.sqlite3" />
+    <PackageReference Include="SourceGear.sqlite3" ExcludeAssets="all" />
     <ProjectReference Include="..\BrickController2\BrickController2.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SQLite-net">
+      <HintPath>$(NuGetPackageRoot)sqlite-net-pcl/$(SQLiteNetPclVersion)/lib/net8.0-ios18.0/SQLite-net.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

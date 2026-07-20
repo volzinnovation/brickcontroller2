@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <SQLiteNetPclVersion>1.11.285</SQLiteNetPclVersion>
   </PropertyGroup>
   <ItemGroup>
     <!-- Autofac 11 emits dynamic resolver methods that cannot execute in Mac Catalyst's AOT-only release runtime. -->
@@ -13,8 +14,11 @@
     <PackageVersion Include="Microsoft.Maui.Platforms.Linux.Gtk4" Version="0.1.0-preview.12.26358.3" />
     <PackageVersion Include="Microsoft.Maui.Platforms.Linux.Gtk4.Essentials" Version="0.1.0-preview.12.26358.3" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageVersion Include="sqlite-net-pcl" Version="1.11.285" />
+    <PackageVersion Include="sqlite-net-pcl" Version="$(SQLiteNetPclVersion)" />
     <PackageVersion Include="SQLitePCLRaw.lib.e_sqlite3" Version="3.53.3" />
+    <PackageVersion Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.3" />
+    <PackageVersion Include="SQLitePCLRaw.provider.sqlite3" Version="3.0.3" />
+    <PackageVersion Include="SourceGear.sqlite3" Version="3.53.3" />
     <PackageVersion Include="SQLiteNetExtensions" Version="2.1.0" />
     <PackageVersion Include="SQLiteNetExtensions.Async" Version="2.1.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />

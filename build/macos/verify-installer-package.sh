@@ -3,7 +3,7 @@ set -euo pipefail
 
 usage() {
   cat <<'USAGE'
-Usage: verify-installer-package.sh [--expected-build NUMBER] PKG_PATH
+Usage: verify-installer-package.sh [--require-system-sqlite] [--expected-build NUMBER] PKG_PATH
 
 Expands a macOS installer package and verifies every contained app bundle,
 including code signatures and all bundled Mach-O dependencies.
@@ -12,6 +12,7 @@ USAGE
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 expected_build=""
+require_system_sqlite=0
 pkg_path=""
 
 while [[ $# -gt 0 ]]; do
@@ -19,6 +20,10 @@ while [[ $# -gt 0 ]]; do
     --expected-build)
       expected_build="${2:-}"
       shift 2
+      ;;
+    --require-system-sqlite)
+      require_system_sqlite=1
+      shift
       ;;
     -h|--help)
       usage
@@ -55,6 +60,9 @@ app_count=0
 while IFS= read -r -d '' app_path; do
   app_count=$((app_count + 1))
   args=(--require-signature)
+  if [[ "$require_system_sqlite" == "1" ]]; then
+    args+=(--require-system-sqlite)
+  fi
   if [[ -n "$expected_build" ]]; then
     args+=(--expected-build "$expected_build")
   fi

@@ -80,7 +80,7 @@ if [[ -z "$pkg" ]]; then
   echo "No PKG found below $ARTIFACTS_PATH" >&2
   exit 3
 fi
-"$VERIFY_PKG_SCRIPT" --expected-build "$APP_BUILD" "$pkg"
+"$VERIFY_PKG_SCRIPT" --require-system-sqlite --expected-build "$APP_BUILD" "$pkg"
 echo "PKG: $pkg"
 
 if [[ "$upload" == "1" ]]; then

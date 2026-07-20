@@ -90,7 +90,7 @@ xattr -cr "$archive_app" 2>/dev/null || true
 dot_clean -m "$archive_app" 2>/dev/null || true
 find "$archive_app" -name '._*' -delete
 
-"$VERIFY_APP_SCRIPT" --require-signature --expected-build "$APP_BUILD" "$archive_app"
+"$VERIFY_APP_SCRIPT" --require-signature --require-system-sqlite --expected-build "$APP_BUILD" "$archive_app"
 
 app_executable="$archive_app/Contents/MacOS/$EXECUTABLE_NAME"
 if command -v dsymutil >/dev/null 2>&1 && [[ -f "$app_executable" ]]; then
@@ -137,7 +137,7 @@ xcodebuild -exportArchive \
 if [[ "$destination" == "export" ]]; then
   pkg="$(find "$export_path" -maxdepth 1 -type f -name '*.pkg' -print | head -1)"
   if [[ -n "$pkg" ]]; then
-    "$VERIFY_PKG_SCRIPT" --expected-build "$APP_BUILD" "$pkg"
+    "$VERIFY_PKG_SCRIPT" --require-system-sqlite --expected-build "$APP_BUILD" "$pkg"
     echo "PKG: $pkg"
   fi
 fi

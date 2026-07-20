@@ -21,6 +21,13 @@ if [[ -n "${XCODE_DEVELOPER_DIR:-}" ]]; then
   export DEVELOPER_DIR="${XCODE_DEVELOPER_DIR}"
 fi
 
+dotnet clean "${PROJECT}" \
+  -c "${CONFIGURATION}" \
+  -f net10.0-maccatalyst \
+  -r "${RID}" \
+  --nologo \
+  --verbosity quiet
+
 dotnet publish "${PROJECT}" \
   -c "${CONFIGURATION}" \
   -f net10.0-maccatalyst \
@@ -34,7 +41,7 @@ mkdir -p "${OUTPUT_DIR}"
 
 PUBLISHED_PKG="$(find "${PUBLISH_DIR}" -maxdepth 1 -type f -name '*.pkg' | head -n 1)"
 if [[ -n "${PUBLISHED_PKG}" ]]; then
-  "${VERIFY_PKG_SCRIPT}" --expected-build "${BUILD_NUMBER}" "${PUBLISHED_PKG}"
+  "${VERIFY_PKG_SCRIPT}" --require-system-sqlite --expected-build "${BUILD_NUMBER}" "${PUBLISHED_PKG}"
   PKG_PATH="${OUTPUT_DIR}/BrickController_${VERSION}_${RID}.pkg"
   cp "${PUBLISHED_PKG}" "${PKG_PATH}"
   echo "${PKG_PATH}"
@@ -47,7 +54,7 @@ if [[ -z "${APP_PATH}" ]]; then
   exit 1
 fi
 
-"${VERIFY_APP_SCRIPT}" --require-signature --expected-build "${BUILD_NUMBER}" "${APP_PATH}"
+"${VERIFY_APP_SCRIPT}" --require-signature --require-system-sqlite --expected-build "${BUILD_NUMBER}" "${APP_PATH}"
 
 rm -rf "${STAGING_DIR}"
 mkdir -p "${STAGING_DIR}/Applications"
@@ -61,6 +68,6 @@ productbuild \
   --install-location "/" \
   "${PKG_PATH}"
 
-"${VERIFY_PKG_SCRIPT}" --expected-build "${BUILD_NUMBER}" "${PKG_PATH}"
+"${VERIFY_PKG_SCRIPT}" --require-system-sqlite --expected-build "${BUILD_NUMBER}" "${PKG_PATH}"
 
 echo "${PKG_PATH}"

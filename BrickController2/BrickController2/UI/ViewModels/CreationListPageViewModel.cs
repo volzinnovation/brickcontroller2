@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.ApplicationModel;
+using Microsoft.Extensions.Logging;
 using BrickController2.BusinessLogic;
 using BrickController2.CreationManagement;
 using BrickController2.DeviceManagement;
@@ -24,6 +26,7 @@ namespace BrickController2.UI.ViewModels
         private readonly IPlayLogic _playLogic;
         private readonly IDialogService _dialogService;
         private readonly IReadWriteExternalStoragePermission _readWriteExternalStoragePermission;
+        private readonly ILogger<CreationListPageViewModel> _logger;
 
         private bool _isLoaded;
 
@@ -39,7 +42,8 @@ namespace BrickController2.UI.ViewModels
             IDialogService dialogService,
             ISharedFileStorageService sharedFileStorageService,
             ICommandFactory<Creation> commandFactory,
-            IReadWriteExternalStoragePermission readWriteExternalStoragePermission)
+            IReadWriteExternalStoragePermission readWriteExternalStoragePermission,
+            ILogger<CreationListPageViewModel> logger)
             : base(navigationService, translationService)
         {
             _creationManager = creationManager;
@@ -47,6 +51,7 @@ namespace BrickController2.UI.ViewModels
             _playLogic = playLogic;
             _dialogService = dialogService;
             _readWriteExternalStoragePermission = readWriteExternalStoragePermission;
+            _logger = logger;
             SharedFileStorageService = sharedFileStorageService;
 
             ImportCreationCommand = commandFactory.ImportItemFromFileCommand(this);
@@ -88,10 +93,21 @@ namespace BrickController2.UI.ViewModels
         {
             if (!_isRequestingPermission)
             {
-                base.OnAppearing();
+                try
+                {
+                    base.OnAppearing();
 
-                await LoadCreationsAndDevicesAsync();
-                await RequestStoragePermissionAsync();
+                    await LoadCreationsAndDevicesAsync();
+                    await RequestStoragePermissionAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to initialize the creation list page.");
+                    await TryShowStartupErrorAsync();
+                }
             }
         }
 
@@ -127,6 +143,22 @@ namespace BrickController2.UI.ViewModels
             }
             catch (OperationCanceledException)
             {
+            }
+        }
+
+        private async Task TryShowStartupErrorAsync()
+        {
+            try
+            {
+                await _dialogService.ShowMessageBoxAsync(
+                    Translate("StartupErrorTitle"),
+                    Translate("StartupErrorMessage"),
+                    Translate("Ok"),
+                    CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to display the startup error message.");
             }
         }
 

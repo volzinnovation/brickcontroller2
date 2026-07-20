@@ -3,15 +3,17 @@ set -euo pipefail
 
 usage() {
   cat <<'USAGE'
-Usage: verify-app-bundle-dependencies.sh [--require-signature] [--expected-build NUMBER] APP_PATH
+Usage: verify-app-bundle-dependencies.sh [--require-signature] [--require-system-sqlite] [--expected-build NUMBER] APP_PATH
 
 Checks every Mach-O file in a macOS app bundle and fails when a bundled
 dependency is missing, a dynamic-library path uses unsafe parent traversal,
-or the optional build/signature requirements are not met.
+or the optional build/signature requirements are not met. The system-SQLite
+check also rejects a bundled libe_sqlite3 dylib.
 USAGE
 }
 
 require_signature=0
+require_system_sqlite=0
 expected_build=""
 app_path=""
 
@@ -19,6 +21,10 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --require-signature)
       require_signature=1
+      shift
+      ;;
+    --require-system-sqlite)
+      require_system_sqlite=1
       shift
       ;;
     --expected-build)
@@ -74,6 +80,18 @@ fi
 
 if [[ "$require_signature" == "1" ]]; then
   codesign --verify --deep --strict --verbose=2 "$app_path"
+fi
+
+if [[ "$require_system_sqlite" == "1" ]]; then
+  if find "$app_path/Contents" -type f -name 'libe_sqlite3.dylib' -print -quit | grep -q .; then
+    echo "Bundled libe_sqlite3.dylib is forbidden; the Mac app must use the system SQLite library." >&2
+    exit 1
+  fi
+
+  if ! otool -L "$main_executable" | tail -n +2 | sed -E 's/^[[:space:]]+([^[:space:]]+).*/\1/' | grep -qx '/usr/lib/libsqlite3.dylib'; then
+    echo "Main executable does not link the required system SQLite library: /usr/lib/libsqlite3.dylib" >&2
+    exit 1
+  fi
 fi
 
 errors=0

@@ -195,6 +195,12 @@
   <data name="BluetoothDevicesWillNOTBeAvailable" xml:space="preserve">
     <value>Bluetooth-Geräte werden NICHT verfügbar sein</value>
   </data>
+  <data name="StartupErrorTitle" xml:space="preserve">
+    <value>BrickController konnte den Start nicht abschließen</value>
+  </data>
+  <data name="StartupErrorMessage" xml:space="preserve">
+    <value>BrickController konnte die gespeicherten Daten nicht laden. Die App bleibt geöffnet. Bitte starte sie neu und kontaktiere den Support, falls das Problem weiterhin besteht.</value>
+  </data>
   <data name="BluetoothAccess" xml:space="preserve">
     <value>Bluetooth-Zugriff</value>
   </data>
